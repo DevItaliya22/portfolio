@@ -1,35 +1,44 @@
-'use client'
 
-import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { ArrowRight, FileDown, Github, Twitter } from 'lucide-react'
-import ParticleEffect from '../components/ParticleEffect'
+"use client"
+import Link from "next/link"
+import { motion } from "framer-motion"
+import { ArrowRight, Eye, FileDown, Github, Twitter } from 'lucide-react'
+import { SpotlightCard } from "../components/SpotlightCard"
+import ParticleEffect from "../components/ParticleEffect"
 
 interface Project {
   id: string
   title: string
   description: string
   tags: string[]
+  date: string
+  views: number
 }
 
 const projects: Project[] = [
   {
-    id: 'unkey-dev',
-    title: 'unkey.dev',
-    description: 'API authentication and authorization for developers. Secure, scalable, and easy to integrate.',
-    tags: ['API', 'Auth', 'SaaS']
+    id: "unkey-dev",
+    title: "unkey.dev",
+    description: "API authentication and authorization for developers. Secure, scalable, and easy to integrate.",
+    tags: ["API", "Auth", "SaaS"],
+    date: "Apr 1, 2023",
+    views: 18000
   },
   {
-    id: 'project-nebula',
-    title: 'Project Nebula',
-    description: 'A cloud-native database solution designed for high performance and scalability.',
-    tags: ['Database', 'Cloud', 'Performance']
+    id: "project-nebula",
+    title: "Project Nebula",
+    description: "A cloud-native database solution designed for high performance and scalability.",
+    tags: ["Database", "Cloud", "Performance"],
+    date: "May 15, 2023",
+    views: 12000
   },
   {
-    id: 'devflow',
-    title: 'DevFlow',
-    description: 'Streamline your development workflow with our integrated CI/CD pipeline and collaboration tools.',
-    tags: ['DevOps', 'Collaboration', 'Productivity']
+    id: "devflow",
+    title: "DevFlow",
+    description: "Streamline your development workflow with our integrated CI/CD pipeline and collaboration tools.",
+    tags: ["DevOps", "Collaboration", "Productivity"],
+    date: "Jun 30, 2023",
+    views: 15000
   }
 ]
 
@@ -60,7 +69,7 @@ export default function ProjectsPage() {
       className="min-h-screen bg-black text-white flex flex-col relative overflow-hidden"
     >
       <ParticleEffect />
-      <nav className="flex justify-center gap-6 p-6 text-neutral-400 relative z-10 ">
+      <nav className="flex justify-center gap-6 p-6 text-neutral-400 relative z-10">
         <motion.a 
           href="/" 
           className="text-sm hover:text-white transition-colors"
@@ -77,36 +86,16 @@ export default function ProjectsPage() {
         >
           Contact
         </motion.a>
+        
         <motion.a 
-            href="https://twitter.com/DevItaliya22"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-neutral-400 hover:text-white transition-colors"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <Twitter className="h-5 w-5" />
-          </motion.a>
-          <motion.a 
-            href="https://github.com/DevItaliya22"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-neutral-400 hover:text-white transition-colors"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <Github className="h-5 w-5" />
-          </motion.a>
-          <motion.a 
-            href="https://drive.google.com/file/d/1HvREDAjhvTZcT8XCi7nj5APDe-yRWDsK/view?usp=drive_link"
-            className="text-neutral-400 hover:text-white transition-colors"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <FileDown className="h-5 w-5" />
-          </motion.a>
+          href="https://drive.google.com/file/d/1HvREDAjhvTZcT8XCi7nj5APDe-yRWDsK/view?usp=drive_link"
+          className="text-neutral-400 hover:text-white transition-colors"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <FileDown className="h-5 w-5" />
+        </motion.a>
       </nav>
-      
       
       <main className="flex-1 flex flex-col items-center justify-start gap-12 p-6 relative z-10 max-w-6xl mx-auto w-full">
         <motion.div
@@ -124,7 +113,7 @@ export default function ProjectsPage() {
         </motion.div>
         
         <motion.div 
-          className="grid gap-8 md:grid-cols-2 w-full"
+          className="grid gap-8 w-full"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -132,24 +121,35 @@ export default function ProjectsPage() {
           {projects.map((project) => (
             <motion.div
               key={project.id}
-              className="bg-neutral-900 p-6 rounded-lg border border-neutral-800 hover:border-neutral-700 transition-colors"
               variants={itemVariants}
             >
-              <h2 className="text-2xl font-semibold mb-2">{project.title}</h2>
-              <p className="text-neutral-400 mb-4">{project.description}</p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {project.tags.map((tag) => (
-                  <span key={tag} className="text-xs bg-neutral-800 text-neutral-300 px-2 py-1 rounded">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <Link 
-                href={`/projects/${project.id}`}
-                className="inline-flex items-center text-sm text-white hover:underline"
-              >
-                Learn more <ArrowRight className="ml-1 h-4 w-4" />
-              </Link>
+              <SpotlightCard>
+                <div className="flex justify-between items-start mb-4">
+                  <span className="text-sm text-neutral-400">{project.date}</span>
+                  <div className="flex items-center gap-1 text-neutral-400">
+                    <Eye className="h-4 w-4" />
+                    <span className="text-sm">{(project.views / 1000).toFixed(0)}K</span>
+                  </div>
+                </div>
+                <h2 className="text-2xl font-semibold mb-4">{project.title}</h2>
+                <p className="text-neutral-400 mb-6 text-sm leading-relaxed">{project.description}</p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.tags.map((tag) => (
+                    <span 
+                      key={tag} 
+                      className="text-xs bg-neutral-800/50 text-neutral-300 px-2 py-1 rounded-full"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <Link 
+                  href={`/projects/${project.id}`}
+                  className="inline-flex items-center text-sm text-white hover:text-neutral-300 transition-colors"
+                >
+                  Learn more <ArrowRight className="ml-1 h-4 w-4" />
+                </Link>
+              </SpotlightCard>
             </motion.div>
           ))}
         </motion.div>

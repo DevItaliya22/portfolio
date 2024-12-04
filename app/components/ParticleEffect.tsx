@@ -12,8 +12,12 @@ const ParticleEffect = () => {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
+    const updateCanvasSize = () => {
+      canvas.width = window.innerWidth
+      canvas.height = document.documentElement.scrollHeight
+    }
+
+    updateCanvasSize()
 
     const particles: { x: number; y: number; size: number; speedX: number; speedY: number }[] = []
 
@@ -49,8 +53,7 @@ const ParticleEffect = () => {
     animate()
 
     const handleResize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      updateCanvasSize()
     }
 
     window.addEventListener('resize', handleResize)
@@ -60,8 +63,7 @@ const ParticleEffect = () => {
     }
   }, [])
 
-  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" />
+  return <canvas ref={canvasRef} className="fixed inset-0 w-full h-full pointer-events-none" />
 }
 
 export default ParticleEffect
-
