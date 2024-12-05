@@ -2,9 +2,10 @@
 "use client"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { ArrowRight, Eye, FileDown, Github, Twitter } from 'lucide-react'
+import { ArrowRight, Eye} from 'lucide-react'
 import { SpotlightCard } from "../components/SpotlightCard"
 import ParticleEffect from "../components/ParticleEffect"
+import Navbar from "../components/Navbar"
 
 interface Project {
   id: string
@@ -17,29 +18,46 @@ interface Project {
 
 const projects: Project[] = [
   {
-    id: "unkey-dev",
-    title: "unkey.dev",
-    description: "API authentication and authorization for developers. Secure, scalable, and easy to integrate.",
-    tags: ["API", "Auth", "SaaS"],
-    date: "Apr 1, 2023",
+    id: "autominds",
+    title: "Autominds",
+    description: "Autominds lets you automate workflows without writing code. Connect your apps, set up triggers and actions, and let Autominds do the rest.",
+    tags: ["API", "Automations", "SaaS"],
+    date: "Sept 27,2024",
     views: 18000
   },
   {
-    id: "project-nebula",
-    title: "Project Nebula",
-    description: "A cloud-native database solution designed for high performance and scalability.",
-    tags: ["Database", "Cloud", "Performance"],
-    date: "May 15, 2023",
+    id: "manish-vaghasiya",
+    title: "Manish Vaghasiya",
+    description: "A client project for a personal portfolio website. Designed and developed a responsive website with a focus on user experience.",
+    tags: ["Frontend", "Design", "Development"],
+    date: "Sept 15, 2024",
     views: 12000
   },
   {
-    id: "devflow",
-    title: "DevFlow",
-    description: "Streamline your development workflow with our integrated CI/CD pipeline and collaboration tools.",
-    tags: ["DevOps", "Collaboration", "Productivity"],
-    date: "Jun 30, 2023",
-    views: 15000
-  }
+    id: "pub-sub",
+    title: "Pub Sub Messaging System",
+    description: "This was a project to build a pub sub messaging system using websockets and redis with singleton pattern.",
+    tags: ["Websockets","PubSub","Redis","Scaling"],
+    date: "Aug 12, 2024",
+    views: 152
+  },
+  {
+    id: "delfa",
+    title: "Delfa Innovators (Internship)",
+    description: "This is my internship project where I made handeled many API's with frontend optimisation.",
+    tags: ["Analytics","Data","Internship","SaaS"],
+    date: "June 3, 2024",
+    views: 152
+  },
+  {
+    id: "pattern-generator",
+    title: "Pattern Generator (Internship)",
+    description: "This is an AI start up where I managed frontend optimisation with S3.",
+    tags: ["Generative AI","Internship","SaaS"],
+    date: "July 23, 2024",
+    views: 152
+  },
+
 ]
 
 const containerVariants = {
@@ -60,6 +78,11 @@ const itemVariants = {
   }
 }
 
+const convertViews = (views: number) => {
+  if(views < 1000) return views
+  else return `${(views/1000).toFixed(0)}K`
+}
+
 export default function ProjectsPage() {
   return (
     <motion.div 
@@ -69,33 +92,7 @@ export default function ProjectsPage() {
       className="min-h-screen bg-black text-white flex flex-col relative overflow-hidden"
     >
       <ParticleEffect />
-      <nav className="flex justify-center gap-6 p-6 text-neutral-400 relative z-10">
-        <motion.a 
-          href="/" 
-          className="text-sm hover:text-white transition-colors"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Home
-        </motion.a>
-        <motion.a 
-          href="/contact" 
-          className="text-sm hover:text-white transition-colors mr-10"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Contact
-        </motion.a>
-        
-        <motion.a 
-          href="https://drive.google.com/file/d/1HvREDAjhvTZcT8XCi7nj5APDe-yRWDsK/view?usp=drive_link"
-          className="text-neutral-400 hover:text-white transition-colors"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <FileDown className="h-5 w-5" />
-        </motion.a>
-      </nav>
+      <Navbar></Navbar>
       
       <main className="flex-1 flex flex-col items-center justify-start gap-12 p-6 relative z-10 max-w-6xl mx-auto w-full">
         <motion.div
@@ -123,12 +120,12 @@ export default function ProjectsPage() {
               key={project.id}
               variants={itemVariants}
             >
-              <SpotlightCard>
+              <SpotlightCard className="border-neutral-900">
                 <div className="flex justify-between items-start mb-4">
                   <span className="text-sm text-neutral-400">{project.date}</span>
                   <div className="flex items-center gap-1 text-neutral-400">
                     <Eye className="h-4 w-4" />
-                    <span className="text-sm">{(project.views / 1000).toFixed(0)}K</span>
+                    <span className="text-sm">{convertViews(project.views)}</span>
                   </div>
                 </div>
                 <h2 className="text-2xl font-semibold mb-4">{project.title}</h2>

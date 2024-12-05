@@ -51,7 +51,7 @@ export function SpotlightCard({
       onBlur={handleBlur}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`relative rounded-3xl border border-neutral-800 bg-neutral-900/80 overflow-hidden p-8 ${className}`}
+      className={`relative rounded-3xl border border-neutral-800 bg-neutral-900/80 overflow-hidden p-8 ${className} group`}
     >
       <div
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-in-out"
@@ -60,7 +60,12 @@ export function SpotlightCard({
           background: `radial-gradient(circle at ${position.x}px ${position.y}px, ${spotlightColor}, transparent 80%)`,
         }}
       />
-      {children}
+      <div className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent to-transparent shimmer-border opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      </div>
+      <div className="relative z-10">
+        {children}
+      </div>
     </div>
   )
 }

@@ -57,3 +57,8 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
+
+.shimmer-border {
+  animation: shimmer 3s ease-in-out infinite;
+}
+
