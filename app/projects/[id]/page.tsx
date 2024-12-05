@@ -123,8 +123,8 @@ export default function ProjectDetail() {
 
         <motion.div
           className="w-full"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{  opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.8, ease: 'easeOut' }}
         >
           <h2 className="text-2xl font-semibold mb-4">Key Features</h2>
@@ -137,8 +137,8 @@ export default function ProjectDetail() {
 
         <motion.div
           className="w-full"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{  opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.8, ease: 'easeOut' }}
         >
           <h2 className="text-2xl font-semibold mb-4">Tech Stack</h2>

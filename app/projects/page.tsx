@@ -6,8 +6,6 @@ import { SpotlightCard } from '../components/SpotlightCard';
 import ParticleEffect from '../components/ParticleEffect';
 import Navbar from '../components/Navbar';
 import { projects } from '@/lib/info';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -33,15 +31,6 @@ const convertViews = (views: number) => {
 };
 
 export default function ProjectsPage() {
-  const router = useRouter();
-
-  useEffect(() => {
-    // Prefetch all project detail pages
-    projects.forEach((project) => {
-      router.prefetch(`/projects/${project.id}`);
-    });
-  }, [router]);
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
