@@ -2,10 +2,19 @@
 
 import { motion } from 'framer-motion';
 import ParticleEffect from './components/ParticleEffect';
-import { FileDown, Github, Twitter } from 'lucide-react';
 import Navbar from './components/Navbar';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
+  const router = useRouter();
+
+  const routesToPrefetch = ['/projects', '/contact'];
+  useEffect(() => {
+    routesToPrefetch.forEach((route:string) => {
+      router.prefetch(route);
+    });
+  }, []);
   return (
     <motion.div
       initial={{ opacity: 0 }}

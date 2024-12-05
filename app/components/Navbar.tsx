@@ -8,7 +8,7 @@ function Navbar() {
 
   return (
     <nav className="flex justify-center gap-6 p-6 text-neutral-400 relative z-10">
-      {paths.map((path:string) => (
+      {paths.map((path: string) => (
         <motion.a
           key={path}
           href={path.toLocaleLowerCase()}
