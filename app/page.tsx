@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import ParticleEffect from "./components/ParticleEffect";
-import { FileDown, Github, Twitter } from "lucide-react";
-import Navbar from "./components/Navbar";
+import { motion } from 'framer-motion';
+import ParticleEffect from './components/ParticleEffect';
+import { FileDown, Github, Twitter } from 'lucide-react';
+import Navbar from './components/Navbar';
 
 export default function Page() {
   return (
@@ -20,7 +20,7 @@ export default function Page() {
           className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter"
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
+          transition={{ delay: 0.2, duration: 0.8, ease: 'easeOut' }}
         >
           Dev Italiya
         </motion.h1>
@@ -28,7 +28,7 @@ export default function Page() {
           className="text-neutral-400 text-sm md:text-base max-w-[600px] text-center"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
+          transition={{ delay: 0.5, duration: 0.8, ease: 'easeOut' }}
         >
           I'm building web applications and websites for clients around the
           world.

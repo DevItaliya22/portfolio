@@ -1,21 +1,21 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
+import type { Metadata } from 'next';
+import localFont from 'next/font/local';
+import './globals.css';
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+  src: './fonts/GeistVF.woff',
+  variable: '--font-geist-sans',
+  weight: '100 900',
 });
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+  src: './fonts/GeistMonoVF.woff',
+  variable: '--font-geist-mono',
+  weight: '100 900',
 });
 
 export const metadata: Metadata = {
-  title: "Dev Italiya",
-  description: "Portfolio of Dev Italiya",
+  title: 'Dev Italiya',
+  description: 'Portfolio of Dev Italiya',
 };
 
 export default function RootLayout({
@@ -30,7 +30,7 @@ export default function RootLayout({
           rel="shortcut icon"
           href="./favicon.ico"
           type="image/x-icon"
-          style={{borderRadius:"50%"}}
+          style={{ borderRadius: '50%' }}
         />
       </head>
       <body
