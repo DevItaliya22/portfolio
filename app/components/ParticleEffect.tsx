@@ -27,7 +27,7 @@ const ParticleEffect = () => {
       speedY: number;
     }[] = [];
 
-    for (let i = 0; i < 250; i++) {
+    for (let i = 0; i < 50; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
