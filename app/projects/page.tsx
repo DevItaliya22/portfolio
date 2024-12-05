@@ -6,6 +6,8 @@ import { SpotlightCard } from '../components/SpotlightCard';
 import ParticleEffect from '../components/ParticleEffect';
 import Navbar from '../components/Navbar';
 import { projects } from '@/lib/info';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -31,6 +33,15 @@ const convertViews = (views: number) => {
 };
 
 export default function ProjectsPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Prefetch all project detail pages
+    projects.forEach((project) => {
+      router.prefetch(`/projects/${project.id}`);
+    });
+  }, [router]);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -39,13 +50,13 @@ export default function ProjectsPage() {
       className="min-h-screen bg-black text-white flex flex-col relative overflow-hidden"
     >
       <ParticleEffect />
-      <Navbar></Navbar>
+      <Navbar />
 
       <main className="flex-1 flex flex-col items-center justify-start gap-12 p-6 relative z-10 max-w-6xl mx-auto w-full">
         <motion.div
           className="text-center"
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.8, ease: 'easeOut' }}
         >
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-4">
@@ -93,6 +104,7 @@ export default function ProjectsPage() {
                 </div>
                 <Link
                   href={`/projects/${project.id}`}
+                  prefetch={false}
                   className="inline-flex items-center text-sm text-white hover:text-neutral-300 transition-colors"
                 >
                   Learn more <ArrowRight className="ml-1 h-4 w-4" />

@@ -43,8 +43,8 @@ export default function ProjectDetail() {
       <main className="flex-1 flex flex-col items-start justify-start gap-12 p-6 relative z-10 max-w-4xl mx-auto w-full">
         <motion.div
           className="w-full"
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.8, ease: 'easeOut' }}
         >
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-4 ">

@@ -27,8 +27,8 @@ export default function Page() {
       <main className="flex-1 flex flex-col items-center justify-center gap-6 p-6 relative z-10">
         <motion.h1
           className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter"
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+          initial={{  opacity: 0 }}
+          animate={{  opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.8, ease: 'easeOut' }}
         >
           Dev Italiya
