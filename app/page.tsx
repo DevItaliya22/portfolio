@@ -14,7 +14,7 @@ export default function Page() {
     routesToPrefetch.forEach((route:string) => {
       router.prefetch(route);
     });
-  }, []);
+  });
   return (
     <motion.div
       initial={{ opacity: 0 }}

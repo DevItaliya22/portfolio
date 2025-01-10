@@ -15,12 +15,11 @@ import {
 import ParticleEffect from '../../components/ParticleEffect';
 import React, { useEffect, useState } from 'react';
 import { Project, projects } from '@/lib/info';
-import { useViewStore } from '@/store/viewStore';
 
 export default function ProjectDetail() {
   const { id } = useParams();
   const router = useRouter();
-  const [view, setView] = useState<{ id: any, project: string; views: number }[]>([]);
+  const [view, setView] = useState<{ id: string | number, project: string; views: number }[]>([]);
 
 useEffect(() => {
   const getRes = async () => {
@@ -36,7 +35,7 @@ const [project, setProject] = useState<Project>(() => {
   if (foundProject) {
     return {
       ...foundProject,
-      views: 0, // Initialize with 0 views, will be updated later
+      views: 0, 
     };
   }
   return {} as Project;

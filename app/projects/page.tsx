@@ -32,7 +32,7 @@ const convertViews = (views: number) => {
 };
 
 export default function ProjectsPage() {
-  const [view, setView] = useState<{ id: any, project: string; views: number }[]>([]);
+  const [view, setView] = useState<{ id: string | number, project: string; views: number }[]>([]);
   const [dynamicProjects, setDynamicProjects] = useState(projects);
 
   useEffect(() => {
