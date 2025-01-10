@@ -8,7 +8,7 @@ datasource db {
 }
 
 model views {
-  id        Int      @id @default(autoincrement())
-  project  String
+  id        Int      @id @default(autoincrement()) 
+  project  String   @unique
   views    Int
 }

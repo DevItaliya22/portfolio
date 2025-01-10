@@ -15,44 +15,52 @@ import {
 import ParticleEffect from '../../components/ParticleEffect';
 import React, { useEffect, useState } from 'react';
 import { Project, projects } from '@/lib/info';
+import axios from 'axios';
 
 export default function ProjectDetail() {
   const { id } = useParams();
   const router = useRouter();
-  const [view, setView] = useState<{ id: string | number, project: string; views: number }[]>([]);
+  const [view, setView] = useState<
+    { id: string | number; project: string; views: number }[]
+  >([]);
 
-useEffect(() => {
-  const getRes = async () => {
-    const res = await fetch('/api/view');
-    const data = await res.json();
-    setView(data.view);
-  };
-  getRes();
-}, []);
-
-const [project, setProject] = useState<Project>(() => {
-  const foundProject = projects.find((p) => p.id === id);
-  if (foundProject) {
-    return {
-      ...foundProject,
-      views: 0, 
+  useEffect(() => {
+    const getRes = async () => {
+      const res = await fetch('/api/view');
+      const data = await res.json();
+      setView(data.view);
     };
-  }
-  return {} as Project;
-});
+    getRes();
+  }, []);
 
-useEffect(() => {
-  const foundProject = projects.find((p) => p.id === id);
-  if (foundProject) {
-    const updatedProject = {
-      ...foundProject,
-      views: view.find((v) => v.project === id)?.views || 0,
-    };
-    setProject(updatedProject);
-  }
-}, [view, id]); 
+  const [project, setProject] = useState<Project>(() => {
+    const foundProject = projects.find((p) => p.id === id);
+    if (foundProject) {
+      return {
+        ...foundProject,
+        views: 0,
+      };
+    }
+    return {} as Project;
+  });
 
-  
+  useEffect(() => {
+    const foundProject = projects.find((p) => p.id === id);
+    if (foundProject) {
+      const updatedProject = {
+        ...foundProject,
+        views: view.find((v) => v.project === id)?.views || 0,
+      };
+      setProject(updatedProject);
+    }
+  }, [view, id]);
+
+  useEffect(()=>{
+    const incrementView = async () => {
+      const res = await axios.post("/api/increment", {id: id});
+    }
+    incrementView();
+  },[]);
 
   return (
     <motion.div
@@ -64,14 +72,14 @@ useEffect(() => {
       <ParticleEffect />
       <nav className="flex justify-between items-center p-6  z-10 relative">
         <div
-          onClick={() => router.push("/projects")}
+          onClick={() => router.push('/projects')}
           className="text-sm text-neutral-400 hover:text-white transition-colors inline-flex items-center"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Projects
         </div>
-        <div className='text-sm text-neutral-400 flex '>
-          <EyeIcon/> &nbsp; {project.views}
+        <div className="text-sm text-neutral-400 flex ">
+          <EyeIcon /> &nbsp; {project.views}
         </div>
       </nav>
 
@@ -159,7 +167,7 @@ useEffect(() => {
         <motion.div
           className="w-full"
           initial={{ opacity: 0 }}
-          animate={{  opacity: 1 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.8, ease: 'easeOut' }}
         >
           <h2 className="text-2xl font-semibold mb-4">Key Features</h2>
@@ -173,7 +181,7 @@ useEffect(() => {
         <motion.div
           className="w-full"
           initial={{ opacity: 0 }}
-          animate={{  opacity: 1 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.8, ease: 'easeOut' }}
         >
           <h2 className="text-2xl font-semibold mb-4">Tech Stack</h2>
