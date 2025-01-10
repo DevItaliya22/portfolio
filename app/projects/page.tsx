@@ -6,7 +6,6 @@ import { SpotlightCard } from '../components/SpotlightCard';
 import ParticleEffect from '../components/ParticleEffect';
 import Navbar from '../components/Navbar';
 import { projects } from '@/lib/info';
-import { useViewStore } from '@/store/viewStore';
 import { useEffect, useState } from 'react';
 
 const containerVariants = {
@@ -33,30 +32,31 @@ const convertViews = (views: number) => {
 };
 
 export default function ProjectsPage() {
-  const fetchViews = useViewStore((state) => state.fetchViews);
-  const view = useViewStore((state) => state.view);
+  const [view, setView] = useState<{ id: any, project: string; views: number }[]>([]);
+  const [dynamicProjects, setDynamicProjects] = useState(projects);
 
-  useEffect(()=>{
-    fetchViews();
-  },[])
+  useEffect(() => {
+    const getRes = async () => {
+      const res = await fetch('/api/view');
+      const data = await res.json();
+      setView(data.view);
+    };
+    getRes();
+  }, []);
 
-  const [dynamicProjects,setDynamicProjects] = useState(projects);
-
-  useEffect(()=>{
-    console.log(view)
-    if(view.length > 0){
-      const updatedProjects = projects.map((project)=>{
-        const viewCount = view.find((v)=>v.project === project.id);
-        if(viewCount){
-          return {...project,views:viewCount.views}
-        }else{
-          return project
+  useEffect(() => {
+    if (view.length > 0) {
+      const updatedProjects = projects.map((project) => {
+        const viewCount = view.find((v) => v.project === project.id);
+        if (viewCount) {
+          return { ...project, views: viewCount.views };
+        } else {
+          return project;
         }
-      })
-      console.log(updatedProjects)
+      });
       setDynamicProjects(updatedProjects);
     }
-  },[fetchViews,view])
+  }, [view]); 
 
   return (
     <motion.div

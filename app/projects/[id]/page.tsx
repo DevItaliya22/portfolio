@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams, notFound } from 'next/navigation';
+import { useParams, notFound, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
@@ -10,6 +10,7 @@ import {
   EyeIcon,
   Github,
   Instagram,
+  Router,
 } from 'lucide-react';
 import ParticleEffect from '../../components/ParticleEffect';
 import React, { useEffect, useState } from 'react';
@@ -18,18 +19,40 @@ import { useViewStore } from '@/store/viewStore';
 
 export default function ProjectDetail() {
   const { id } = useParams();
-  const view = useViewStore((state) => state.view);
-  const fetchViews = useViewStore((state) => state.fetchViews);
+  const router = useRouter();
+  const [view, setView] = useState<{ id: any, project: string; views: number }[]>([]);
 
-  useEffect(()=>{
-    fetchViews();
-  },[])
+useEffect(() => {
+  const getRes = async () => {
+    const res = await fetch('/api/view');
+    const data = await res.json();
+    setView(data.view);
+  };
+  getRes();
+}, []);
 
-  const [project, setProject] = useState<Project>(projects.find((p) => p.id === id) || {} as Project);
+const [project, setProject] = useState<Project>(() => {
+  const foundProject = projects.find((p) => p.id === id);
+  if (foundProject) {
+    return {
+      ...foundProject,
+      views: 0, // Initialize with 0 views, will be updated later
+    };
+  }
+  return {} as Project;
+});
 
-  useEffect(()=>{
-    setProject((project) => ({ ...project, views: view.find((v) => v.project === id)?.views || 0 }));
-  },[project,view])
+useEffect(() => {
+  const foundProject = projects.find((p) => p.id === id);
+  if (foundProject) {
+    const updatedProject = {
+      ...foundProject,
+      views: view.find((v) => v.project === id)?.views || 0,
+    };
+    setProject(updatedProject);
+  }
+}, [view, id]); 
+
   
 
   return (
@@ -37,17 +60,17 @@ export default function ProjectDetail() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-black text-white flex flex-col relative overflow-hidden"
+      className="min-h-screen bg-black text-white flex flex-col relative overflow-hidden cursor-pointer"
     >
       <ParticleEffect />
       <nav className="flex justify-between items-center p-6  z-10 relative">
-        <Link
-          href="/projects"
+        <div
+          onClick={() => router.push("/projects")}
           className="text-sm text-neutral-400 hover:text-white transition-colors inline-flex items-center"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Projects
-        </Link>
+        </div>
         <div className='text-sm text-neutral-400 flex '>
           <EyeIcon/> &nbsp; {project.views}
         </div>
