@@ -1,3 +1,4 @@
+import { useViewStore } from '@/store/viewStore';
 import {
   Twitter,
   Mail,
@@ -29,7 +30,7 @@ export const projects: Project[] = [
     github: 'https://github.com/DevItaliya22/AutoMinds',
     title: 'Autominds',
     description:
-      'API authentication and authorization for developers. Secure, scalable, and easy to integrate.',
+      'Automations with most known platforms. Secure, scalable, and easy to integrate.',
     longDescription:
       'AutoMinds is a completely open-source platform that allows you to connect multiple user applications (such as Google Drive, Google Docs, Google Sheets, GitHub, Gmail) and automates workflows between them. AutoMinds lets you set up triggers and actions to streamline and automate repetitive tasks across different platforms. It is a no-code automation platform that allows you to create complex workflows with simple drag-and-drop actions. <br/> This is one of the biggest and the most concise project I have ever worked on. It has a lot of features and is scalable. ',
     tags: ['API', 'Automations', 'SaaS'],
@@ -49,7 +50,7 @@ export const projects: Project[] = [
       'prisma',
       'Shad CN',
     ],
-    views: 18000,
+    views: 0,
     date: 'Sept 27,2024',
   },
   {
@@ -59,7 +60,7 @@ export const projects: Project[] = [
     github: 'private',
     instagram: 'https://www.instagram.com/manishvaghasiya01',
     description:
-      'A cloud-native database solution designed for high performance and scalability.A client project for a personal portfolio website. Designed and developed a responsive website with a focus on user experience.',
+      '.A client project for a personal portfolio website. Designed and developed a responsive website with a focus on user experience.',
     longDescription:
       'Manish Vaghasiya is a motivational speaker in Gujarat , India . He is a very good speaker and has a lot of followers. He wanted a website to showcase his work and his thoughts. Built an end to end website with admin panel and push notifications on contact and bookings. Client was very happy with the work and the website is live and running and shipped what he wanted in matter of days ',
     tags: ['Frontend', 'Design', 'Development'],
@@ -69,7 +70,7 @@ export const projects: Project[] = [
       'Deployment and hosting setup',
     ],
     techStack: ['Next.js', 'Tailwind CSS', 'Vercel', 'Prisma', 'PostgreSQL'],
-    views: 12000,
+    views:  0,
     date: 'Sept 15, 2024',
   },
   {
@@ -90,7 +91,7 @@ export const projects: Project[] = [
       'Docker persist volume for redis',
     ],
     techStack: ['React', 'Node.js', 'Docker', 'Bull MQ', 'Websockets', 'Redis'],
-    views: 152,
+    views:  0,
     date: 'Aug 12, 2024',
   },
   {
@@ -110,7 +111,7 @@ export const projects: Project[] = [
       'Deployment on AWS EC2',
     ],
     techStack: ['Next js', 'Node js', 'AWS EC2', 'S3', 'PostgreSQL'],
-    views: 152,
+    views:  0,
     date: 'June 3, 2024',
   },
   {
@@ -128,7 +129,7 @@ export const projects: Project[] = [
       'Mostly worked with React and Zustand',
     ],
     techStack: ['Next js', 'S3', 'Zustand'],
-    views: 152,
+    views:  0,
     date: 'July 23, 2024',
   },
 ];

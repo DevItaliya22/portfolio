@@ -7,20 +7,30 @@ import {
   ArrowBigRightDash,
   ArrowLeft,
   ArrowUpRight,
+  EyeIcon,
   Github,
   Instagram,
 } from 'lucide-react';
 import ParticleEffect from '../../components/ParticleEffect';
-import React from 'react';
-import { projects } from '@/lib/info';
+import React, { useEffect, useState } from 'react';
+import { Project, projects } from '@/lib/info';
+import { useViewStore } from '@/store/viewStore';
 
 export default function ProjectDetail() {
   const { id } = useParams();
-  const project = projects.find((p) => p.id === id);
+  const view = useViewStore((state) => state.view);
+  const fetchViews = useViewStore((state) => state.fetchViews);
 
-  if (!project) {
-    notFound();
-  }
+  useEffect(()=>{
+    fetchViews();
+  },[])
+
+  const [project, setProject] = useState<Project>(projects.find((p) => p.id === id) || {} as Project);
+
+  useEffect(()=>{
+    setProject((project) => ({ ...project, views: view.find((v) => v.project === id)?.views || 0 }));
+  },[project,view])
+  
 
   return (
     <motion.div
@@ -38,6 +48,9 @@ export default function ProjectDetail() {
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Projects
         </Link>
+        <div className='text-sm text-neutral-400 flex '>
+          <EyeIcon/> &nbsp; {project.views}
+        </div>
       </nav>
 
       <main className="flex-1 flex flex-col items-start justify-start gap-12 p-6 relative z-10 max-w-4xl mx-auto w-full">

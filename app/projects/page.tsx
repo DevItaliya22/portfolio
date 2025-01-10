@@ -6,6 +6,8 @@ import { SpotlightCard } from '../components/SpotlightCard';
 import ParticleEffect from '../components/ParticleEffect';
 import Navbar from '../components/Navbar';
 import { projects } from '@/lib/info';
+import { useViewStore } from '@/store/viewStore';
+import { useEffect, useState } from 'react';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -31,6 +33,31 @@ const convertViews = (views: number) => {
 };
 
 export default function ProjectsPage() {
+  const fetchViews = useViewStore((state) => state.fetchViews);
+  const view = useViewStore((state) => state.view);
+
+  useEffect(()=>{
+    fetchViews();
+  },[])
+
+  const [dynamicProjects,setDynamicProjects] = useState(projects);
+
+  useEffect(()=>{
+    console.log(view)
+    if(view.length > 0){
+      const updatedProjects = projects.map((project)=>{
+        const viewCount = view.find((v)=>v.project === project.id);
+        if(viewCount){
+          return {...project,views:viewCount.views}
+        }else{
+          return project
+        }
+      })
+      console.log(updatedProjects)
+      setDynamicProjects(updatedProjects);
+    }
+  },[fetchViews,view])
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -63,7 +90,7 @@ export default function ProjectsPage() {
           initial="hidden"
           animate="visible"
         >
-          {projects.map((project) => (
+          {dynamicProjects.map((project) => (
             <motion.div key={project.id} variants={itemVariants}>
               <SpotlightCard className="border-neutral-900">
                 <div className="flex justify-between items-start mb-4">
