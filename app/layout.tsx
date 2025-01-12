@@ -40,7 +40,7 @@ export default function RootLayout({
       </body>
       <script
         defer
-        data-website-id={process.env.NEXT_PUBLIC_ANALYTICS_ID}
+        data-website-id="6783df6488b0ca8b0194a39b"
         data-domain="www.devitaliya.me"
         src="https://datafa.st/js/script.js"
       ></script>
