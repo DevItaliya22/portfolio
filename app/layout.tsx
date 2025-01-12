@@ -38,6 +38,12 @@ export default function RootLayout({
       >
         {children}
       </body>
+      <script
+        defer
+        data-website-id={process.env.NEXT_PUBLIC_ANALYTICS_ID}
+        data-domain="www.devitaliya.me"
+        src="https://datafa.st/js/script.js"
+      ></script>
     </html>
   );
 }
