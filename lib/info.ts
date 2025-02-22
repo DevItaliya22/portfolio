@@ -157,7 +157,7 @@ export const socialLinks = [
     icon: FileDown,
     handle: 'Resume',
     label: 'resume',
-    href: 'https://drive.google.com/file/d/1HvREDAjhvTZcT8XCi7nj5APDe-yRWDsK/view?usp=drive_link',
+    href: 'https://drive.google.com/file/d/1GDTkwcA7HJlGgHMSo74U82w7AqIrJAvo/view',
   },
   {
     icon: Mail,
