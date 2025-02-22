@@ -7,7 +7,7 @@ import ParticleEffect from '../components/ParticleEffect';
 import Navbar from '../components/Navbar';
 import { projects } from '@/lib/info';
 import { useEffect, useState } from 'react';
-
+export const fetchCache = 'force-no-store';
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {

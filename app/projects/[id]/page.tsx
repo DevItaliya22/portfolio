@@ -1,22 +1,18 @@
 'use client';
-
 import { useParams, notFound, useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
-  ArrowBigRightDash,
   ArrowLeft,
   ArrowUpRight,
   EyeIcon,
   Github,
   Instagram,
-  Router,
 } from 'lucide-react';
 import ParticleEffect from '../../components/ParticleEffect';
 import React, { useEffect, useState } from 'react';
 import { Project, projects } from '@/lib/info';
 import axios from 'axios';
-
+export const fetchCache = 'force-no-store';
 export default function ProjectDetail() {
   const { id } = useParams();
   const router = useRouter();

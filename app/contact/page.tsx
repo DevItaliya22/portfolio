@@ -3,7 +3,7 @@ import { socialLinks } from '@/lib/info';
 import { motion } from 'framer-motion';
 import { SpotlightCard } from '../components/SpotlightCard';
 import Navbar from '../components/Navbar';
-
+export const fetchCache = 'force-no-store';
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-900 from-20% via-neutral-800 via-40% to-neutral-900 to-80% flex flex-col">
