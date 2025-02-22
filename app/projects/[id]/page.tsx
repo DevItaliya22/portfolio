@@ -13,6 +13,7 @@ import React, { useEffect, useState } from 'react';
 import { Project, projects } from '@/lib/info';
 import axios from 'axios';
 export const fetchCache = 'force-no-store';
+export const dynamic = "force-dynamic"
 export default function ProjectDetail() {
   const { id } = useParams();
   const router = useRouter();
@@ -91,7 +92,7 @@ export default function ProjectDetail() {
           </h1>
           <div className="flex gap-2"></div>
           <div className="flex flex-wrap gap-2 mb-4">
-            {project.tags.map((tag) => (
+            {project.tags.length >0 && project.tags.map((tag) => (
               <span
                 key={tag}
                 className="text-xs bg-neutral-800 text-neutral-300 px-2 py-1 rounded"
@@ -138,7 +139,7 @@ export default function ProjectDetail() {
           </div>
           <p className="text-neutral-400 text-lg mb-8">{project.description}</p>
           <p className="text-neutral-300">
-            {project.longDescription
+            {project.longDescription?.includes('<br/>')  && project.longDescription
               .split('<br/>')
               .map((val: string, idx: number) => (
                 <React.Fragment key={idx}>
