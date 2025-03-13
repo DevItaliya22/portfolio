@@ -1,5 +1,5 @@
 'use client';
-import { useParams, notFound, useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft,
@@ -28,7 +28,9 @@ export default function ProjectDetail() {
       setView(data.view);
     };
     getRes();
+    router.refresh();
   }, []);
+
 
   const [project, setProject] = useState<Project>(() => {
     const foundProject = projects.find((p) => p.id === id);
@@ -60,17 +62,17 @@ export default function ProjectDetail() {
   },[]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="min-h-screen bg-black text-white flex flex-col relative overflow-hidden cursor-pointer"
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="min-h-screen bg-black text-white flex flex-col relative overflow-hidden"
     >
       <ParticleEffect />
       <nav className="flex justify-between items-center p-6  z-10 relative">
         <div
           onClick={() => router.push('/projects')}
-          className="text-sm text-neutral-400 hover:text-white transition-colors inline-flex items-center"
+          className="text-sm text-neutral-400 hover:text-white transition-colors inline-flex items-center cursor-pointer"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Projects
@@ -92,7 +94,7 @@ export default function ProjectDetail() {
           </h1>
           <div className="flex gap-2"></div>
           <div className="flex flex-wrap gap-2 mb-4">
-            {project.tags.length >0 && project.tags.map((tag) => (
+            {project.tags && project.tags.length > 0 && project.tags.map((tag) => (
               <span
                 key={tag}
                 className="text-xs bg-neutral-800 text-neutral-300 px-2 py-1 rounded"

@@ -3,10 +3,14 @@ import { socialLinks } from '@/lib/info';
 import { motion } from 'framer-motion';
 import { SpotlightCard } from '../components/SpotlightCard';
 import Navbar from '../components/Navbar';
-export const fetchCache = 'force-no-store';
+import ParticleEffect from '../components/ParticleEffect';
+import Lightning from '../components/Lightning';
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-900 from-20% via-neutral-800 via-40% to-neutral-900 to-80% flex flex-col">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="min-h-screen bg-black text-white flex flex-col relative overflow-hidden">
+      {/* <Lightning className="absolute top-0 left-0 w-full h-full z-[1]" />
+       */}
+       <ParticleEffect/>
       <Navbar></Navbar>
       <motion.div
         className="flex-1 flex items-center justify-center p-4"
@@ -26,7 +30,7 @@ export default function ContactPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <SpotlightCard className="h-full transition-all duration-300 hover:scale-102 hover:shadow-lg hover:shadow-indigo-500/10">
+              <SpotlightCard className="h-full transition-all duration-300 hover:scale-102 hover:shadow-lg hover:shadow-indigo-500/10 z-10">
                 <div className="flex flex-col items-center space-y-4">
                   <div className="p-4 bg-neutral-800 rounded-full transition-colors duration-300 group-hover:bg-neutral-700">
                     <link.icon className="w-6 h-6 text-indigo-400 transition-colors duration-300 group-hover:text-indigo-300" />
@@ -43,6 +47,6 @@ export default function ContactPage() {
           ))}
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
