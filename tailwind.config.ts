@@ -4,6 +4,14 @@ module.exports = {
   content: ['app/**/*.{ts,tsx}', 'components/**/*.{ts,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        'geist-sans': ['var(--font-geist-sans)'],
+        'geist-mono': ['var(--font-geist-mono)'],
+        'dev-private': ['var(--font-dev-private)'],
+        'poppins-extrabold-italic': ['var(--font-poppins-extrabold-italic)'],
+        'satoshi-light': ['var(--font-satoshi-light)'],
+        'satoshi-bold': ['var(--font-satoshi-bold)'],
+      },
       animation: {
         'star-movement-bottom':
           'star-movement-bottom linear infinite alternate',
