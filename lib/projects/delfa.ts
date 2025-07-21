@@ -6,18 +6,44 @@ export const delfa: Project = {
   title: 'Delfa Innovators',
   github: 'private',
   description:
-    "This is my internship project where I made handled many API's with frontend optimisation.",
-  longDescription:
-    "This was my internship project where I worked on many API's and made a dashboard for the company. The company was a startup and they wanted to have a dashboard where they can see all the data and the analytics of the company. I worked on the frontend optimisation and the backend API's. The project was built with react and nodejs and was deployed on AWS ec2. The project was a success and the company was happy with the work. <br/> Completed the project in 2 months and the project is live and running. <br/> Handled Frontend, Backend, Database everything along with another intern @Aviral.",
+    'Full-stack analytics dashboard for startup company. Handled API development, frontend optimization, and AWS deployment during 2-month internship.',
+  longDescription: `Delfa Innovators was my comprehensive internship project where I developed an enterprise-level analytics dashboard for a growing startup company.
+
+## Project Overview:
+**Delfa Innovators** needed a centralized dashboard to visualize company data, track analytics, and monitor business performance. I was responsible for the complete development cycle from backend APIs to frontend optimization.
+
+## Key Responsibilities:
+
+### Full-Stack Development
+- **API Architecture**: Designed and implemented multiple RESTful APIs for data management
+- **Frontend Optimization**: Enhanced React performance with modern optimization techniques
+- **Database Management**: Structured and optimized PostgreSQL queries for analytics
+
+### Technical Implementation
+- **File Processing System**: Built robust PDF and Excel handling with AWS S3 integration
+- **Real-time Analytics**: Implemented live data visualization and monitoring dashboards
+- **Code Migration**: Successfully migrated JavaScript codebase to TypeScript for better maintainability
+
+### Cloud Infrastructure
+- **AWS Deployment**: Managed complete deployment pipeline on AWS EC2
+- **S3 Integration**: Implemented secure file storage and processing workflows
+- **Production Ready**: Delivered a scalable, production-ready application
+
+## Collaboration:
+Worked alongside [@Aviral](https://github.com/AviralJ58) from Accenture, handling both frontend and backend responsibilities while maintaining high code quality standards.
+
+## Results:
+Successfully completed the project in **2 months** with the dashboard now live and actively used by the company for business intelligence and decision-making processes.`,
   tags: ['Analytics', 'Data', 'Internship', 'SaaS'],
   features: [
-    'Highly optimised backend',
-    'Migrated some js code to ts',
-    'Pdf and Xl handling on S3 and processing on server',
-    'Real time analytics',
-    'Deployment on AWS EC2',
+    'Highly optimised backend API architecture',
+    'JavaScript to TypeScript migration',
+    'PDF and Excel file processing with S3 integration',
+    'Real-time analytics and data visualization',
+    'Production deployment on AWS EC2',
   ],
-  techStack: ['Next js', 'Node js', 'AWS EC2', 'S3', 'PostgreSQL'],
+  techStack: ['Next.js', 'Node.js', 'AWS EC2', 'S3', 'PostgreSQL'],
   views: 0,
   date: 'June 3, 2024',
+  repoCount: 2,
 };

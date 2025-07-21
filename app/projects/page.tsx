@@ -1,5 +1,5 @@
 import React from 'react';
-import { Eye, Link } from 'lucide-react';
+import { Eye, Link, Github } from 'lucide-react';
 import {
   projects,
   getAllCategories,
@@ -140,9 +140,37 @@ export default async function Projects2Page() {
                           >
                             <div className="flex items-center justify-between py-4 px-4 hover:bg-neutral-900/50 rounded-lg transition-colors duration-200">
                               <div className="flex-1">
-                                <h3 className="text-lg  font-mono font-medium group-hover:text-neutral-300 transition-colors">
-                                  {project.title}
-                                </h3>
+                                <div className="flex items-center gap-2">
+                                  <h3 className="text-lg  font-mono font-medium group-hover:text-neutral-300 transition-colors">
+                                    {project.title}
+                                  </h3>
+                                  {project.repoCount && (
+                                    <div className="flex items-center gap-1 text-xs text-neutral-500 bg-neutral-800/50 px-2 py-1 rounded-md">
+                                      <div className="relative">
+                                        <Github className="h-3 w-3 cursor-pointer hover:text-neutral-300 transition-colors peer" />
+
+                                        {/* Tooltip */}
+                                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-md shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 w-64">
+                                          <div className="space-y-1">
+                                            <h4 className="font-medium text-sm text-neutral-200">
+                                              Repository Count
+                                            </h4>
+                                            <p className="text-sm text-neutral-400">
+                                              This number represents the total
+                                              number of repositories I worked on
+                                              during this project. Many of these
+                                              repositories are private and
+                                              cannot be publicly shared.
+                                            </p>
+                                          </div>
+                                          {/* Arrow */}
+                                          <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-neutral-700"></div>
+                                        </div>
+                                      </div>
+                                      <span>{project.repoCount}</span>
+                                    </div>
+                                  )}
+                                </div>
                                 <p className="text-sm text-neutral-400 mt-1">
                                   {project.description}
                                 </p>
