@@ -9,15 +9,47 @@ import {
   Instagram,
 } from 'lucide-react';
 import ParticleEffect from '../../components/ParticleEffect';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Project } from '../../../lib/info';
 import Link from 'next/link';
+import NumberFlow from '@number-flow/react';
 
 interface ProjectClientProps {
   project: Project;
 }
 
 export default function ProjectClient({ project }: ProjectClientProps) {
+  const [currentViews, setCurrentViews] = useState(project.views);
+
+  // Listen for custom events from ViewIncrementer
+  useEffect(() => {
+    const handleViewIncrement = (event: CustomEvent) => {
+      if (event.detail.projectId === project.id) {
+        setCurrentViews(event.detail.newViews);
+      }
+    };
+
+    window.addEventListener(
+      'viewIncremented',
+      handleViewIncrement as EventListener
+    );
+
+    return () => {
+      window.removeEventListener(
+        'viewIncremented',
+        handleViewIncrement as EventListener
+      );
+    };
+  }, [project.id]);
+
+  const formatViews = (views: number) => {
+    return views < 1000 ? views : parseFloat((views / 1000).toFixed(0));
+  };
+
+  const getViewsSuffix = (views: number) => {
+    return views < 1000 ? '' : 'K';
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -36,9 +68,17 @@ export default function ProjectClient({ project }: ProjectClientProps) {
         </Link>
         <div className="text-sm text-neutral-400 flex items-center">
           <EyeIcon className="h-4 w-4 mr-1" />
-          {project.views < 1000
-            ? project.views
-            : `${(project.views / 1000).toFixed(0)}K`}
+          <NumberFlow
+            value={formatViews(currentViews)}
+            format={{
+              notation: 'standard',
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            }}
+            locales="en-US"
+            className="inline-block"
+          />
+          <span>{getViewsSuffix(currentViews)}</span>
         </div>
       </nav>
 
