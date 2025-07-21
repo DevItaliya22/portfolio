@@ -6,7 +6,6 @@ import { Metadata } from 'next';
 import ViewIncrementer from './ViewIncrementer';
 import ProjectClient from './ProjectClient';
 
-// Force dynamic rendering for fresh data
 export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {

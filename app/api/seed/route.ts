@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { manualSeed } from '@/lib/views-kv';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST() {
   try {
     const success = await manualSeed();

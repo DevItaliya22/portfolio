@@ -76,9 +76,11 @@ export default function ProjectClient({ project }: ProjectClientProps) {
               maximumFractionDigits: 0,
             }}
             locales="en-US"
-            className="inline-block"
+            className="inline-block font-satoshi-bold"
           />
-          <span>{getViewsSuffix(currentViews)}</span>
+          <span className="font-satoshi-light">
+            {getViewsSuffix(currentViews)}
+          </span>
         </div>
       </nav>
 
@@ -89,7 +91,7 @@ export default function ProjectClient({ project }: ProjectClientProps) {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.8, ease: 'easeOut' }}
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-4">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-4 font-mono">
             {project.title}
           </h1>
           <div className="flex flex-wrap gap-2 mb-4">
@@ -140,8 +142,14 @@ export default function ProjectClient({ project }: ProjectClientProps) {
               </a>
             )}
           </div>
-          <p className="text-neutral-400 text-lg mb-8">{project.description}</p>
-          <div className="text-neutral-300">
+          <p
+            className={`text-neutral-400 text-lg mb-8 ${project.id === 'delfa' ? 'font-mono' : ''}`}
+          >
+            {project.description}
+          </p>
+          <div
+            className={`text-neutral-300 ${project.id === 'delfa' ? 'font-mono' : ''}`}
+          >
             {project.longDescription?.includes('<br/>') &&
               project.longDescription
                 .split('<br/>')
@@ -172,7 +180,9 @@ export default function ProjectClient({ project }: ProjectClientProps) {
           transition={{ delay: 0.4, duration: 0.8, ease: 'easeOut' }}
         >
           <h2 className="text-2xl font-semibold mb-4">Key Features</h2>
-          <ul className="list-disc list-inside space-y-2 text-neutral-300">
+          <ul
+            className={`list-disc list-inside space-y-2 text-neutral-300 ${project.id === 'delfa' ? 'font-dev-private' : ''}`}
+          >
             {project.features.map((feature, index) => (
               <li key={index}>{feature}</li>
             ))}
