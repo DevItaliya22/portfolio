@@ -35,7 +35,6 @@ const satoshiBold = localFont({
   weight: '700',
 });
 
-
 export const metadata: Metadata = {
   title: {
     default: 'Dev Italiya - Full Stack Developer',
@@ -66,7 +65,7 @@ export const metadata: Metadata = {
     siteName: 'Dev Italiya Portfolio',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/image.jpg',
         width: 1200,
         height: 630,
         alt: 'Dev Italiya - Full Stack Developer',
@@ -81,7 +80,7 @@ export const metadata: Metadata = {
     description:
       'Full-stack developer building innovative web applications and websites for clients worldwide.',
     creator: '@DevItaliya22',
-    images: ['/og-image.jpg'],
+    images: ['/image.jpg'],
   },
   robots: {
     index: true,
@@ -135,8 +134,8 @@ export default function RootLayout({
       <head>
         <link
           rel="shortcut icon"
-          href="./favicon.ico"
-          type="image/x-icon"
+          href="/image.jpg"
+          type="image/jpeg"
           style={{ borderRadius: '50%' }}
         />
         <script
