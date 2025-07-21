@@ -13,6 +13,17 @@ import { pubSub } from './projects/pub-sub';
 import { delfa } from './projects/delfa';
 import { patternGenerator } from './projects/pattern-generator';
 import { buffindia } from './projects/buffindia';
+import { kubernetes } from './projects/kubernetes';
+import { alias } from './projects/alias';
+import { intentjsTwitter } from './projects/intentjs-twitter';
+import { statushive } from './projects/statushive';
+import { shyamahShrinagar } from './projects/shyamah-shrinagar';
+import { cyroTechnologies } from './projects/cyro-technologies';
+import { twilioCall } from './projects/twilio-call';
+import { raycastWhatsapp } from './projects/raycast-whatsapp';
+import { agencyPortfolio } from './projects/agency-portfolio';
+import { helpbharat } from './projects/helpbharat';
+import { visualizenbuildBugs } from './projects/visualizenbuild-bugs';
 
 export type ProjectCategory = 'side-project' | 'internship' | 'freelance';
 
@@ -35,7 +46,18 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  visualizenbuildBugs,
+  helpbharat,
+  agencyPortfolio,
+  raycastWhatsapp,
+  cyroTechnologies,
+  twilioCall,
+  shyamahShrinagar,
   autominds,
+  statushive,
+  kubernetes,
+  alias,
+  intentjsTwitter,
   manishVaghasiya,
   pubSub,
   delfa,

@@ -68,6 +68,20 @@ export default function HomeClient() {
           I'm building web applications and websites for clients around the
           world.
         </motion.p>
+        
+        {/* Available for Work Indicator */}
+        <motion.div 
+          className="flex items-center gap-3 text-neutral-300"
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.8, ease: 'easeOut' }}
+        >
+          <div className="relative">
+            <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+            <div className="absolute inset-0 w-3 h-3 bg-green-400 rounded-full animate-ping"></div>
+          </div>
+          <span className="text-sm font-medium">Available for work</span>
+        </motion.div>
       </main>
     </motion.div>
   );
