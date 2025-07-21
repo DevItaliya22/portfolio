@@ -1,52 +1,70 @@
-'use client';
-import { socialLinks } from '@/lib/info';
-import { motion } from 'framer-motion';
-import { SpotlightCard } from '../components/SpotlightCard';
-import Navbar from '../components/Navbar';
-import ParticleEffect from '../components/ParticleEffect';
-import Lightning from '../components/Lightning';
+import { socialLinks } from '../../lib/info';
+import { Metadata } from 'next';
+import ContactClient from './ContactClient';
+
+// SEO Metadata
+export const metadata: Metadata = {
+  title: 'Contact - Dev Italiya',
+  description:
+    'Get in touch with Dev Italiya. Connect through social media, email, or professional networks. Available for freelance projects and collaborations.',
+  keywords: [
+    'contact',
+    'dev italiya',
+    'freelance',
+    'collaboration',
+    'social media',
+    'email',
+    'github',
+    'dev italiya github',
+    'dev italiya medium',
+    'dev italiya instagram',
+    'dev italiya twitter',
+    'dev italiya x',
+    'dev italiya email',
+  ],
+  openGraph: {
+    title: 'Contact - Dev Italiya',
+    description:
+      'Get in touch with Dev Italiya. Available for freelance projects and collaborations.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Contact - Dev Italiya',
+    description:
+      'Get in touch with Dev Italiya. Available for freelance projects and collaborations.',
+  },
+};
+
 export default function ContactPage() {
+  // Generate structured data for SEO
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Dev Italiya',
+    jobTitle: 'Full Stack Developer',
+    description:
+      'Full-stack developer building innovative solutions with modern technologies',
+    sameAs: socialLinks.map((link) => link.href),
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'Professional',
+      availableLanguage: 'English',
+    },
+  };
+
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="min-h-screen bg-black text-white flex flex-col relative overflow-hidden">
-      {/* <Lightning className="absolute top-0 left-0 w-full h-full z-[1]" />
-       */}
-       <ParticleEffect/>
-      <Navbar></Navbar>
-      <motion.div
-        className="flex-1 flex items-center justify-center p-4"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl w-full">
-          {socialLinks.map((link, index) => (
-            <motion.a
-              key={link.label}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <SpotlightCard className="h-full transition-all duration-300 hover:scale-102 hover:shadow-lg hover:shadow-indigo-500/10 z-10">
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="p-4 bg-neutral-800 rounded-full transition-colors duration-300 group-hover:bg-neutral-700">
-                    <link.icon className="w-6 h-6 text-indigo-400 transition-colors duration-300 group-hover:text-indigo-300" />
-                  </div>
-                  <span className="text-2xl font-medium text-white transition-colors duration-300 group-hover:text-indigo-200">
-                    {link.handle}
-                  </span>
-                  <span className="text-neutral-400 transition-colors duration-300 group-hover:text-neutral-300">
-                    {link.label}
-                  </span>
-                </div>
-              </SpotlightCard>
-            </motion.a>
-          ))}
-        </div>
-      </motion.div>
-    </motion.div>
+    <>
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
+        }}
+      />
+
+      {/* Client Component with animations */}
+      <ContactClient />
+    </>
   );
 }

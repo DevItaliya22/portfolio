@@ -1,14 +1,26 @@
-import { PrismaClient } from '@prisma/client';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { getProjectViews } from '@/lib/views';
 
-const prisma = new PrismaClient();
-
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const view = await prisma.views.findMany();
-    return NextResponse.json({view})
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Project ID is required' },
+        { status: 400 }
+      );
+    }
+
+    const views = await getProjectViews(id);
+
+    return NextResponse.json({ views, project: id });
   } catch (error) {
-    console.error('Error fetching views:', error);
-    return NextResponse.json({ error: 'Failed to fetch views' }, { status: 500 });
+    console.error('Error fetching view data:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
   }
 }

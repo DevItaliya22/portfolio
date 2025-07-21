@@ -1,20 +1,26 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { incrementProjectViews } from '@/lib/views';
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json(); 
-    const idParam:string = body.id;
-    const inc = await prisma.views.update({
-      where: { project: idParam },
-      data: { views: { increment: 1 } },
-    });
+    const body = await req.json();
+    const idParam: string = body.id;
 
-    return NextResponse.json({ inc });
+    if (!idParam) {
+      return NextResponse.json(
+        { error: 'Project ID is required' },
+        { status: 400 }
+      );
+    }
+
+    const newViews = await incrementProjectViews(idParam);
+
+    return NextResponse.json({ views: newViews, project: idParam });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: error }, { status: 500 });
+    console.error('Error incrementing views:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
   }
 }
