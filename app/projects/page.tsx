@@ -6,9 +6,11 @@ import {
   getCategoryLabel,
   getProjectCounts,
   ProjectCategory,
+  socialLinks,
 } from '../../lib/info';
 import Navbar from '../components/Navbar';
 import ParticleEffect from '../components/ParticleEffect';
+import LiveTime from '../components/LiveTime';
 import { getAllProjectsWithViews } from '@/lib/views-kv';
 import { Metadata } from 'next';
 
@@ -197,11 +199,46 @@ export default async function Projects2Page() {
               )}
             </div>
 
-            {/* Footer space */}
+            {/* Footer */}
             <div className="mt-16 pt-8 border-t border-neutral-800">
-              <p className="text-center text-neutral-500 text-sm">
-                {dynamicProjects.length} projects total
-              </p>
+              <div className="flex items-center justify-between">
+                {/* Left side - Social Icons */}
+                <div className="flex items-center gap-4">
+                  {socialLinks
+                    .filter((link) =>
+                      ['Github', 'Twitter', 'Linkedin', 'Email'].includes(
+                        link.label
+                      )
+                    )
+                    .map((link) => {
+                      const IconComponent = link.icon;
+                      return (
+                        <a
+                          key={link.label}
+                          href={link.href}
+                          target={
+                            link.href.startsWith('mailto:')
+                              ? undefined
+                              : '_blank'
+                          }
+                          rel={
+                            link.href.startsWith('mailto:')
+                              ? undefined
+                              : 'noopener noreferrer'
+                          }
+                          className="text-white hover:text-pink-200 transition-colors duration-200"
+                        >
+                          <IconComponent className="h-5 w-5" />
+                        </a>
+                      );
+                    })}
+                </div>
+
+                {/* Right side - Live Time */}
+                <div>
+                  <LiveTime />
+                </div>
+              </div>
             </div>
           </main>
         </div>

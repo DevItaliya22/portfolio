@@ -1,9 +1,9 @@
 import { Project } from '../info';
 
-export const shyamahShrinagar: Project = {
-  id: 'shyamah-shrinagar',
+export const shyamahShringar: Project = {
+  id: 'shyamah-shringar',
   category: 'freelance',
-  title: 'ShyamahShrinagar Business Dashboard',
+  title: 'ShyamahShringar Business Dashboard',
   github: 'private',
   description:
     'Complete business management dashboard and admin panel for client. Features comprehensive analytics, inventory management, S3 integration, and sales-based calculations.',

@@ -100,4 +100,5 @@ type ResponseData struct {
   ],
   views: 0,
   date: 'Mar 13, 2025',
+  repoCount: 1,
 };
