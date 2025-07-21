@@ -59,4 +59,5 @@ AutoMinds streamlines productivity by eliminating repetitive manual tasks, allow
   ],
   views: 0,
   date: 'Sept 27,2024',
+  repoCount: 1,
 };

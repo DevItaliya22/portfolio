@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 
 import { autominds } from './projects/autominds';
+import { accufin } from './projects/accufin';
 import { manishVaghasiya } from './projects/manish-vaghasiya';
 import { pubSub } from './projects/pub-sub';
 import { delfa } from './projects/delfa';
@@ -17,13 +18,14 @@ import { kubernetes } from './projects/kubernetes';
 import { alias } from './projects/alias';
 import { intentjsTwitter } from './projects/intentjs-twitter';
 import { statushive } from './projects/statushive';
-import { shyamahShrinagar } from './projects/shyamah-shrinagar';
+import { shyamahShringar } from './projects/shyamah-shrinagar';
 import { cyroTechnologies } from './projects/cyro-technologies';
 import { twilioCall } from './projects/twilio-call';
 import { raycastWhatsapp } from './projects/raycast-whatsapp';
 import { agencyPortfolio } from './projects/agency-portfolio';
 import { helpbharat } from './projects/helpbharat';
 import { visualizenbuildBugs } from './projects/visualizenbuild-bugs';
+import { shuttle } from './projects/shuttle';
 
 export type ProjectCategory = 'side-project' | 'internship' | 'freelance';
 
@@ -46,13 +48,15 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  shuttle,
   visualizenbuildBugs,
   helpbharat,
   agencyPortfolio,
+  accufin,
   raycastWhatsapp,
   cyroTechnologies,
   twilioCall,
-  shyamahShrinagar,
+  shyamahShringar,
   autominds,
   statushive,
   kubernetes,

@@ -59,4 +59,5 @@ Delivering a sophisticated web presence that positions the client's software dev
   ],
   views: 0,
   date: 'Jul 21, 2025',
+  repoCount: 1,
 };

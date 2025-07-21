@@ -98,4 +98,5 @@ The [original Raycast WhatsApp extension](https://www.raycast.com/vimtor/whatsap
   ],
   views: 0,
   date: 'Sept 8, 2025',
+  repoCount: 1,
 };

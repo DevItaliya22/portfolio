@@ -56,4 +56,5 @@ Built with modern technologies and best practices, this messaging system showcas
   techStack: ['React', 'Node.js', 'Docker', 'BullMQ', 'WebSockets', 'Redis'],
   views: 0,
   date: 'Aug 12, 2024',
+  repoCount: 1,
 };

@@ -65,4 +65,5 @@ Simple configuration files that can be quickly integrated into existing shell se
   techStack: ['Zsh', 'Bash', 'Git', 'Shell Scripting', 'Terminal'],
   views: 0,
   date: 'Jul 21, 2025',
+  repoCount: 1,
 };

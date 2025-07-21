@@ -53,4 +53,5 @@ Perfect for anyone starting their Kubernetes journey or as a personal reference 
   techStack: ['Kubernetes', 'Docker', 'YAML', 'kubectl'],
   views: 0,
   date: 'Sept 8, 2024',
+  repoCount: 1,
 };
