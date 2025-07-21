@@ -4,7 +4,8 @@ export const manishVaghasiya: Project = {
   id: 'manish-vaghasiya',
   category: 'freelance',
   title: 'Manish Vaghasiya',
-  href: 'https://manishvaghasiya.com/',
+  href: 'https://hmanish-vaghasiya.vercel.app',
+  repoCount: 1,
   github: 'private',
   instagram: 'https://www.instagram.com/manishvaghasiya01',
   description:
