@@ -12,6 +12,7 @@ import { manishVaghasiya } from './projects/manish-vaghasiya';
 import { pubSub } from './projects/pub-sub';
 import { delfa } from './projects/delfa';
 import { patternGenerator } from './projects/pattern-generator';
+import { buffindia } from './projects/buffindia';
 
 export type ProjectCategory = 'side-project' | 'internship' | 'freelance';
 
@@ -29,6 +30,8 @@ export interface Project {
   techStack: string[];
   date: string;
   views: number;
+  repoCount?: number; // Number of repositories worked on (for internship/freelance projects)
+  websites?: string[]; // Array of website URLs for the project
 }
 
 export const projects: Project[] = [
@@ -37,6 +40,7 @@ export const projects: Project[] = [
   pubSub,
   delfa,
   patternGenerator,
+  buffindia,
 ];
 
 // Utility functions for project categories

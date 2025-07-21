@@ -13,6 +13,8 @@ import React, { useState, useEffect } from 'react';
 import { Project } from '../../../lib/info';
 import Link from 'next/link';
 import NumberFlow from '@number-flow/react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface ProjectClientProps {
   project: Project;
@@ -93,6 +95,15 @@ export default function ProjectClient({ project }: ProjectClientProps) {
         >
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-4 font-mono">
             {project.title}
+            {project.repoCount && (
+              <span className="inline-flex items-center gap-3 text-base text-neutral-400 bg-neutral-800/30 px-3 py-2 rounded-md ml-6 align-middle">
+                <Github className="h-4 w-4" />
+                <span className="font-medium tracking-wide">
+                  {project.repoCount}{' '}
+                  {project.repoCount > 1 ? 'Repositories' : 'Repository'}
+                </span>
+              </span>
+            )}
           </h1>
           <div className="flex flex-wrap gap-2 mb-4">
             {project.tags &&
@@ -142,34 +153,107 @@ export default function ProjectClient({ project }: ProjectClientProps) {
               </a>
             )}
           </div>
-          <p
-            className={`text-neutral-400 text-lg mb-8 ${project.id === 'delfa' ? 'font-mono' : ''}`}
-          >
+          <p className="text-neutral-400 text-lg mb-8 font-mono">
             {project.description}
           </p>
-          <div
-            className={`text-neutral-300 ${project.id === 'delfa' ? 'font-mono' : ''}`}
-          >
-            {project.longDescription?.includes('<br/>') &&
-              project.longDescription
-                .split('<br/>')
-                .map((val: string, idx: number) => (
-                  <React.Fragment key={idx}>
-                    {val.includes('@Aviral') ? (
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: val.replace(
-                            '@Aviral',
-                            `<a href="https://github.com/AviralJ58" target="_blank" class="underline italic text-white font-700">@Aviral (Accenture)</a>`
-                          ),
-                        }}
-                      />
-                    ) : (
-                      <span>{val}</span>
-                    )}
-                    <br />
-                  </React.Fragment>
+
+          {/* Project Websites Section - Moved to top for better accessibility */}
+          {project.websites && project.websites.length > 0 && (
+            <div className="w-full mb-8">
+              <h2 className="text-2xl font-semibold mb-4">Project Websites</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {project.websites.map((website, index) => (
+                  <a
+                    key={index}
+                    href={website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between bg-neutral-800/50 hover:bg-neutral-800 border border-neutral-700 hover:border-neutral-600 rounded-lg px-4 py-3 transition-all duration-200"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full group-hover:bg-green-400 transition-colors"></div>
+                      <span className="text-neutral-300 group-hover:text-white transition-colors font-mono text-sm">
+                        {website.replace('https://', '').replace('http://', '')}
+                      </span>
+                    </div>
+                    <ArrowUpRight className="h-4 w-4 text-neutral-500 group-hover:text-neutral-300 transition-colors" />
+                  </a>
                 ))}
+              </div>
+            </div>
+          )}
+
+          <div className="text-neutral-300 prose prose-invert prose-sm max-w-none">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                h1: ({ children }) => (
+                  <h1 className="text-2xl font-bold text-white mb-4 mt-6 first:mt-0">
+                    {children}
+                  </h1>
+                ),
+                h2: ({ children }) => (
+                  <h2 className="text-xl font-semibold text-white mb-3 mt-6 first:mt-0">
+                    {children}
+                  </h2>
+                ),
+                h3: ({ children }) => (
+                  <h3 className="text-lg font-medium text-white mb-2 mt-4 first:mt-0">
+                    {children}
+                  </h3>
+                ),
+                p: ({ children }) => (
+                  <p className="text-neutral-300 mb-3 leading-relaxed font-mono">
+                    {children}
+                  </p>
+                ),
+                ul: ({ children }) => (
+                  <ul className="list-disc list-inside space-y-2 mb-4 text-neutral-300 font-mono ml-4">
+                    {children}
+                  </ul>
+                ),
+                ol: ({ children }) => (
+                  <ol className="list-decimal list-inside space-y-2 mb-4 text-neutral-300 font-mono ml-4">
+                    {children}
+                  </ol>
+                ),
+                li: ({ children }) => (
+                  <li className="text-neutral-300 leading-relaxed">
+                    {children}
+                  </li>
+                ),
+                strong: ({ children }) => (
+                  <strong className="text-white font-semibold">
+                    {children}
+                  </strong>
+                ),
+                em: ({ children }) => (
+                  <em className="text-neutral-200 italic">{children}</em>
+                ),
+                code: ({ children }) => (
+                  <code className="bg-neutral-800 px-2 py-1 rounded text-sm text-neutral-200 font-mono">
+                    {children}
+                  </code>
+                ),
+                blockquote: ({ children }) => (
+                  <blockquote className="border-l-4 border-neutral-600 pl-4 my-4 text-neutral-300 italic">
+                    {children}
+                  </blockquote>
+                ),
+                a: ({ href, children }) => (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:text-blue-300 underline transition-colors"
+                  >
+                    {children}
+                  </a>
+                ),
+              }}
+            >
+              {project.longDescription}
+            </ReactMarkdown>
           </div>
         </motion.div>
 
@@ -181,7 +265,7 @@ export default function ProjectClient({ project }: ProjectClientProps) {
         >
           <h2 className="text-2xl font-semibold mb-4">Key Features</h2>
           <ul
-            className={`list-disc list-inside space-y-2 text-neutral-300 ${project.id === 'delfa' ? 'font-dev-private' : ''}`}
+            className={`list-disc list-inside space-y-2 text-neutral-300 font-mono`}
           >
             {project.features.map((feature, index) => (
               <li key={index}>{feature}</li>
@@ -207,6 +291,8 @@ export default function ProjectClient({ project }: ProjectClientProps) {
             ))}
           </div>
         </motion.div>
+
+        <div className="h-16 md:h-20"></div>
       </main>
     </motion.div>
   );

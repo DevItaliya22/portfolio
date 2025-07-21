@@ -75,13 +75,4 @@
   .font-dev-private {
     font-family: var(--font-dev-private), sans-serif;
   }
-  .font-poppins-extrabold-italic {
-    font-family: var(--font-poppins-extrabold-italic), sans-serif;
-  }
-  .font-satoshi-light {
-    font-family: var(--font-satoshi-light), sans-serif;
-  }
-  .font-satoshi-bold {
-    font-family: var(--font-satoshi-bold), sans-serif;
-  }
 }
