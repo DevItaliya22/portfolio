@@ -11,13 +11,27 @@ export default function ViewIncrementer({ projectId }: ViewIncrementerProps) {
   useEffect(() => {
     const incrementView = async () => {
       try {
-        await axios.post('/api/increment', { id: projectId });
+        const response = await axios.post('/api/increment', { id: projectId });
+
+        // Emit custom event to notify ProjectClient of the view increment
+        if (response.data.views) {
+          const event = new CustomEvent('viewIncremented', {
+            detail: {
+              projectId,
+              newViews: response.data.views,
+            },
+          });
+          window.dispatchEvent(event);
+        }
       } catch (error) {
         console.error('Error incrementing view:', error);
       }
     };
 
-    incrementView();
+    // Small delay to ensure the component is mounted and ready
+    const timer = setTimeout(incrementView, 500);
+
+    return () => clearTimeout(timer);
   }, [projectId]);
 
   // This component renders nothing

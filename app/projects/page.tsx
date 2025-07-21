@@ -3,7 +3,7 @@ import { Eye, Link } from 'lucide-react';
 import { projects } from '../../lib/info';
 import Navbar from '../components/Navbar';
 import ParticleEffect from '../components/ParticleEffect';
-import { getAllProjectsWithViews } from '@/lib/views';
+import { getAllProjectsWithViews } from '@/lib/views-kv';
 import { Metadata } from 'next';
 
 // Force dynamic rendering for fresh data
@@ -39,7 +39,7 @@ const convertViews = (views: number) =>
   views < 1000 ? views : `${(views / 1000).toFixed(0)}K`;
 
 export default async function Projects2Page() {
-  // Get all projects with their view counts from JSON file
+  // Get all projects with their view counts from Vercel KV
   const dynamicProjects = await getAllProjectsWithViews();
 
   // Generate structured data for SEO

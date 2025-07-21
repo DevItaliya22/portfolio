@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getProjectViews } from '@/lib/views';
+import { getProjectViews } from '@/lib/views-kv';
 
 export async function GET(request: NextRequest) {
   try {

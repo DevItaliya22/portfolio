@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import React from 'react';
 import { Project, projects } from '../../../lib/info';
-import { getProjectViews } from '@/lib/views';
+import { getProjectViews } from '@/lib/views-kv';
 import { Metadata } from 'next';
 import ViewIncrementer from './ViewIncrementer';
 import ProjectClient from './ProjectClient';
@@ -56,7 +56,7 @@ export default async function ProjectDetail({
     redirect('/projects');
   }
 
-  // Get view count from JSON file
+  // Get view count from Vercel KV
   const projectViews = await getProjectViews(params.id);
 
   const projectWithViews = {

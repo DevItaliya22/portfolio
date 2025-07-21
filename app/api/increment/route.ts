@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { incrementProjectViews } from '@/lib/views';
+import { incrementProjectViews } from '@/lib/views-kv';
 
 export async function POST(req: NextRequest) {
   try {
