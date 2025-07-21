@@ -4,14 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
     "format-check": "prettier --check ."
   },
   "dependencies": {
-    "@prisma/client": "^5.22.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.2",
     "@tailwindcss/typography": "^0.5.15",
@@ -36,7 +35,6 @@
     "eslint-config-next": "14.2.16",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
-    "prisma": "^5.20.0",
     "tailwindcss": "^3.4.16",
     "typescript": "^5"
   }
