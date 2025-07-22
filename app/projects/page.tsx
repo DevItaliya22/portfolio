@@ -173,9 +173,9 @@ export default async function Projects2Page() {
                                     </div>
                                   )}
                                 </div>
-                                <p className="text-sm text-neutral-400 mt-1">
+                                {/* <p className="text-sm text-neutral-400 mt-1">
                                   {project.description}
-                                </p>
+                                </p> */}
                               </div>
 
                               <div className="flex items-center gap-6 text-sm text-neutral-400 ml-4">
