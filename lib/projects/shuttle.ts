@@ -110,6 +110,6 @@ Revolutionizing hotel transport logistics by providing guests with Uber-like con
     'Multi-Platform Architecture',
   ],
   views: 0,
-  date: 'Oct 15, 2025',
+  date: 'Jul 22, 2025',
   repoCount: 6,
 };

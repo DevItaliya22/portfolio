@@ -88,7 +88,7 @@ Successfully transformed a complex, bug-ridden multi-platform system into a stab
     'System Debugging',
   ],
   views: 0,
-  date: 'Jul 21, 2025',
+  date: 'Jun 30, 2025',
   websites: [
     'https://ash-deployment.vercel.app',
     'https://ash-deployment-pbq6.vercel.app/',
