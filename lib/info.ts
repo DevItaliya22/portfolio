@@ -52,7 +52,7 @@ export const projects: Project[] = [
   visualizenbuildBugs,
   helpbharat,
   agencyPortfolio,
-  accufin,
+  // accufin,
   raycastWhatsapp,
   cyroTechnologies,
   twilioCall,
