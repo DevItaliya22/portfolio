@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import { Analytics } from '@vercel/analytics/next';
 import { ThemeProvider } from '@/components/theme-provider';
+import GradualBlur from '@/components/portfolio/GradualBlur';
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
@@ -13,7 +14,6 @@ const geistMono = localFont({
   variable: '--font-geist-mono',
   weight: '100 900',
 });
-
 
 export const metadata: Metadata = {
   title: {
@@ -142,6 +142,14 @@ export default function RootLayout({
         >
           <Analytics />
           {children}
+          <GradualBlur
+            position="bottom"
+            height="5rem"
+            target="page"
+            zIndex={40}
+            strength={2}
+            divCount={5}
+          />
         </ThemeProvider>
       </body>
     </html>
