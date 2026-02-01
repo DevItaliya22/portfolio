@@ -4,6 +4,7 @@ import './globals.css';
 import { Analytics } from '@vercel/analytics/next';
 import { ThemeProvider } from '@/components/theme-provider';
 import GradualBlur from '@/components/portfolio/GradualBlur';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
@@ -151,6 +152,7 @@ export default function RootLayout({
             divCount={5}
           />
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
