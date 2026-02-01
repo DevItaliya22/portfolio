@@ -123,7 +123,7 @@ export const socialLinks = [
     icon: FileDown,
     handle: 'Resume',
     label: 'resume',
-    href: 'https://drive.google.com/file/d/1GDTkwcA7HJlGgHMSo74U82w7AqIrJAvo/view',
+    href: 'https://www.papermark.com/view/cml3f50u00004l404rrrtcvs5',
   },
   {
     icon: Mail,
