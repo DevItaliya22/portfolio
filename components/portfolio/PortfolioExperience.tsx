@@ -22,7 +22,7 @@ function ExperienceRow({
   const hasLinks = item.links.length > 0;
 
   return (
-    <li className="border-b border-neutral-800/50 last:border-0">
+    <li className="border-b border-neutral-200 dark:border-neutral-800/50 last:border-0">
       <div
         className={
           hasLinks
@@ -38,16 +38,16 @@ function ExperienceRow({
           {getInitials(item.name)}
         </div> */}
         <div className="flex-1 min-w-0">
-          <div className="font-medium text-white">{item.name}</div>
+          <div className="font-medium text-neutral-800 dark:text-white">{item.name}</div>
           {(item.role || item.roleLink) && (
-            <div className="text-sm text-neutral-400">
+            <div className="text-sm text-neutral-600 dark:text-neutral-400">
               {item.role}
               {item.roleLink && (
                 <a
                   href={item.roleLink.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-neutral-400 hover:text-white transition-colors underline decoration-neutral-600 underline-offset-2"
+                  className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors underline decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2"
                   onClick={(e) => e.stopPropagation()}
                 >
                   {item.roleLink.text}
@@ -56,12 +56,12 @@ function ExperienceRow({
             </div>
           )}
         </div>
-        <span className="flex-shrink-0 text-sm text-neutral-500">
+        <span className="flex-shrink-0 text-sm text-neutral-600 dark:text-neutral-500">
           {item.date}
         </span>
         {hasLinks && (
           <span
-            className="flex-shrink-0 p-1.5 text-neutral-500 transition-transform duration-200"
+            className="flex-shrink-0 p-1.5 text-neutral-600 dark:text-neutral-500 transition-transform duration-200"
             aria-hidden
           >
             <ChevronDown className={`h-4 w-4 ${isOpen ? 'rotate-180' : ''}`} />
@@ -70,14 +70,14 @@ function ExperienceRow({
       </div>
       {hasLinks && isOpen && (
         <div className="pb-4 pr-4 pt-0">
-          <ul className="list-disc list-inside space-y-1.5 py-1 text-sm text-neutral-400 [&_li]:marker:text-pink-400">
+          <ul className="list-disc list-inside space-y-1.5 py-1 text-sm text-neutral-600 dark:text-neutral-400 [&_li]:marker:text-pink-400">
             {item.links.map((href, j) => (
               <li key={j}>
                 <a
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-white transition-colors truncate inline-block align-top"
+                  className="hover:text-neutral-900 dark:hover:text-white transition-colors truncate inline-block align-top"
                   onClick={(e) => e.stopPropagation()}
                 >
                   {href.replace(/^https?:\/\//, '').replace(/\/$/, '')}
@@ -96,7 +96,7 @@ export default function PortfolioExperience() {
 
   return (
     <section className="mb-16">
-      <h2 className="text-lg font-semibold mb-6 text-white">
+      <h2 className="text-lg font-semibold mb-6 text-neutral-800 dark:text-white">
         cool places i worked at
       </h2>
 
@@ -107,7 +107,7 @@ export default function PortfolioExperience() {
 
           return (
             <div key={category}>
-              <h3 className="text-sm font-medium text-neutral-500 tracking-wider mb-4">
+              <h3 className="text-sm font-medium text-neutral-600 dark:text-neutral-500 tracking-wider mb-4">
                 {categoryLabels[category]}
               </h3>
               <ul className="space-y-0">

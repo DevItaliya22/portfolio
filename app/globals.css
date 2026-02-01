@@ -27,7 +27,7 @@
   }
 
   .dark {
-    --background: 224 71% 4%;
+    --background: 0 0% 0%;
     --foreground: 213 31% 91%;
     --muted: 223 47% 11%;
     --muted-foreground: 215.4 16.3% 56.9%;
@@ -67,6 +67,10 @@
   scrollbar-color: #6b7280 #e5e7eb;
 }
 
+.dark * {
+  scrollbar-color: #6b7280 #1f2937;
+}
+
 ::selection {
   background-color: transparent;
   color: #fbcfe8;
@@ -78,11 +82,21 @@
 }
 
 body {
-  background-color: #030303;
+  @apply bg-background;
 }
 
 .wall-pattern {
-  background-color: #030303;
+  @apply bg-background;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 2px,
+    rgba(128, 128, 128, 0.15) 2px,
+    rgba(128, 128, 128, 0.15) 5px
+  );
+}
+
+.dark .wall-pattern {
   background-image: repeating-linear-gradient(
     -45deg,
     transparent,

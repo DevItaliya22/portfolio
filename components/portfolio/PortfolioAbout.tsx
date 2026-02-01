@@ -10,8 +10,10 @@ import {
 export default function PortfolioAbout() {
   return (
     <section className="mb-16">
-      <h2 className="text-lg font-semibold mb-4 text-white">about</h2>
-      <div className="space-y-5 text-neutral-500 leading-relaxed">
+      <h2 className="text-lg font-semibold mb-4 text-neutral-800 dark:text-neutral-200">
+        about
+      </h2>
+      <div className="space-y-5 text-neutral-600 dark:text-neutral-500 leading-relaxed">
         <p>
           currently building a B2B product in the customer loyalty and retention
           space —{' '}
@@ -23,18 +25,18 @@ export default function PortfolioAbout() {
                     href="https://dy.devitaliya.me/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-neutral-400 hover:text-white transition-colors underline decoration-neutral-600 underline-offset-2"
+                    className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors underline decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2  px-1 py-0.5 rounded"
                   >
                     landing
                   </a>
-                  <span className="text-neutral-600 text-xs cursor-default">
+                  <span className="text-neutral-500 dark:text-neutral-600 text-xs cursor-default">
                     (hover)
                   </span>
                 </span>
               </TooltipTrigger>
               <TooltipContent
                 side="bottom"
-                className="max-w-xs bg-neutral-800 text-neutral-200 border border-neutral-700"
+                className="max-w-xs bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700"
               >
                 DY — we work with D2C and B2C clients. Customer loyalty,
                 retention, referral programs, gamified solutions. Point-based
@@ -43,13 +45,13 @@ export default function PortfolioAbout() {
             </Tooltip>
           </TooltipProvider>
         </p>
-        <p className="text-neutral-500">
+        <p className="text-neutral-600 dark:text-neutral-500">
           built a startup with{' '}
           <a
             href="https://github.com/AshishViradiya153"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-neutral-400 hover:text-white transition-colors underline decoration-neutral-600 underline-offset-2"
+            className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors underline decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2 px-1 py-0.5 rounded"
           >
             @AshishViradiya153
           </a>
@@ -62,18 +64,18 @@ export default function PortfolioAbout() {
                     href="https://sendpaper.io"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-neutral-400 hover:text-white transition-colors underline decoration-neutral-600 underline-offset-2"
+                    className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors underline decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2"
                   >
                     Sendpaper
                   </a>
-                  <span className="text-neutral-600 text-xs cursor-default">
+                  <span className="text-neutral-500 dark:text-neutral-600 text-xs cursor-default">
                     (hover)
                   </span>
                 </span>
               </TooltipTrigger>
               <TooltipContent
                 side="top"
-                className="max-w-xs bg-neutral-800 text-neutral-200 border border-neutral-700"
+                className="max-w-xs bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700"
               >
                 Sendpaper — secure document sharing with others. Org handling,
                 dataroom sharing, link creation with filters, and more.

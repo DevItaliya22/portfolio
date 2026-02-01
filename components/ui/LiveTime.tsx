@@ -14,7 +14,7 @@ export default function LiveTime() {
   }, []);
 
   return (
-    <span className="text-xs text-neutral-500 font-mono">
+    <span className="text-xs text-neutral-600 dark:text-neutral-500 font-mono">
       {time.toLocaleTimeString()}
     </span>
   );
