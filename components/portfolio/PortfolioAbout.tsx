@@ -10,7 +10,7 @@ import {
 export default function PortfolioAbout() {
   return (
     <section className="mb-16">
-      <h2 className="text-lg font-semibold mb-4">about</h2>
+      <h2 className="text-lg font-semibold mb-4 text-white">about</h2>
       <div className="space-y-5 text-neutral-500 leading-relaxed">
         <p>
           currently building a B2B product in the customer loyalty and retention

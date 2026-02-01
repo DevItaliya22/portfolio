@@ -38,8 +38,12 @@ export default function PortfolioFooter() {
             resume{' '}
           </a>
         </div>
-        <div className="flex flex-col items-end gap-1">
+        <div className="flex items-center gap-4">
           <LiveTime />
+          <span
+            className="w-1 h-1 rounded-full bg-neutral-600 shrink-0"
+            aria-hidden
+          />
           <PageViews />
         </div>
       </div>
