@@ -96,7 +96,9 @@ export default function PortfolioExperience() {
 
   return (
     <section className="mb-16">
-      <h2 className="text-lg font-semibold mb-6">cool places i worked at</h2>
+      <h2 className="text-lg font-semibold mb-6 text-white">
+        cool places i worked at
+      </h2>
 
       <div className="space-y-10">
         {categoryOrder.map((category) => {

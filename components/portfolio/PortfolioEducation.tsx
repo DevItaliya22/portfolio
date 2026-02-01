@@ -14,7 +14,7 @@ const education = [
 export default function PortfolioEducation() {
   return (
     <section>
-      <h2 className="text-lg font-semibold mb-6">education</h2>
+      <h2 className="text-lg font-semibold mb-6 text-neutral-200">education</h2>
       <ul className="space-y-4">
         {education.map((edu, i) => (
           <li
@@ -30,12 +30,14 @@ export default function PortfolioEducation() {
                   href={edu.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-medium text-white hover:text-neutral-300 transition-colors"
+                  className="font-medium text-neutral-200 hover:text-neutral-300 transition-colors"
                 >
                   {edu.school}
                 </Link>
               ) : (
-                <span className="font-medium text-white">{edu.school}</span>
+                <span className="font-medium text-neutral-200">
+                  {edu.school}
+                </span>
               )}
               <span className="text-neutral-400"> · {edu.degree}</span>
               <br />
