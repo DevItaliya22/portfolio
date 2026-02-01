@@ -9,8 +9,8 @@ export default function PortfolioFooter() {
 
   return (
     <footer className="mt-16">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-4">
           {footerLinks.map((link) => {
             const IconComponent = link.icon;
             return (
@@ -38,7 +38,7 @@ export default function PortfolioFooter() {
             resume{' '}
           </a>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           <LiveTime />
           <span
             className="w-1 h-1 rounded-full bg-neutral-400 dark:bg-neutral-600 shrink-0"
