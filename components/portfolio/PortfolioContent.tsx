@@ -1,3 +1,6 @@
+'use client';
+
+import { motion } from 'framer-motion';
 import { Separator } from '@/components/ui/separator';
 import PortfolioHeader from './PortfolioHeader';
 import PortfolioAbout from './PortfolioAbout';
@@ -7,7 +10,13 @@ import PortfolioFooter from './PortfolioFooter';
 
 export default function PortfolioContent() {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: -30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 1.4,
+        ease: [0.16, 1, 0.3, 1],
+      }}
       className="min-h-screen bg-black text-white grid grid-cols-[1fr_4rem_minmax(0,42rem)_4rem_1fr]"
       style={{
         fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
@@ -28,6 +37,6 @@ export default function PortfolioContent() {
       </main>
       <div className="wall-pattern min-h-screen" aria-hidden />
       <div className="min-h-screen" aria-hidden />
-    </div>
+    </motion.div>
   );
 }
