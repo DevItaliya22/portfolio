@@ -26,7 +26,14 @@ export default function PageViews() {
     };
   }, []);
 
-  if (views === null) return null;
+  if (views === null) {
+    return (
+      <span
+        className="inline-block h-3.5 w-14 rounded bg-neutral-200 dark:bg-neutral-700 animate-pulse font-mono text-xs"
+        aria-label="Loading view count"
+      />
+    );
+  }
 
   return (
     <span className="text-xs text-neutral-600 dark:text-neutral-500 font-mono">
