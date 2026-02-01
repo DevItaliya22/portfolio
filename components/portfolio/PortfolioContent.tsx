@@ -30,13 +30,13 @@ export default function PortfolioContent() {
         </div>
         <div className="px-4 min-[828px]:px-6 pb-16 pt-6">
           <PortfolioHeader />
-          <Separator className="my-8 h-0 border-t border-dashed border-neutral-800 bg-transparent" />
+          <Separator className="my-8 h-0 border-t border-dashed border-neutral-300 dark:border-neutral-800 bg-transparent" />
           <PortfolioAbout />
-          <Separator className="my-8 h-0 border-t border-dashed border-neutral-800 bg-transparent" />
+          <Separator className="my-8 h-0 border-t border-dashed border-neutral-300 dark:border-neutral-800 bg-transparent" />
           <PortfolioExperience />
-          <Separator className="my-8 h-0 border-t border-dashed border-neutral-800 bg-transparent" />
+          <Separator className="my-8 h-0 border-t border-dashed border-neutral-300 dark:border-neutral-800 bg-transparent" />
           <PortfolioEducation />
-          <Separator className="my-8 h-0 border-t border-dashed border-neutral-800 bg-transparent" />
+          <Separator className="my-8 h-0 border-t border-dashed border-neutral-300 dark:border-neutral-800 bg-transparent" />
           <PortfolioFooter />
         </div>
       </main>

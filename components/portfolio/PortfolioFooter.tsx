@@ -23,7 +23,7 @@ export default function PortfolioFooter() {
                     ? undefined
                     : 'noopener noreferrer'
                 }
-                className="text-neutral-400 hover:text-white transition-colors"
+                className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
               >
                 <IconComponent className="h-5 w-5" />
               </a>
@@ -33,7 +33,7 @@ export default function PortfolioFooter() {
             href="https://www.papermark.com/view/cml3f50u00004l404rrrtcvs5"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-neutral-400 hover:text-white transition-colors"
+            className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
           >
             resume{' '}
           </a>
@@ -41,7 +41,7 @@ export default function PortfolioFooter() {
         <div className="flex items-center gap-4">
           <LiveTime />
           <span
-            className="w-1 h-1 rounded-full bg-neutral-600 shrink-0"
+            className="w-1 h-1 rounded-full bg-neutral-400 dark:bg-neutral-600 shrink-0"
             aria-hidden
           />
           <PageViews />

@@ -14,14 +14,16 @@ const education = [
 export default function PortfolioEducation() {
   return (
     <section>
-      <h2 className="text-lg font-semibold mb-6 text-neutral-200">education</h2>
+      <h2 className="text-lg font-semibold mb-6 text-neutral-800 dark:text-neutral-200">
+        education
+      </h2>
       <ul className="space-y-4">
         {education.map((edu, i) => (
           <li
             key={i}
-            className="flex items-center gap-4 py-2 border-b border-neutral-800/50 last:border-0"
+            className="flex items-center gap-4 py-2 border-b border-neutral-200 dark:border-neutral-800/50 last:border-0"
           >
-            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-neutral-800 flex items-center justify-center text-sm font-medium text-neutral-400">
+            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-sm font-medium text-neutral-600 dark:text-neutral-400">
               {getInitials(edu.school)}
             </div>
             <div className="flex-1 min-w-0">
@@ -30,20 +32,20 @@ export default function PortfolioEducation() {
                   href={edu.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-medium text-neutral-200 hover:text-neutral-300 transition-colors"
+                  className="font-medium text-neutral-800 dark:text-neutral-200 hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors"
                 >
                   {edu.school}
                 </Link>
               ) : (
-                <span className="font-medium text-neutral-200">
+                <span className="font-medium text-neutral-800 dark:text-neutral-200">
                   {edu.school}
                 </span>
               )}
-              <span className="text-neutral-400"> · {edu.degree}</span>
+              <span className="text-neutral-600 dark:text-neutral-400"> · {edu.degree}</span>
               <br />
-              <span className="text-neutral-400"> {edu.subtitle}</span>
+              <span className="text-neutral-600 dark:text-neutral-400"> {edu.subtitle}</span>
             </div>
-            <span className="flex-shrink-0 text-sm text-neutral-500">
+            <span className="flex-shrink-0 text-sm text-neutral-600 dark:text-neutral-500">
               {edu.period}
             </span>
           </li>

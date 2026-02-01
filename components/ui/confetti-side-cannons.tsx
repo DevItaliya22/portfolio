@@ -42,7 +42,7 @@ export function ConfettiSideCannons() {
     <Button
       onClick={handleClick}
       variant="outline"
-      className="fixed bottom-4 right-4 z-50 size-10 rounded-full p-0 border-neutral-600 bg-neutral-900/80 hover:bg-neutral-800 text-neutral-300 hover:text-white backdrop-blur-sm"
+      className="fixed bottom-4 right-4 z-50 size-10 rounded-full p-0 border-neutral-300 bg-white/80 dark:border-neutral-600 dark:bg-neutral-900/80 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white backdrop-blur-sm"
       aria-label="Celebrate"
     >
       🎉
