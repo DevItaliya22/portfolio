@@ -38,7 +38,14 @@ function ExperienceRow({
           {getInitials(item.name)}
         </div> */}
         <div className="flex-1 min-w-0">
-          <div className="font-medium text-neutral-800 dark:text-white">{item.name}</div>
+          <div className="font-medium text-neutral-800 dark:text-white flex items-baseline gap-2 flex-wrap">
+            {item.name}
+            {item.private && (
+              <span className="text-[10px] font-normal text-neutral-400 dark:text-neutral-500 tracking-wide">
+                (private)
+              </span>
+            )}
+          </div>
           {(item.role || item.roleLink) && (
             <div className="text-sm text-neutral-600 dark:text-neutral-400">
               {item.role}
