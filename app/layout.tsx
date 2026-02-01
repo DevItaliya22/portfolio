@@ -4,7 +4,8 @@ import './globals.css';
 import { Analytics } from '@vercel/analytics/next';
 import { ThemeProvider } from '@/components/theme-provider';
 import GradualBlur from '@/components/portfolio/GradualBlur';
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { InitialBlurReveal } from '@/components/portfolio/InitialBlurReveal';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
@@ -142,7 +143,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Analytics />
-          {children}
+          <InitialBlurReveal>{children}</InitialBlurReveal>
           <GradualBlur
             position="bottom"
             height="5rem"
