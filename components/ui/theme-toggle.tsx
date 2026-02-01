@@ -1,13 +1,18 @@
 'use client';
 
-import { useTheme } from 'next-themes';
+import { useThemeToggle } from '@/components/portfolio/skipper-toggle';
 import { Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const { isDark, toggleTheme } = useThemeToggle({
+    variant: 'circle',
+    start: 'center',
+    blur: true,
+  });
 
   useEffect(() => {
     setMounted(true);
@@ -30,15 +35,13 @@ export function ThemeToggle() {
     <Button
       variant="ghost"
       size="icon"
-      className="size-9 rounded-full text-neutral-500 hover:text-foreground dark:text-neutral-400 dark:hover:text-white"
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      className={cn(
+        'size-9 rounded-full text-neutral-500 hover:text-foreground dark:text-neutral-400 dark:hover:text-white'
+      )}
+      onClick={toggleTheme}
       aria-label="Toggle theme"
     >
-      {theme === 'dark' ? (
-        <Sun className="h-4 w-4" />
-      ) : (
-        <Moon className="h-4 w-4" />
-      )}
+      {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
     </Button>
   );
 }
