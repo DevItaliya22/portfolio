@@ -1,5 +1,5 @@
+import PortfolioContent from '@/components/portfolio/PortfolioContent';
 import { Metadata } from 'next';
-import HomeClient from './HomeClient';
 
 export const metadata: Metadata = {
   title: 'Dev Italiya - Full Stack Developer',
@@ -29,5 +29,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <HomeClient />;
+  return <PortfolioContent />;
 }

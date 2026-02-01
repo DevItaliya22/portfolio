@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import React from 'react';
-import { Project, projects } from '../../../lib/info';
+import { Project, projects } from '@/lib/info';
 import { getProjectViews } from '@/lib/views-kv';
 import { Metadata } from 'next';
 import ViewIncrementer from './ViewIncrementer';

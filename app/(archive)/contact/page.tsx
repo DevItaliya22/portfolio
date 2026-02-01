@@ -1,6 +1,6 @@
-import { socialLinks } from '../../lib/info';
 import { Metadata } from 'next';
 import ContactClient from './ContactClient';
+import { socialLinks } from '@/lib/info';
 
 // SEO Metadata
 export const metadata: Metadata = {
