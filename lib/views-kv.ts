@@ -37,6 +37,7 @@ function initRedis(): boolean {
 }
 
 const KV_KEY = 'project_views';
+const MAIN_PAGE_VIEWS_KEY = 'main_page_views';
 
 // Check if Redis is available
 async function isRedisAvailable(): Promise<boolean> {
@@ -178,5 +179,37 @@ export async function manualSeed(): Promise<boolean> {
   } catch (error) {
     console.error('Manual seed failed:', error);
     return false;
+  }
+}
+
+// --- Main page views only ---
+
+export async function getMainPageViews(): Promise<number> {
+  if (!(await isRedisAvailable()) || !redis) {
+    return 0;
+  }
+  try {
+    const val = await redis.get<number>(MAIN_PAGE_VIEWS_KEY);
+    return typeof val === 'number' ? val : 0;
+  } catch (error) {
+    console.error('Error getting main page views:', error);
+    return 0;
+  }
+}
+
+export async function incrementMainPageViews(): Promise<number> {
+  if (!(await isRedisAvailable()) || !redis) {
+    const current = await getMainPageViews();
+    return current + 1;
+  }
+  try {
+    const current = await getMainPageViews();
+    const newViews = current + 1;
+    await redis.set(MAIN_PAGE_VIEWS_KEY, newViews);
+    return newViews;
+  } catch (error) {
+    console.error('Error incrementing main page views:', error);
+    const current = await getMainPageViews();
+    return current + 1;
   }
 }

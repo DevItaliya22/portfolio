@@ -12,28 +12,7 @@ const geistMono = localFont({
   variable: '--font-geist-mono',
   weight: '100 900',
 });
-const devPrivate = localFont({
-  src: './fonts/dev-private.woff',
-  variable: '--font-dev-private',
-  weight: '400',
-});
-const poppinsExtraBoldItalic = localFont({
-  src: './fonts/Poppins-ExtraBoldItalic.woff',
-  variable: '--font-poppins-extrabold-italic',
-  weight: '800',
-  style: 'italic',
-});
-const satoshiLight = localFont({
-  src: './fonts/Satoshi-Light.woff',
-  variable: '--font-satoshi-light',
-  weight: '500',
-});
 
-const satoshiBold = localFont({
-  src: './fonts/Satoshi-Bold.woff',
-  variable: '--font-satoshi-bold',
-  weight: '700',
-});
 
 export const metadata: Metadata = {
   title: {
@@ -152,7 +131,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${devPrivate.variable} ${poppinsExtraBoldItalic.variable} ${satoshiLight.variable} ${satoshiBold.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Analytics />
         {children}

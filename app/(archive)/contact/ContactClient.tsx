@@ -1,10 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { SpotlightCard } from '../components/SpotlightCard';
-import Navbar from '../components/Navbar';
-import ParticleEffect from '../components/ParticleEffect';
-import { socialLinks } from '../../lib/info';
+import { SpotlightCard } from '../_components/SpotlightCard';
+import Navbar from '../_components/Navbar';
+import OldPageBanner from '../_components/OldPageBanner';
+import ParticleEffect from '../_components/ParticleEffect';
+import { socialLinks } from '@/lib/info';
 
 export default function ContactClient() {
   return (
@@ -14,6 +15,7 @@ export default function ContactClient() {
       transition={{ duration: 0.5 }}
       className="min-h-screen bg-black text-white flex flex-col relative overflow-hidden"
     >
+      <OldPageBanner />
       <ParticleEffect />
       <Navbar />
       <motion.div

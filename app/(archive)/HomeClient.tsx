@@ -1,8 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import ParticleEffect from './components/ParticleEffect';
-import Navbar from './components/Navbar';
+import ParticleEffect from './_components/ParticleEffect';
+import Navbar from './_components/Navbar';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { projects } from '@/lib/info';
@@ -68,9 +68,9 @@ export default function HomeClient() {
           I'm building web applications and websites for clients around the
           world.
         </motion.p>
-        
+
         {/* Available for Work Indicator */}
-        <motion.div 
+        <motion.div
           className="flex items-center gap-3 text-neutral-300"
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

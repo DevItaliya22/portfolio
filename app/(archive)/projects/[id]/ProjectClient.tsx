@@ -8,9 +8,10 @@ import {
   Github,
   Instagram,
 } from 'lucide-react';
-import ParticleEffect from '../../components/ParticleEffect';
+import ParticleEffect from '../../_components/ParticleEffect';
+import OldPageBanner from '../../_components/OldPageBanner';
 import React, { useState, useEffect } from 'react';
-import { Project } from '../../../lib/info';
+import { Project } from '@/lib/info';
 import Link from 'next/link';
 import NumberFlow from '@number-flow/react';
 import ReactMarkdown from 'react-markdown';
@@ -59,6 +60,7 @@ export default function ProjectClient({ project }: ProjectClientProps) {
       transition={{ duration: 0.5 }}
       className="min-h-screen bg-black text-white flex flex-col relative overflow-hidden"
     >
+      <OldPageBanner />
       <ParticleEffect />
       <nav className="flex justify-between items-center p-6 z-10 relative">
         <Link

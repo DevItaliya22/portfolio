@@ -7,10 +7,11 @@ import {
   getProjectCounts,
   ProjectCategory,
   socialLinks,
-} from '../../lib/info';
-import Navbar from '../components/Navbar';
-import ParticleEffect from '../components/ParticleEffect';
-import LiveTime from '../components/LiveTime';
+} from '@/lib/info';
+import Navbar from '../_components/Navbar';
+import OldPageBanner from '../_components/OldPageBanner';
+import ParticleEffect from '../_components/ParticleEffect';
+import LiveTime from '../_components/LiveTime';
 import { getAllProjectsWithViews } from '@/lib/views-kv';
 import { Metadata } from 'next';
 
@@ -102,6 +103,7 @@ export default async function Projects2Page() {
       />
 
       <div className="min-h-screen bg-black text-white relative overflow-hidden">
+        <OldPageBanner />
         <ParticleEffect />
         <div className="relative z-10">
           <Navbar />
