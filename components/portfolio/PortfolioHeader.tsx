@@ -4,7 +4,7 @@ export default function PortfolioHeader() {
   return (
     <header className="flex justify-between items-start gap-8 mb-16">
       <div>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-2 text-white">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-2 text-neutral-200">
           hi, dev here
         </h1>
         <p className="text-neutral-400 text-lg">21 · full-stack engineer</p>
