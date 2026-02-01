@@ -16,6 +16,8 @@ export interface ExperienceItem {
   date: string;
   sortDate: string; // YYYY-MM-DD for sorting
   links: string[];
+  /** Show "(private)" beside title when true */
+  private?: boolean;
 }
 
 // Parse date to YYYY-MM-DD for sorting (most recent first)
@@ -39,6 +41,12 @@ function parseSortDate(dateStr: string): string {
   };
   if (dateStr.toLowerCase() === 'present') return '2099-12-31';
   const parts = dateStr.toLowerCase().replace(/,/g, '').split(/\s+/);
+  // "Month Year – Month Year" range: use end date for sorting (most recent end first)
+  if (parts.includes('–') && parts.length >= 5) {
+    const month = months[parts[3]] || '01';
+    const year = parts[4];
+    if (/^\d{4}$/.test(year)) return `${year}-${month}-01`;
+  }
   if (parts.length >= 3) {
     const month = months[parts[0].replace(/^0/, '')] || parts[0];
     const day = parts[1].padStart(2, '0');
@@ -58,7 +66,8 @@ function item(
   date: string,
   links: string[] = [],
   role?: string,
-  roleLink?: { text: string; href: string }
+  roleLink?: { text: string; href: string },
+  isPrivate?: boolean
 ): ExperienceItem {
   return {
     name,
@@ -67,6 +76,7 @@ function item(
     date,
     sortDate: parseSortDate(date),
     links: links.filter(Boolean),
+    ...(isPrivate && { private: true }),
   };
 }
 
@@ -76,8 +86,16 @@ export const experienceByCategory: Record<
 > = {
   internship: [
     item(
+      '3RP Technetium',
+      'Aug 2025 – Sept 2025',
+      [],
+      undefined,
+      undefined,
+      true
+    ),
+    item(
       'Buffindia',
-      'Mar 1, 2025',
+      'Mar 2025 – Jul 2025',
       [
         'https://buffindia.com/',
         // 'https://dev.buffindia.com/',
@@ -92,18 +110,26 @@ export const experienceByCategory: Record<
     ),
     item(
       'Pattern Generator',
-      'July 23, 2024',
+      'Apr 2024 – Dec 2024',
       [],
       'frontend developer under ',
       {
         text: 'Harsh',
         href: 'https://www.linkedin.com/in/harsh-sutaria/',
-      }
+      },
+      true
     ),
-    item('Delfa Innovators', 'June 3, 2024', [], 'full-stack developer with ', {
-      text: 'Aviral',
-      href: 'https://www.linkedin.com/in/aviral-jain-20/',
-    }),
+    item(
+      'Delfa Innovators',
+      'Apr 2024 – Dec 2024',
+      [],
+      'full-stack developer with ',
+      {
+        text: 'Aviral',
+        href: 'https://www.linkedin.com/in/aviral-jain-20/',
+      },
+      true
+    ),
   ],
   freelance: [
     item('Kakadiya Automobiles', 'Jan 15, 2025', [
@@ -112,7 +138,7 @@ export const experienceByCategory: Record<
     item("K's Lunaloops", 'Jan 8, 2025', ['https://ks-lunaloop.vercel.app/']),
     item('Shuttle', 'Jul 22, 2025', ['https://shuttle.devitaliya.me/']),
     item('Agency Portfolio', 'Jul 8, 2025', ['https://agency.devitaliya.me/']),
-    item('Cyro Technologies', 'Jul 15, 2025', []),
+    item('Cyro Technologies', 'Jul 15, 2025', [], undefined, undefined, true),
     item('Manish Vaghasiya', 'Sept 15, 2024', [
       'https://manishvaghasiya.devitaliya.me/',
     ]),
@@ -153,19 +179,16 @@ export const experienceByCategory: Record<
       'DY',
       'present',
       ['https://dy.devitaliya.me/', 'https://dyweb.devitaliya.me/login'],
-      'co-founder with ',
+      'co-founder : ',
       {
         text: 'Yash Katrodiya',
         href: 'https://www.linkedin.com/in/recellstechnology/',
       }
     ),
-    item(
-      'Sendpaper',
-      'present',
-      ['https://sendpaper.io/'],
-      'co-founder with ',
-      { text: 'Ashish', href: 'https://github.com/AshishViradiya153' }
-    ),
+    item('Sendpaper', 'present', ['https://sendpaper.io/'], 'co-founder : ', {
+      text: 'Ashish',
+      href: 'https://github.com/AshishViradiya153',
+    }),
   ],
 };
 
