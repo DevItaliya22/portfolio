@@ -144,7 +144,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Analytics />
-          <InitialBlurReveal>{children}</InitialBlurReveal>
+          {/* <InitialBlurReveal>{children}</InitialBlurReveal>
+          //TODO: Uncomment this when the initial blur reveal is ready */}
+          {children}
           <GradualBlur
             position="bottom"
             height="5rem"
