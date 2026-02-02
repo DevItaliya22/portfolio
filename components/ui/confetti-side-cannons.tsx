@@ -39,13 +39,15 @@ export function ConfettiSideCannons() {
   };
 
   return (
-    <Button
-      onClick={handleClick}
-      variant="outline"
-      className="fixed bottom-4 right-4 z-[150] size-10 rounded-full p-0 border-neutral-300 bg-white/80 dark:border-neutral-600 dark:bg-neutral-900/80 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white backdrop-blur-sm"
-      aria-label="Celebrate"
-    >
-      🎉
-    </Button>
+    <div className="fixed inset-0 z-[9999] pointer-events-none">
+      <Button
+        onClick={handleClick}
+        variant="outline"
+        className="absolute bottom-4 right-4 pointer-events-auto size-10 rounded-full p-0 border-neutral-300 bg-white/80 dark:border-neutral-600 dark:bg-neutral-900/80 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white backdrop-blur-sm"
+        aria-label="Celebrate"
+      >
+        🎉
+      </Button>
+    </div>
   );
 }

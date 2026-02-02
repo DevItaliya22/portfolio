@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/next';
 import { ThemeProvider } from '@/components/theme-provider';
 import GradualBlur from '@/components/portfolio/GradualBlur';
 import { InitialBlurReveal } from '@/components/portfolio/InitialBlurReveal';
+import { ConfettiSideCannons } from '@/components/ui/confetti-side-cannons';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -138,7 +139,7 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
@@ -152,6 +153,7 @@ export default function RootLayout({
             strength={2}
             divCount={5}
           />
+          <ConfettiSideCannons />
         </ThemeProvider>
         <SpeedInsights />
       </body>

@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
-import { ConfettiSideCannons } from '@/components/ui/confetti-side-cannons';
 import PortfolioHeader from './PortfolioHeader';
 import PortfolioAbout from './PortfolioAbout';
 import PortfolioExperience from './PortfolioExperience';
@@ -45,7 +44,6 @@ export default function PortfolioContent() {
         className="hidden min-[751px]:block wall-pattern flex-1 min-w-0 max-w-[50px] min-h-screen flex-shrink-0"
         aria-hidden
       />
-      <ConfettiSideCannons />
     </div>
   );
 }
