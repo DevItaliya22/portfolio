@@ -30,7 +30,7 @@ export default function PortfolioFooter() {
             );
           })}
           <a
-            href="https://www.papermark.com/view/cml3f50u00004l404rrrtcvs5"
+            href="https://resume.devitaliya.me"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
