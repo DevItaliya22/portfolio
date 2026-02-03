@@ -18,14 +18,16 @@ export default function PortfolioContent() {
       />
       <main className="w-full max-w-[750px] flex-shrink-0">
         <div className="relative w-full h-48 sm:h-64 md:h-80 overflow-hidden min-[751px]:rounded-t-lg">
-          <Image
-            src="/banner1.jpg"
-            alt=""
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="(max-width: 750px) 100vw, 750px"
-          />
+          {
+            <Image
+              src="/banner4.jpg"
+              alt=""
+              fill
+              priority
+              className="object-cover object-center"
+              sizes="(max-width: 750px) 100vw, 750px"
+            />
+          }
         </div>
         <div className="px-4 min-[828px]:px-6 pb-16 pt-6">
           <PortfolioHeader />
