@@ -9,7 +9,7 @@
  * 3. Server applies changes to the database
  * 4. Server returns a DeltaPacket (also broadcast to other clients via WebSocket)
  *
- * Our simplified version:
+ * My simplified version:
  * - Applies transaction, returns delta to the calling client
  * - Other clients pick up changes via polling (pull endpoint)
  *

@@ -86,14 +86,24 @@ export default function PortfolioAbout() {
         <p>
           i&apos;ve built multiple admin dashboards, fix bugs for companies as a
           freelancer, and work on real-time systems. local-first is a passion—i
-          love learning and building with{' '}
+          love learning and building about{' '}
           <a
             href="/sync"
             className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors underline decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2 px-1 py-0.5 rounded"
           >
             sync engines
           </a>
-          , offline-first flows, and doc handling.
+          , offline-first applications like 
+          {' '}
+          <a
+            href="https://linear.app"
+            className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors underline decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2 px-1 py-0.5 rounded"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            linear
+          </a>
+          , and doc handling.
         </p>
         <p>available for freelance.</p>
       </div>
