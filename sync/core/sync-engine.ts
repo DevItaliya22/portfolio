@@ -5,9 +5,9 @@
  *
  * Inspired by Linear's SyncedStore, this orchestrates:
  *
- * 1. BOOTSTRAP: Initial data load (Server → IndexedDB → Memory)
- *    - Full bootstrap: Fetch everything from server (first time)
- *    - Incremental: Load from IndexedDB, then pull deltas
+ * 1. BOOTSTRAP: Initial data load (IndexedDB → Memory → then Server in bg)
+ *    - If local data exists: show immediately, sync deltas in background
+ *    - If no local data: full bootstrap from server (Redis)
  *
  * 2. PUSH (Write Path): Client mutations → Transaction → Server
  *    - Optimistic update in object pool
@@ -22,6 +22,7 @@
  *
  * 4. OFFLINE QUEUE: Pending transactions stored in IndexedDB
  *    - Automatically flushed when connection restores
+ *    - Listens for browser `online` event for immediate flush
  *    - Server handles conflict resolution:
  *      • UPDATE on deleted record → resurrect
  *      • CREATE on existing → merge
@@ -115,8 +116,11 @@ export class SyncEngine {
   /** Current sync status */
   private _status: SyncStatus = 'idle';
 
-  /** Polling interval handle */
-  private pullInterval: ReturnType<typeof setInterval> | null = null;
+  /** Polling timeout handle (chained setTimeout, NOT setInterval) */
+  private pullTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  /** Polling interval in ms */
+  private pollIntervalMs = 3000;
 
   /** Event listeners */
   private listeners: Set<SyncEngineListener> = new Set();
@@ -127,8 +131,14 @@ export class SyncEngine {
   /** Is the engine initialized? */
   private initialized = false;
 
+  /** Lock to prevent concurrent pull operations */
+  private isPulling = false;
+
   /** Lock to prevent concurrent flush operations */
   private isFlushing = false;
+
+  /** Bound handler for the browser `online` event */
+  private onOnlineHandler: (() => void) | null = null;
 
   constructor(options?: { apiBase?: string }) {
     this.localDb = new LocalDatabase();
@@ -143,13 +153,18 @@ export class SyncEngine {
   /**
    * Initialize the sync engine.
    *
-   * Follows Linear's bootstrap process:
-   * 1. Open IndexedDB
-   * 2. Check if we have local data (via lastSyncId)
-   * 3. If yes → load from IndexedDB, then pull deltas (incremental)
-   * 4. If no → full bootstrap from server
-   * 5. Flush pending offline transactions
-   * 6. Start polling for real-time updates
+   * Two paths:
+   *
+   * A) Local data exists (returning user):
+   *    1. Open IndexedDB
+   *    2. Load records into object pool → emit bootstrap-complete (INSTANT UI)
+   *    3. Background: pull deltas, flush pending, start polling
+   *
+   * B) No local data (first visit):
+   *    1. Open IndexedDB
+   *    2. Full bootstrap from server (must wait — no local data to show)
+   *    3. Emit bootstrap-complete
+   *    4. Flush pending, start polling
    */
   async initialize(): Promise<void> {
     if (this.initialized) return;
@@ -164,28 +179,38 @@ export class SyncEngine {
       const localSyncId = await this.localDb.getLastSyncId();
 
       if (localSyncId > 0) {
-        // Incremental bootstrap
+        // ── Path A: Instant load from IndexedDB ──
         console.log(
-          `[SyncEngine] Incremental bootstrap from syncId=${localSyncId}`
+          `[SyncEngine] Loading from IndexedDB (syncId=${localSyncId}), syncing in background`
         );
         await this.loadFromLocalDb();
-        await this.pull();
+
+        // Mark ready immediately — UI can show IndexedDB data now
+        this.initialized = true;
+        this.setStatus('idle');
+        this.emit({ type: 'bootstrap-complete' });
+
+        // Notify listeners of loaded records
+        this.emitAllModelsChanged();
+
+        // Background sync: pull deltas → flush pending → start polling
+        this.backgroundSync();
       } else {
-        // Full bootstrap
+        // ── Path B: First time — must fetch from server ──
         console.log('[SyncEngine] Full bootstrap from server');
         await this.fullBootstrap();
+
+        this.initialized = true;
+        this.setStatus('idle');
+        this.emit({ type: 'bootstrap-complete' });
+
+        // Flush any pending (shouldn't have any on first visit, but safety)
+        await this.flushPendingTransactions();
+        this.startPolling();
       }
 
-      // Step 3: Flush pending offline transactions
-      // (pull happened first, so server has latest context for conflict resolution)
-      await this.flushPendingTransactions();
-
-      // Step 4: Start polling for real-time changes
-      this.startPolling();
-
-      this.initialized = true;
-      this.setStatus('idle');
-      this.emit({ type: 'bootstrap-complete' });
+      // Listen for browser online/offline events
+      this.setupConnectivityListeners();
     } catch (error) {
       console.error('[SyncEngine] Bootstrap failed:', error);
       this.setStatus('error');
@@ -196,6 +221,7 @@ export class SyncEngine {
   /** Shut down the sync engine */
   destroy(): void {
     this.stopPolling();
+    this.teardownConnectivityListeners();
     this.localDb.close();
     this.objectPool.clear();
     this.listeners.clear();
@@ -430,12 +456,7 @@ export class SyncEngine {
     this.lastSyncId = data.syncId;
 
     // Notify listeners
-    const modelNames = Array.from(
-      new Set(data.records.map((r) => r.modelName))
-    );
-    for (const modelName of modelNames) {
-      this.emitRecordsChanged(modelName);
-    }
+    this.emitAllModelsChanged();
   }
 
   /** Load data from local IndexedDB into the object pool */
@@ -448,6 +469,31 @@ export class SyncEngine {
       }
     }
     this.lastSyncId = await this.localDb.getLastSyncId();
+  }
+
+  /**
+   * Background sync — runs AFTER IndexedDB data is shown to the user.
+   *
+   * 1. Pull latest deltas from server
+   * 2. Flush any pending offline transactions
+   * 3. Start polling for real-time updates
+   *
+   * Errors here don't block the UI — the user already sees their local data.
+   */
+  private async backgroundSync(): Promise<void> {
+    try {
+      await this.pull();
+    } catch (error) {
+      console.warn('[SyncEngine] Background pull failed:', error);
+    }
+
+    try {
+      await this.flushPendingTransactions();
+    } catch (error) {
+      console.warn('[SyncEngine] Background flush failed:', error);
+    }
+
+    this.startPolling();
   }
 
   /**
@@ -500,16 +546,18 @@ export class SyncEngine {
   /**
    * Pull changes from server since lastSyncId.
    *
-   * Like Linear's delta sync: fetch all changes since our last known state.
-   * Uses the diff-based approach: "give me everything after syncId N".
+   * Uses a LOCK to prevent concurrent pulls. This is critical because
+   * polling uses chained setTimeout, but the `online` event or manual
+   * calls could still overlap.
    *
-   * Since the server now persists to Redis, there's no more data loss
-   * on serverless cold starts. The syncId and sync log survive restarts.
-   *
-   * After a successful pull, automatically flushes any pending offline
+   * After a successful pull, automatically flushes pending offline
    * transactions so changes get pushed as soon as connectivity returns.
    */
   async pull(): Promise<void> {
+    // Prevent concurrent pulls (polling + online event could overlap)
+    if (this.isPulling) return;
+    this.isPulling = true;
+
     try {
       this.setStatus('syncing');
 
@@ -533,15 +581,15 @@ export class SyncEngine {
 
       this.setStatus('idle');
 
-      // After a successful pull, check for pending offline transactions
-      // and flush them. This handles the case where the user was offline,
-      // made changes, and is now back online.
+      // After a successful pull, flush pending offline transactions.
+      // This is the primary mechanism for pushing offline changes:
+      // poll fires → pull succeeds (we're online) → flush pending
       await this.flushPendingTransactions();
     } catch (error) {
       console.warn('[SyncEngine] Pull failed:', error);
-      if (this._status !== 'offline') {
-        this.setStatus('offline');
-      }
+      this.setStatus('offline');
+    } finally {
+      this.isPulling = false;
     }
   }
 
@@ -623,8 +671,7 @@ export class SyncEngine {
     }
 
     // Notify listeners of changed models
-    const changedModelNames = Array.from(changedModels);
-    for (const modelName of changedModelNames) {
+    for (const modelName of Array.from(changedModels)) {
       this.emitRecordsChanged(modelName);
     }
   }
@@ -635,9 +682,9 @@ export class SyncEngine {
    * Called:
    * 1. During bootstrap (after pull, before polling starts)
    * 2. After every successful pull (auto-retry for offline changes)
+   * 3. When the browser `online` event fires
    *
-   * Uses a lock to prevent concurrent flushes (e.g., if polling
-   * triggers a pull while a flush is already in progress).
+   * Uses a lock to prevent concurrent flushes.
    *
    * The server handles conflict resolution:
    * - UPDATE on a record deleted by another user → resurrect
@@ -672,8 +719,7 @@ export class SyncEngine {
               await this.applyDelta(result.delta);
               await this.localDb.removePendingTransaction(tx.id);
             } else {
-              // Server rejected this transaction — remove it to prevent
-              // infinite retry loops (e.g., validation error)
+              // Server rejected — remove to prevent infinite retry
               console.warn(
                 `[SyncEngine] Transaction ${tx.id} rejected:`,
                 result.error
@@ -703,21 +749,69 @@ export class SyncEngine {
   // ============================================================
 
   /**
-   * Start polling for changes.
+   * Start polling for changes using CHAINED setTimeout.
    *
-   * In Linear, real-time sync uses WebSocket connections.
-   * We use polling for simplicity - can be upgraded to WebSocket/SSE later.
+   * Why setTimeout instead of setInterval?
+   * - setInterval fires every N ms regardless of whether the previous
+   *   pull() finished. If pull() takes > N ms (e.g., during flush),
+   *   multiple pulls stack up, causing race conditions.
+   * - Chained setTimeout waits for pull() to complete, THEN schedules
+   *   the next one. Guaranteed sequential, no stacking.
    */
   private startPolling(intervalMs = 3000): void {
     this.stopPolling();
-    this.pullInterval = setInterval(() => this.pull(), intervalMs);
+    this.pollIntervalMs = intervalMs;
+    this.scheduleNextPull();
+  }
+
+  /** Schedule the next pull after a delay */
+  private scheduleNextPull(): void {
+    this.pullTimeout = setTimeout(async () => {
+      await this.pull();
+      // Only schedule next pull if polling is still active
+      // (destroy() might have been called during the pull)
+      if (this.pullTimeout !== null) {
+        this.scheduleNextPull();
+      }
+    }, this.pollIntervalMs);
   }
 
   private stopPolling(): void {
-    if (this.pullInterval) {
-      clearInterval(this.pullInterval);
-      this.pullInterval = null;
+    if (this.pullTimeout !== null) {
+      clearTimeout(this.pullTimeout);
+      this.pullTimeout = null;
     }
+  }
+
+  // ============================================================
+  // Connectivity Listeners
+  // ============================================================
+
+  /**
+   * Listen for the browser's `online` event.
+   *
+   * When the user regains connectivity, immediately trigger a
+   * pull + flush instead of waiting for the next poll interval.
+   * This makes offline → online transitions feel much faster.
+   */
+  private setupConnectivityListeners(): void {
+    if (typeof window === 'undefined') return;
+
+    this.onOnlineHandler = () => {
+      console.log('[SyncEngine] Browser online event — triggering sync');
+      // Trigger an immediate pull + flush cycle
+      this.pull().catch((err) =>
+        console.warn('[SyncEngine] Online event pull failed:', err)
+      );
+    };
+
+    window.addEventListener('online', this.onOnlineHandler);
+  }
+
+  private teardownConnectivityListeners(): void {
+    if (typeof window === 'undefined' || !this.onOnlineHandler) return;
+    window.removeEventListener('online', this.onOnlineHandler);
+    this.onOnlineHandler = null;
   }
 
   // ============================================================
@@ -747,6 +841,14 @@ export class SyncEngine {
       modelName,
       records: this.getAll(modelName),
     });
+  }
+
+  /** Emit records-changed for all registered models */
+  private emitAllModelsChanged(): void {
+    const models = ModelRegistry.getAll();
+    for (const model of models) {
+      this.emitRecordsChanged(model.name);
+    }
   }
 
   private setStatus(status: SyncStatus): void {
