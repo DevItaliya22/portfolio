@@ -38,6 +38,7 @@ function initRedis(): boolean {
 
 const KV_KEY = 'project_views';
 const MAIN_PAGE_VIEWS_KEY = 'main_page_views';
+const SYNC_PAGE_VIEWS_KEY = 'sync_page_views';
 const SYNC_FEEDBACK_KEY = 'sync_feedback';
 const MAX_SYNC_FEEDBACK_LIST_SIZE = 1000;
 
@@ -184,7 +185,39 @@ export async function manualSeed(): Promise<boolean> {
   }
 }
 
-// --- Main page views only ---
+// --- Sync page views ---
+
+export async function getSyncPageViews(): Promise<number> {
+  if (!(await isRedisAvailable()) || !redis) {
+    return 0;
+  }
+  try {
+    const val = await redis.get<number>(SYNC_PAGE_VIEWS_KEY);
+    return typeof val === 'number' ? val : 0;
+  } catch (error) {
+    console.error('Error getting sync page views:', error);
+    return 0;
+  }
+}
+
+export async function incrementSyncPageViews(): Promise<number> {
+  if (!(await isRedisAvailable()) || !redis) {
+    const current = await getSyncPageViews();
+    return current + 1;
+  }
+  try {
+    const current = await getSyncPageViews();
+    const newViews = current + 1;
+    await redis.set(SYNC_PAGE_VIEWS_KEY, newViews);
+    return newViews;
+  } catch (error) {
+    console.error('Error incrementing sync page views:', error);
+    const current = await getSyncPageViews();
+    return current + 1;
+  }
+}
+
+// --- Main page views ---
 
 export async function getMainPageViews(): Promise<number> {
   if (!(await isRedisAvailable()) || !redis) {

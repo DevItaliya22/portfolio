@@ -191,6 +191,15 @@ class ServerStoreClass {
     };
   }
 
+  /** Get count of non-deleted records for a model */
+  getRecordCount(modelName: string): number {
+    let count = 0;
+    for (const record of Array.from(this.records.values())) {
+      if (record.modelName === modelName && !record.deleted) count++;
+    }
+    return count;
+  }
+
   /** Get stats about the store (for debugging) */
   getStats() {
     return {
