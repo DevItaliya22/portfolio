@@ -15,7 +15,7 @@
  *
  * Validation (Zod):
  * - Task title: max 75 chars
- * - Total tasks: max 50
+ * - Total tasks: max 100
  *
  * Request body: PushRequest { transaction }
  * Response: PushResponse { success, delta, error? }

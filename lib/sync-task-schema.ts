@@ -4,13 +4,13 @@
  *
  * Limits:
  * - Max 75 chars per todo title (to avoid spam)
- * - Max 50 todos total (enforced server-side + client-side)
+ * - Max 100 todos total (enforced server-side + client-side)
  */
 
 import { z } from 'zod';
 
 export const MAX_TODO_TITLE_LENGTH = 75;
-export const MAX_TOTAL_TODOS = 50;
+export const MAX_TOTAL_TODOS = 100;
 
 /** Task title - max 75 chars */
 export const taskTitleSchema = z

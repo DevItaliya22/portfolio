@@ -3,40 +3,43 @@
 import confetti from 'canvas-confetti';
 import { Button } from '@/components/ui/button';
 
-export function ConfettiSideCannons() {
-  const handleClick = () => {
-    const end = Date.now() + 1 * 1000; // 1 second
-    const colors = ['#a786ff', '#fd8bbc', '#eca184', '#f8deb1'];
+/** Trigger side-cannon confetti (e.g. on new high score). Call from anywhere. */
+export function triggerConfetti() {
+  const end = Date.now() + 1 * 1000; // 1 second
+  const colors = ['#a786ff', '#fd8bbc', '#eca184', '#f8deb1'];
 
-    const frame = () => {
-      if (Date.now() > end) return;
+  const frame = () => {
+    if (Date.now() > end) return;
 
-      confetti({
-        particleCount: 2,
-        angle: 360 - 45,
-        spread: 70,
-        startVelocity: 60,
-        origin: { x: 0, y: 0 },
-        colors: colors,
-        ticks: 200,
-        decay: 0.9,
-      });
-      confetti({
-        particleCount: 2,
-        angle: 180 + 45,
-        spread: 70,
-        startVelocity: 60,
-        origin: { x: 1, y: 0 },
-        colors: colors,
-        ticks: 200,
-        decay: 0.9,
-      });
+    confetti({
+      particleCount: 2,
+      angle: 360 - 45,
+      spread: 70,
+      startVelocity: 60,
+      origin: { x: 0, y: 0 },
+      colors: colors,
+      ticks: 200,
+      decay: 0.9,
+    });
+    confetti({
+      particleCount: 2,
+      angle: 180 + 45,
+      spread: 70,
+      startVelocity: 60,
+      origin: { x: 1, y: 0 },
+      colors: colors,
+      ticks: 200,
+      decay: 0.9,
+    });
 
-      requestAnimationFrame(frame);
-    };
-
-    frame();
+    requestAnimationFrame(frame);
   };
+
+  frame();
+}
+
+export function ConfettiSideCannons() {
+  const handleClick = () => triggerConfetti();
 
   return (
     <div className="fixed inset-0 z-[9999] pointer-events-none">

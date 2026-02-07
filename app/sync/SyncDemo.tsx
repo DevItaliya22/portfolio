@@ -108,43 +108,6 @@ function PriorityBadge({ priority }: { priority: number }) {
 }
 
 // ============================================================
-// Sync Status Indicator
-// ============================================================
-
-function SyncStatusIndicator({
-  status,
-  syncId,
-}: {
-  status: string;
-  syncId: number;
-}) {
-  const statusConfig: Record<string, { color: string; label: string }> = {
-    idle: { color: 'bg-green-500', label: 'Synced' },
-    bootstrapping: { color: 'bg-yellow-500', label: 'Loading...' },
-    syncing: { color: 'bg-blue-500', label: 'Syncing...' },
-    pushing: { color: 'bg-blue-500', label: 'Saving...' },
-    error: { color: 'bg-red-500', label: 'Error' },
-    offline: { color: 'bg-gray-500', label: 'Offline' },
-  };
-
-  const config = statusConfig[status] ?? statusConfig.idle;
-
-  return (
-    <div className="flex items-center gap-3 text-sm">
-      <div className="flex items-center gap-1.5">
-        <span
-          className={`inline-block h-2 w-2 rounded-full ${config.color} ${
-            status === 'syncing' || status === 'pushing' ? 'animate-pulse' : ''
-          }`}
-        />
-        <span className="text-gray-600 dark:text-gray-400">{config.label}</span>
-      </div>
-      <span className="font-mono text-xs text-gray-400">v{syncId}</span>
-    </div>
-  );
-}
-
-// ============================================================
 // Task Row Component
 // ============================================================
 
@@ -268,11 +231,6 @@ function TaskRow({
         >
           <PriorityBadge priority={record.data.priority as number} />
         </button>
-
-        {/* Sync ID indicator - hidden on small screens */}
-        <span className="order-4 shrink-0 font-mono text-[10px] text-gray-300 dark:text-gray-700">
-          <span className="hidden sm:inline">#{record.syncId}</span>
-        </span>
 
         {/* Delete button */}
         <button
@@ -674,7 +632,7 @@ function FeedbackSectionContent() {
 // ============================================================
 
 export function SyncDemo() {
-  const { status, isReady, syncId } = useSyncEngine();
+  const { isReady } = useSyncEngine();
   const { records, create, update, remove } = useModel('Task');
   const { query, setQuery, results } = useSearch('Task', 'title');
 
@@ -734,10 +692,7 @@ export function SyncDemo() {
                 </a>
               </p>
             </div>
-            <div className="flex items-center gap-4">
-              <SyncPageViews />
-              <SyncStatusIndicator status={status} syncId={syncId} />
-            </div>
+            <SyncPageViews />
           </div>
         </div>
 
@@ -867,20 +822,10 @@ export function SyncDemo() {
             </div>
 
             {/* Footer stats */}
-            <div className="mt-6 flex items-center justify-between border-t border-gray-100 pt-4 dark:border-gray-800">
+            <div className="mt-6 border-t border-gray-100 pt-4 dark:border-gray-800">
               <p className="text-xs text-gray-400">
                 {records.length} task{records.length !== 1 ? 's' : ''} total
               </p>
-              <div className="flex gap-4 text-xs text-gray-400">
-                <span>
-                  SyncId:{' '}
-                  <code className="font-mono text-gray-500">{syncId}</code>
-                </span>
-                <span>
-                  Status:{' '}
-                  <code className="font-mono text-gray-500">{status}</code>
-                </span>
-              </div>
             </div>
 
             {/* Feedback (at the very end) */}
