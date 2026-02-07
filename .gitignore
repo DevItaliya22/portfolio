@@ -9,6 +9,7 @@
 # testing
 /coverage
 
+reverse-linear-sync-engine
 # next.js
 /.next/
 
