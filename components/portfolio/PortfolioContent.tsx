@@ -7,6 +7,7 @@ import PortfolioAbout from './PortfolioAbout';
 import PortfolioExperience from './PortfolioExperience';
 import PortfolioEducation from './PortfolioEducation';
 import PortfolioFooter from './PortfolioFooter';
+import DinoGame from '@/components/DinoGame';
 
 export default function PortfolioContent() {
   return (
@@ -39,6 +40,8 @@ export default function PortfolioContent() {
           <PortfolioEducation />
           <Separator className="my-8 h-0 border-t border-dashed border-neutral-300 dark:border-neutral-800 bg-transparent" />
           <PortfolioFooter />
+          <Separator className="my-8 h-0 border-t border-dashed border-neutral-300 dark:border-neutral-800 bg-transparent" />
+          <DinoGame />
         </div>
       </main>
       {/* Right wall - only when > 750px, grows 0–50px */}
