@@ -4,7 +4,7 @@
  * Pull endpoint - returns all changes since a given syncId.
  *
  * In Linear's architecture, delta packets are pushed via WebSocket.
- * Our simplified version uses polling: clients periodically call
+ * My simplified version uses polling: clients periodically call
  * this endpoint to check for new changes.
  *
  * This is the "delta sync" mechanism:

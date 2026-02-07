@@ -20,7 +20,7 @@
  * - Offline resilience (pending transactions queue)
  */
 
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { useSyncEngine, useModel, useSearch } from '@/sync/hooks';
 import '@/sync/models'; // Register models
 import {
@@ -32,6 +32,7 @@ import {
 } from '@/sync/models/task';
 import type { TaskStatusType, TaskPriorityType } from '@/sync/models/task';
 import type { SyncRecord } from '@/sync/core/types';
+import { syncFeedbackSchema } from '@/lib/sync-feedback-schema';
 
 // ============================================================
 // Status Badge Component
@@ -291,42 +292,47 @@ function CreateTaskForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-2"
+    >
       <input
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Create a new task..."
-        className="flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition-colors placeholder:text-gray-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 dark:border-gray-700 dark:bg-gray-900 dark:placeholder:text-gray-600"
+        className="min-h-[44px] flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition-colors placeholder:text-gray-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 dark:border-gray-700 dark:bg-gray-900 dark:placeholder:text-gray-600"
       />
-      <select
-        value={status}
-        onChange={(e) => setStatus(e.target.value as TaskStatusType)}
-        className="rounded-lg border border-gray-200 bg-white px-2 py-2 text-xs dark:border-gray-700 dark:bg-gray-900"
-      >
-        {Object.entries(STATUS_LABELS).map(([value, label]) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </select>
-      <select
-        value={priority}
-        onChange={(e) =>
-          setPriority(Number(e.target.value) as TaskPriorityType)
-        }
-        className="rounded-lg border border-gray-200 bg-white px-2 py-2 text-xs dark:border-gray-700 dark:bg-gray-900"
-      >
-        {Object.entries(PRIORITY_LABELS).map(([value, label]) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </select>
+      <div className="flex gap-2 sm:flex-shrink-0">
+        <select
+          value={status}
+          onChange={(e) => setStatus(e.target.value as TaskStatusType)}
+          className="min-h-[44px] flex-1 rounded-lg border border-gray-200 bg-white px-2 py-2 text-xs dark:border-gray-700 dark:bg-gray-900 sm:flex-initial"
+        >
+          {Object.entries(STATUS_LABELS).map(([value, label]) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
+        <select
+          value={priority}
+          onChange={(e) =>
+            setPriority(Number(e.target.value) as TaskPriorityType)
+          }
+          className="min-h-[44px] flex-1 rounded-lg border border-gray-200 bg-white px-2 py-2 text-xs dark:border-gray-700 dark:bg-gray-900 sm:flex-initial"
+        >
+          {Object.entries(PRIORITY_LABELS).map(([value, label]) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
+      </div>
       <button
         type="submit"
         disabled={!title.trim()}
-        className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
+        className="min-h-[44px] min-w-[44px] shrink-0 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors active:bg-blue-800 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40 sm:flex-shrink-0"
       >
         Add
       </button>
@@ -335,17 +341,61 @@ function CreateTaskForm({
 }
 
 // ============================================================
+// Collapsible Section (keeps exact same UI, adds collapse)
+// ============================================================
+
+function CollapsibleSection({
+  title,
+  defaultOpen = true,
+  children,
+}: {
+  title: string;
+  defaultOpen?: boolean;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+
+  return (
+    <div className="rounded-lg border border-dashed border-gray-200 bg-gray-50/50 dark:border-gray-800 dark:bg-gray-900/50 overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-gray-100/50 dark:hover:bg-gray-800/50"
+      >
+        <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+          {title}
+        </span>
+        <svg
+          className={`h-4 w-4 text-gray-400 transition-transform ${open ? 'rotate-180' : ''}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+      {open && (
+        <div className="border-t border-dashed border-gray-200 px-4 pb-4 pt-3 dark:border-gray-800">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ============================================================
 // Architecture Diagram
 // ============================================================
 
-function ArchitectureDiagram() {
+function ArchitectureDiagramContent() {
   return (
-    <div className="rounded-lg border border-dashed border-gray-200 bg-gray-50/50 p-4 dark:border-gray-800 dark:bg-gray-900/50">
-      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
-        How it works (inspired by Linear)
-      </h3>
-      <pre className="overflow-x-auto text-[11px] leading-relaxed text-gray-500 dark:text-gray-400">
-        {`
+    <pre className="overflow-x-auto text-[11px] leading-relaxed text-gray-500 dark:text-gray-400">
+      {`
   CLIENT (Browser)                          SERVER (API Routes)
   ┌──────────────────────────────┐          ┌─────────────────────────┐
   │                              │          │                         │
@@ -353,8 +403,8 @@ function ArchitectureDiagram() {
   │  │  Object Pool (Memory)  │◄─┼──────────┼──│  Server Store     │  │
   │  │  Map<key, SyncRecord>  │──┼──────────┼──│  (syncId counter) │  │
   │  └────────┬───────────────┘  │  delta   │  └───────────────────┘  │
-  │           │                  │          │    ▲                     │
-  │           ▼                  │          │    │ syncLog             │
+  │           │                  │          │    ▲                    │
+  │           ▼                  │          │    │ syncLog            │
   │  ┌────────────────────────┐  │          │    │ (ordered WAL)      │
   │  │  IndexedDB             │  │          │                         │
   │  │  - Records per model   │  │  pull    │  Each action gets a     │
@@ -366,8 +416,183 @@ function ArchitectureDiagram() {
   │  Read: From Object Pool      │          │                         │
   └──────────────────────────────┘          └─────────────────────────┘
 `}
-      </pre>
+    </pre>
+  );
+}
+
+// ============================================================
+// Sync Explain (Linear, my sync, WebSocket)
+// ============================================================
+
+function SyncExplainContent() {
+  return (
+    <div className="space-y-3 text-xs text-gray-600 dark:text-gray-400">
+      <p>
+        <strong className="text-gray-700 dark:text-gray-300">
+          Linear&apos;s approach:
+        </strong>{' '}
+        Linear uses an object pool in memory, IndexedDB for offline persistence,
+        and a sync log with monotonically increasing syncIds. Delta packets are
+        pushed to clients via WebSocket for real-time updates.
+      </p>
+      <p>
+        <strong className="text-gray-700 dark:text-gray-300">
+          My implementation:
+        </strong>{' '}
+        I mirror the same concepts—object pool, IndexedDB, optimistic updates,
+        Last-Write-Wins conflict resolution—but use polling instead of WebSocket
+        for simplicity.
+      </p>
+      <p>
+        <strong className="text-amber-600 dark:text-amber-400">
+          WebSocket note:
+        </strong>{' '}
+        I am <em>not</em> using WebSocket right now. I could and should—it would
+        give instant push of deltas instead of periodic polling. The API and
+        sync engine design support swapping polling for WebSocket/SSE later.
+      </p>
     </div>
+  );
+}
+
+// ============================================================
+// API Routes Info (how I do it – from app/api/sync)
+// ============================================================
+
+function ApiRoutesInfoContent() {
+  const routes = [
+    {
+      method: 'GET',
+      path: '/api/sync/bootstrap',
+      description:
+        'Full initial load – returns all records and current syncId. Used when a client connects for the first time or when the local database needs to be rebuilt. Returns BootstrapResponse { records, syncId, models }.',
+    },
+    {
+      method: 'GET',
+      path: '/api/sync/pull?sinceSyncId=N',
+      description:
+        'Returns all changes since a given syncId. Linear uses WebSocket for delta push; I use polling: clients periodically call this to check for new changes. Client sends lastSyncId → server returns actions after that → client applies to local state. Response: PullResponse { delta }.',
+    },
+    {
+      method: 'POST',
+      path: '/api/sync/push',
+      description:
+        'Receives a transaction from the client and applies it. Server assigns monotonically increasing syncIds, applies changes, and returns delta to the caller. Other clients pick up changes via pull. Request: PushRequest { transaction }. Response: PushResponse { success, delta, error? }.',
+    },
+  ];
+
+  return (
+    <>
+      <p className="mb-3 text-xs text-gray-500 dark:text-gray-400">
+        The sync engine talks to these endpoints. Since API route code is not
+        visible in the repo, here&apos;s what each one does:
+      </p>
+      <div className="space-y-3">
+        {routes.map((route) => (
+          <div
+            key={route.path}
+            className="rounded border border-gray-100 bg-white px-3 py-2 dark:border-gray-800 dark:bg-gray-900"
+          >
+            <div className="flex flex-wrap items-center gap-2">
+              <span
+                className={`rounded px-1.5 py-0.5 text-[10px] font-mono font-medium ${
+                  route.method === 'GET'
+                    ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300'
+                    : 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300'
+                }`}
+              >
+                {route.method}
+              </span>
+              <code className="text-xs text-gray-700 dark:text-gray-300">
+                {route.path}
+              </code>
+            </div>
+            <p className="mt-1.5 text-xs leading-relaxed text-gray-600 dark:text-gray-400">
+              {route.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+// ============================================================
+// Feedback Section (at the very end)
+// ============================================================
+
+const FEEDBACK_MAX_CHARS = 200;
+
+function FeedbackSectionContent() {
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    const parsed = syncFeedbackSchema.safeParse({ message: message.trim() });
+    if (!parsed.success) {
+      setError(parsed.error.issues[0]?.message ?? 'Invalid input');
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/sync/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: parsed.data.message }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error ?? 'Failed to send');
+        return;
+      }
+      setSubmitted(true);
+      setMessage('');
+    } catch {
+      setError('Failed to send');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <p className="text-xs text-gray-600 dark:text-gray-400">
+        This demo may contain some issues. If you run into any, please let me
+        know.
+      </p>
+      <textarea
+        value={message}
+        onChange={(e) => {
+          setMessage(e.target.value.slice(0, FEEDBACK_MAX_CHARS));
+          setError(null);
+        }}
+        placeholder="Describe the issue or feedback (max 200 chars)..."
+        maxLength={FEEDBACK_MAX_CHARS}
+        rows={3}
+        disabled={submitted || submitting}
+        className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition-colors placeholder:text-gray-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 disabled:opacity-60 dark:border-gray-700 dark:bg-gray-900 dark:placeholder:text-gray-600"
+      />
+      <div className="flex items-center justify-between">
+        <span className="text-[10px] text-gray-400">
+          {message.length}/{FEEDBACK_MAX_CHARS}
+        </span>
+        <button
+          type="submit"
+          disabled={!message.trim() || submitting || submitted}
+          className="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          {submitted ? 'Thanks!' : submitting ? 'Sending...' : 'Send'}
+        </button>
+      </div>
+      {error && <p className="text-xs text-red-500">{error}</p>}
+    </form>
   );
 }
 
@@ -441,8 +666,33 @@ export function SyncDemo() {
         </div>
 
         {/* Architecture diagram */}
+        <div className="mb-4">
+          <CollapsibleSection
+            title="How it works (inspired by Linear)"
+            defaultOpen={true}
+          >
+            <ArchitectureDiagramContent />
+          </CollapsibleSection>
+        </div>
+
+        {/* Sync explain: Linear, my impl, WebSocket */}
+        <div className="mb-4">
+          <CollapsibleSection
+            title="Linear vs mine sync (WebSocket note)"
+            defaultOpen={true}
+          >
+            <SyncExplainContent />
+          </CollapsibleSection>
+        </div>
+
+        {/* API routes info (how we do it) */}
         <div className="mb-6">
-          <ArchitectureDiagram />
+          <CollapsibleSection
+            title="API routes (how I do it)"
+            defaultOpen={true}
+          >
+            <ApiRoutesInfoContent />
+          </CollapsibleSection>
         </div>
 
         {/* Loading state */}
@@ -564,6 +814,16 @@ export function SyncDemo() {
                   <code className="font-mono text-gray-500">{status}</code>
                 </span>
               </div>
+            </div>
+
+            {/* Feedback (at the very end) */}
+            <div className="mt-8">
+              <CollapsibleSection
+                title="Found an issue? Contact me"
+                defaultOpen={false}
+              >
+                <FeedbackSectionContent />
+              </CollapsibleSection>
             </div>
           </>
         )}

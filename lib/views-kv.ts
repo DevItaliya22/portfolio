@@ -38,6 +38,8 @@ function initRedis(): boolean {
 
 const KV_KEY = 'project_views';
 const MAIN_PAGE_VIEWS_KEY = 'main_page_views';
+const SYNC_FEEDBACK_KEY = 'sync_feedback';
+const MAX_SYNC_FEEDBACK_LIST_SIZE = 1000;
 
 // Check if Redis is available
 async function isRedisAvailable(): Promise<boolean> {
@@ -196,6 +198,28 @@ export async function getMainPageViews(): Promise<number> {
     return 0;
   }
 }
+
+// --- Sync feedback ---
+
+export async function pushSyncFeedback(message: string): Promise<boolean> {
+  if (!(await isRedisAvailable()) || !redis) {
+    return false;
+  }
+  try {
+    const entry = {
+      message,
+      createdAt: new Date().toISOString(),
+    };
+    await redis.lpush(SYNC_FEEDBACK_KEY, JSON.stringify(entry));
+    await redis.ltrim(SYNC_FEEDBACK_KEY, 0, MAX_SYNC_FEEDBACK_LIST_SIZE - 1);
+    return true;
+  } catch (error) {
+    console.error('Failed to push sync feedback to Redis:', error);
+    return false;
+  }
+}
+
+// --- Main page views only ---
 
 export async function incrementMainPageViews(): Promise<number> {
   if (!(await isRedisAvailable()) || !redis) {
