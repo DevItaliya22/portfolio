@@ -1,6 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useCallback, useState } from 'react';
+import { triggerConfetti } from '@/components/ui/confetti-side-cannons';
+
+const DINO_HIGH_SCORE_KEY = 'dino-game-high-score';
 
 type GameState = 'title' | 'playing' | 'gameover';
 
@@ -34,7 +37,7 @@ export default function DinoGame() {
   const pressSpaceImgRef = useRef<HTMLImageElement | null>(null);
   const digitsImgRef = useRef<HTMLImageElement | null>(null);
 
-  // React state for UI display
+  // React state for UI display (high score initialized from localStorage in useEffect)
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [gameState, setGameState] = useState<GameState>('title');
@@ -183,6 +186,12 @@ export default function DinoGame() {
         if (scoreRef.current > highScoreRef.current) {
           highScoreRef.current = scoreRef.current;
           setHighScore(scoreRef.current);
+          try {
+            localStorage.setItem(DINO_HIGH_SCORE_KEY, String(scoreRef.current));
+          } catch {
+            // ignore
+          }
+          triggerConfetti();
         }
 
         if (spaceDownRef.current) {
@@ -295,6 +304,20 @@ export default function DinoGame() {
     if (displayCanvas) {
       displayCanvas.width = GAME_SIZE * SCALE;
       displayCanvas.height = GAME_SIZE * SCALE;
+    }
+
+    // Load high score from localStorage
+    try {
+      const stored = localStorage.getItem(DINO_HIGH_SCORE_KEY);
+      if (stored != null) {
+        const n = parseInt(stored, 10);
+        if (!Number.isNaN(n) && n >= 0) {
+          highScoreRef.current = n;
+          setHighScore(n);
+        }
+      }
+    } catch {
+      // ignore
     }
 
     // Load images then start the game loop
