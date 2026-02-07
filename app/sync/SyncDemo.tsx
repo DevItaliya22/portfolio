@@ -33,6 +33,14 @@ import {
 import type { TaskStatusType, TaskPriorityType } from '@/sync/models/task';
 import type { SyncRecord } from '@/sync/core/types';
 import { syncFeedbackSchema } from '@/lib/sync-feedback-schema';
+import {
+  taskCreateSchema,
+  taskUpdateSchema,
+  MAX_TODO_TITLE_LENGTH,
+  MAX_TOTAL_TODOS,
+} from '@/lib/sync-task-schema';
+import { isProfane } from '@/lib/bad-words-filter';
+import SyncPageViews from '@/components/ui/SyncPageViews';
 
 // ============================================================
 // Status Badge Component
@@ -151,11 +159,25 @@ function TaskRow({
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(record.data.title as string);
+  const [editError, setEditError] = useState<string | null>(null);
 
   const handleSaveTitle = () => {
-    if (editTitle.trim() && editTitle !== record.data.title) {
-      onUpdate(record.id, { title: editTitle.trim() });
+    setEditError(null);
+    const trimmed = editTitle.trim();
+    if (!trimmed || trimmed === record.data.title) {
+      setIsEditing(false);
+      return;
     }
+    const parsed = taskUpdateSchema.safeParse({ title: trimmed });
+    if (!parsed.success) {
+      setEditError(parsed.error.issues[0]?.message ?? 'Invalid title');
+      return;
+    }
+    if (isProfane(parsed.data.title!)) {
+      setEditError('Please use appropriate language');
+      return;
+    }
+    onUpdate(record.id, { title: parsed.data.title });
     setIsEditing(false);
   };
 
@@ -190,21 +212,31 @@ function TaskRow({
       {/* Title */}
       <div className="min-w-0 flex-1">
         {isEditing ? (
-          <input
-            type="text"
-            value={editTitle}
-            onChange={(e) => setEditTitle(e.target.value)}
-            onBlur={handleSaveTitle}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') handleSaveTitle();
-              if (e.key === 'Escape') {
-                setEditTitle(record.data.title as string);
-                setIsEditing(false);
-              }
-            }}
-            className="w-full rounded border border-blue-300 bg-transparent px-1 py-0.5 text-sm outline-none focus:ring-1 focus:ring-blue-500"
-            autoFocus
-          />
+          <div className="flex flex-col gap-0.5">
+            <input
+              type="text"
+              value={editTitle}
+              onChange={(e) => {
+                setEditTitle(e.target.value.slice(0, MAX_TODO_TITLE_LENGTH));
+                setEditError(null);
+              }}
+              onBlur={handleSaveTitle}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleSaveTitle();
+                if (e.key === 'Escape') {
+                  setEditTitle(record.data.title as string);
+                  setEditError(null);
+                  setIsEditing(false);
+                }
+              }}
+              maxLength={MAX_TODO_TITLE_LENGTH}
+              className="w-full rounded border border-blue-300 bg-transparent px-1 py-0.5 text-sm outline-none focus:ring-1 focus:ring-blue-500"
+              autoFocus
+            />
+            {editError && (
+              <span className="text-[10px] text-red-500">{editError}</span>
+            )}
+          </div>
         ) : (
           <button
             onClick={() => {
@@ -268,20 +300,41 @@ function TaskRow({
 
 function CreateTaskForm({
   onCreate,
+  taskCount,
 }: {
   onCreate: (data: Record<string, unknown>) => void;
+  taskCount: number;
 }) {
   const [title, setTitle] = useState('');
   const [status, setStatus] = useState<TaskStatusType>(TaskStatus.TODO);
   const [priority, setPriority] = useState<TaskPriorityType>(TaskPriority.NONE);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim()) return;
+    setError(null);
+
+    const parsed = taskCreateSchema.safeParse({
+      title: title.trim(),
+      status,
+      priority,
+    });
+    if (!parsed.success) {
+      setError(parsed.error.issues[0]?.message ?? 'Invalid input');
+      return;
+    }
+    if (isProfane(parsed.data.title)) {
+      setError('Please use appropriate language');
+      return;
+    }
+    if (taskCount >= MAX_TOTAL_TODOS) {
+      setError(`Maximum ${MAX_TOTAL_TODOS} tasks allowed`);
+      return;
+    }
 
     onCreate(
       createTaskData({
-        title: title.trim(),
+        title: parsed.data.title,
         status,
         priority,
       })
@@ -291,18 +344,41 @@ function CreateTaskForm({
     setPriority(TaskPriority.NONE);
   };
 
+  const atLimit = taskCount >= MAX_TOTAL_TODOS;
+  const canSubmit =
+    title.trim().length > 0 &&
+    title.trim().length <= MAX_TODO_TITLE_LENGTH &&
+    !atLimit;
+
   return (
     <form
       onSubmit={handleSubmit}
       className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-2"
     >
-      <input
-        type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Create a new task..."
-        className="min-h-[44px] flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition-colors placeholder:text-gray-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 dark:border-gray-700 dark:bg-gray-900 dark:placeholder:text-gray-600"
-      />
+      <div className="flex min-w-0 flex-1 flex-col gap-1">
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value.slice(0, MAX_TODO_TITLE_LENGTH));
+            setError(null);
+          }}
+          placeholder={
+            atLimit
+              ? `Max ${MAX_TOTAL_TODOS} tasks reached`
+              : `Create a new task (max ${MAX_TODO_TITLE_LENGTH} chars)...`
+          }
+          maxLength={MAX_TODO_TITLE_LENGTH}
+          disabled={atLimit}
+          className="min-h-[44px] flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition-colors placeholder:text-gray-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 disabled:opacity-60 dark:border-gray-700 dark:bg-gray-900 dark:placeholder:text-gray-600"
+        />
+        <div className="flex items-center justify-between">
+          <span className="text-[10px] text-gray-400">
+            {title.length}/{MAX_TODO_TITLE_LENGTH}
+          </span>
+          {error && <span className="text-[10px] text-red-500">{error}</span>}
+        </div>
+      </div>
       <div className="flex gap-2 sm:flex-shrink-0">
         <select
           value={status}
@@ -331,7 +407,7 @@ function CreateTaskForm({
       </div>
       <button
         type="submit"
-        disabled={!title.trim()}
+        disabled={!canSubmit}
         className="min-h-[44px] min-w-[44px] shrink-0 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors active:bg-blue-800 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40 sm:flex-shrink-0"
       >
         Add
@@ -346,7 +422,7 @@ function CreateTaskForm({
 
 function CollapsibleSection({
   title,
-  defaultOpen = true,
+  defaultOpen = false,
   children,
 }: {
   title: string;
@@ -661,36 +737,30 @@ export function SyncDemo() {
                 </a>
               </p>
             </div>
-            <SyncStatusIndicator status={status} syncId={syncId} />
+            <div className="flex items-center gap-4">
+              <SyncPageViews />
+              <SyncStatusIndicator status={status} syncId={syncId} />
+            </div>
           </div>
         </div>
 
         {/* Architecture diagram */}
         <div className="mb-4">
-          <CollapsibleSection
-            title="How it works (inspired by Linear)"
-            defaultOpen={true}
-          >
+          <CollapsibleSection title="How it works (inspired by Linear)">
             <ArchitectureDiagramContent />
           </CollapsibleSection>
         </div>
 
         {/* Sync explain: Linear, my impl, WebSocket */}
         <div className="mb-4">
-          <CollapsibleSection
-            title="Linear vs mine sync (WebSocket note)"
-            defaultOpen={true}
-          >
+          <CollapsibleSection title="Linear vs mine sync (WebSocket note)">
             <SyncExplainContent />
           </CollapsibleSection>
         </div>
 
         {/* API routes info (how we do it) */}
         <div className="mb-6">
-          <CollapsibleSection
-            title="API routes (how I do it)"
-            defaultOpen={true}
-          >
+          <CollapsibleSection title="API routes (how I do it)">
             <ApiRoutesInfoContent />
           </CollapsibleSection>
         </div>
@@ -711,7 +781,7 @@ export function SyncDemo() {
           <>
             {/* Create task */}
             <div className="mb-6">
-              <CreateTaskForm onCreate={create} />
+              <CreateTaskForm onCreate={create} taskCount={records.length} />
             </div>
 
             {/* Search + Filter bar */}
@@ -818,10 +888,7 @@ export function SyncDemo() {
 
             {/* Feedback (at the very end) */}
             <div className="mt-8">
-              <CollapsibleSection
-                title="Found an issue? Contact me"
-                defaultOpen={false}
-              >
+              <CollapsibleSection title="Found an issue? Contact me">
                 <FeedbackSectionContent />
               </CollapsibleSection>
             </div>
