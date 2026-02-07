@@ -199,97 +199,99 @@ function TaskRow({
   };
 
   return (
-    <div className="group flex items-center gap-3 rounded-lg border border-gray-100 bg-white px-4 py-3 transition-all hover:border-gray-200 hover:shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:hover:border-gray-700">
-      {/* Status toggle */}
-      <button
-        onClick={cycleStatus}
-        className="shrink-0 transition-transform hover:scale-110"
-        title="Click to cycle status"
-      >
-        <StatusBadge status={record.data.status as string} />
-      </button>
-
-      {/* Title */}
-      <div className="min-w-0 flex-1">
-        {isEditing ? (
-          <div className="flex flex-col gap-0.5">
-            <input
-              type="text"
-              value={editTitle}
-              onChange={(e) => {
-                setEditTitle(e.target.value.slice(0, MAX_TODO_TITLE_LENGTH));
-                setEditError(null);
-              }}
-              onBlur={handleSaveTitle}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') handleSaveTitle();
-                if (e.key === 'Escape') {
-                  setEditTitle(record.data.title as string);
-                  setEditError(null);
-                  setIsEditing(false);
-                }
-              }}
-              maxLength={MAX_TODO_TITLE_LENGTH}
-              className="w-full rounded border border-blue-300 bg-transparent px-1 py-0.5 text-sm outline-none focus:ring-1 focus:ring-blue-500"
-              autoFocus
-            />
-            {editError && (
-              <span className="text-[10px] text-red-500">{editError}</span>
-            )}
-          </div>
-        ) : (
-          <button
-            onClick={() => {
-              setEditTitle(record.data.title as string);
-              setIsEditing(true);
-            }}
-            className={`w-full truncate text-left text-sm ${
-              record.data.status === TaskStatus.DONE
-                ? 'text-gray-400 line-through dark:text-gray-600'
-                : 'text-gray-900 dark:text-gray-100'
-            }`}
-          >
-            {record.data.title as string}
-          </button>
-        )}
-        {(record.data.description as string) && (
-          <p className="mt-0.5 truncate text-xs text-gray-400">
-            {record.data.description as string}
-          </p>
-        )}
-      </div>
-
-      {/* Priority */}
-      <button
-        onClick={cyclePriority}
-        className="shrink-0 transition-transform hover:scale-110"
-        title="Click to cycle priority"
-      >
-        <PriorityBadge priority={record.data.priority as number} />
-      </button>
-
-      {/* Sync ID indicator */}
-      <span className="shrink-0 font-mono text-[10px] text-gray-300 dark:text-gray-700">
-        #{record.syncId}
-      </span>
-
-      {/* Delete button */}
-      <button
-        onClick={() => onDelete(record.id)}
-        className="shrink-0 rounded p-1 text-gray-300 opacity-0 transition-all hover:bg-red-50 hover:text-red-500 group-hover:opacity-100 dark:text-gray-700 dark:hover:bg-red-900/20 dark:hover:text-red-400"
-        title="Delete task"
-      >
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
+    <div className="group flex flex-col gap-2 rounded-lg border border-gray-100 bg-white px-3 py-2 transition-all hover:border-gray-200 hover:shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:hover:border-gray-700 sm:flex-row sm:items-center sm:gap-3 sm:px-4 sm:py-3">
+      <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2 sm:contents">
+        {/* Status toggle */}
+        <button
+          onClick={cycleStatus}
+          className="order-1 shrink-0 transition-transform hover:scale-110"
+          title="Click to cycle status"
         >
-          <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
-        </svg>
-      </button>
+          <StatusBadge status={record.data.status as string} />
+        </button>
+
+        {/* Title */}
+        <div className="order-3 min-w-0 flex-1 sm:order-2">
+          {isEditing ? (
+            <div className="flex flex-col gap-0.5">
+              <input
+                type="text"
+                value={editTitle}
+                onChange={(e) => {
+                  setEditTitle(e.target.value.slice(0, MAX_TODO_TITLE_LENGTH));
+                  setEditError(null);
+                }}
+                onBlur={handleSaveTitle}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleSaveTitle();
+                  if (e.key === 'Escape') {
+                    setEditTitle(record.data.title as string);
+                    setEditError(null);
+                    setIsEditing(false);
+                  }
+                }}
+                maxLength={MAX_TODO_TITLE_LENGTH}
+                className="w-full rounded border border-blue-300 bg-transparent px-2 py-1.5 text-sm outline-none focus:ring-1 focus:ring-blue-500 dark:border-blue-600 dark:bg-gray-800/50"
+                autoFocus
+              />
+              {editError && (
+                <span className="text-[10px] text-red-500">{editError}</span>
+              )}
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                setEditTitle(record.data.title as string);
+                setIsEditing(true);
+              }}
+              className={`block w-full truncate text-left text-sm ${
+                record.data.status === TaskStatus.DONE
+                  ? 'text-gray-400 line-through dark:text-gray-600'
+                  : 'text-gray-900 dark:text-gray-100'
+              }`}
+            >
+              {record.data.title as string}
+            </button>
+          )}
+          {(record.data.description as string) && (
+            <p className="mt-0.5 truncate text-xs text-gray-400">
+              {record.data.description as string}
+            </p>
+          )}
+        </div>
+
+        {/* Priority */}
+        <button
+          onClick={cyclePriority}
+          className="order-2 shrink-0 transition-transform hover:scale-110 sm:order-3"
+          title="Click to cycle priority"
+        >
+          <PriorityBadge priority={record.data.priority as number} />
+        </button>
+
+        {/* Sync ID indicator - hidden on small screens */}
+        <span className="order-4 shrink-0 font-mono text-[10px] text-gray-300 dark:text-gray-700">
+          <span className="hidden sm:inline">#{record.syncId}</span>
+        </span>
+
+        {/* Delete button */}
+        <button
+          onClick={() => onDelete(record.id)}
+          className="order-5 shrink-0 rounded p-1.5 text-gray-300 opacity-100 transition-all hover:bg-red-50 hover:text-red-500 sm:opacity-0 sm:group-hover:opacity-100 dark:text-gray-700 dark:hover:bg-red-900/20 dark:hover:text-red-400"
+          title="Delete task"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 }
@@ -372,12 +374,7 @@ function CreateTaskForm({
           disabled={atLimit}
           className="min-h-[44px] flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition-colors placeholder:text-gray-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 disabled:opacity-60 dark:border-gray-700 dark:bg-gray-900 dark:placeholder:text-gray-600"
         />
-        <div className="flex items-center justify-between">
-          <span className="text-[10px] text-gray-400">
-            {title.length}/{MAX_TODO_TITLE_LENGTH}
-          </span>
-          {error && <span className="text-[10px] text-red-500">{error}</span>}
-        </div>
+        {error && <span className="text-[10px] text-red-500">{error}</span>}
       </div>
       <div className="flex gap-2 sm:flex-shrink-0">
         <select
