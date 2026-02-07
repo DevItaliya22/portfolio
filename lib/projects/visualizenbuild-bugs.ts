@@ -88,5 +88,5 @@ Successfully resolved critical system issues while delivering a complete adminis
     'https://visualizenbuild.com',
     // 'https://franchise.visualizenbuild.com',
   ],
-  repoCount: 4
+  repoCount: 4,
 };

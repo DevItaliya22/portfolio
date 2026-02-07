@@ -3,15 +3,15 @@
  *
  * Push endpoint - receives a Transaction from a client and applies it.
  *
- * In Linear's architecture:
+ * Flow:
  * 1. Client sends a transaction (one or more actions)
- * 2. Server assigns syncIds (monotonically increasing)
- * 3. Server applies changes to the database
- * 4. Server returns a DeltaPacket (also broadcast to other clients via WebSocket)
- *
- * My simplified version:
- * - Applies transaction, returns delta to the calling client
- * - Other clients pick up changes via polling (pull endpoint)
+ * 2. Server validates (title length, profanity, max record count)
+ * 3. Server applies to Redis with conflict resolution:
+ *    - UPDATE on deleted record → resurrect
+ *    - CREATE on existing → merge as update
+ *    - DELETE on already-deleted → no-op
+ * 4. Server returns a DeltaPacket
+ * 5. Other clients pick up changes via polling (pull endpoint)
  *
  * Validation (Zod):
  * - Task title: max 75 chars
@@ -34,14 +34,18 @@ import { isProfane } from '@/lib/bad-words-filter';
 // Ensure models are registered
 import '@/sync/models';
 
-// Force dynamic - mutates in-memory store
+// Force dynamic - mutates Redis store
 export const dynamic = 'force-dynamic';
 
 const TASK_MODEL = 'Task';
 
-function validateTransaction(
+/**
+ * Validate a transaction before applying it.
+ * Now async because getRecordCount reads from Redis.
+ */
+async function validateTransaction(
   transaction: PushRequest['transaction']
-): string | null {
+): Promise<string | null> {
   if (!transaction?.actions?.length) return null;
 
   let newTaskCreates = 0;
@@ -78,7 +82,8 @@ function validateTransaction(
     }
   }
 
-  const currentCount = ServerStore.getRecordCount(TASK_MODEL);
+  // Check record count limit (async - reads from Redis)
+  const currentCount = await ServerStore.getRecordCount(TASK_MODEL);
   if (currentCount + newTaskCreates > MAX_TOTAL_TODOS) {
     return `Maximum ${MAX_TOTAL_TODOS} tasks allowed`;
   }
@@ -89,12 +94,13 @@ function validateTransaction(
 export async function POST(request: Request) {
   try {
     const body: PushRequest = await request.json();
+    const currentSyncId = await ServerStore.getSyncId();
 
     if (!body.transaction) {
       return NextResponse.json(
         {
           success: false,
-          delta: { syncId: ServerStore.getSyncId(), actions: [] },
+          delta: { syncId: currentSyncId, actions: [] },
           error: 'Missing transaction',
         } satisfies PushResponse,
         { status: 400 }
@@ -105,27 +111,29 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           success: false,
-          delta: { syncId: ServerStore.getSyncId(), actions: [] },
+          delta: { syncId: currentSyncId, actions: [] },
           error: 'Transaction has no actions',
         } satisfies PushResponse,
         { status: 400 }
       );
     }
 
-    const validationError = validateTransaction(body.transaction);
+    const validationError = await validateTransaction(body.transaction);
     if (validationError) {
+      const latestSyncId = await ServerStore.getSyncId();
       return NextResponse.json(
         {
           success: false,
-          delta: { syncId: ServerStore.getSyncId(), actions: [] },
+          delta: { syncId: latestSyncId, actions: [] },
           error: validationError,
         } satisfies PushResponse,
         { status: 400 }
       );
     }
 
-    // Apply the transaction - this is where syncIds get assigned
-    const delta = ServerStore.applyTransaction(body.transaction);
+    // Apply the transaction to Redis — this is where syncIds get assigned
+    // and conflict resolution (offline vs online) happens
+    const delta = await ServerStore.applyTransaction(body.transaction);
 
     const response: PushResponse = {
       success: true,

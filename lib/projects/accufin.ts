@@ -81,5 +81,5 @@ Delivering a complete solution that streamlines financial service operations whi
   ],
   views: 0,
   date: 'Jun 9, 2025',
-  repoCount:1
+  repoCount: 1,
 };

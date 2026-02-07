@@ -3,8 +3,8 @@ import { Project } from '../info';
 export const shuttle: Project = {
   id: 'shuttle',
   category: 'freelance',
-    title: 'Shuttle - Real-time Hotel Transport System',
-    github: 'private',
+  title: 'Shuttle - Real-time Hotel Transport System',
+  github: 'private',
   description:
     '🚧 Ongoing - Complex multi-platform shuttle management system with real-time tracking, WebSocket communications, and Google Maps integration. 6 repositories managing guest transport logistics across hotels.',
   longDescription: `**⚠️ Project Status: Active Development** - An ongoing, sophisticated **real-time shuttle management ecosystem** handling complex hotel transport logistics with multi-platform architecture and live tracking capabilities.

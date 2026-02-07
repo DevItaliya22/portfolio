@@ -3,7 +3,7 @@ import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { useTheme } from 'next-themes';
 
 export default function PortfolioHeader() {
-  const {theme} = useTheme();
+  const { theme } = useTheme();
   return (
     <header className="flex justify-between items-start gap-8 mb-16">
       <div>
@@ -16,25 +16,23 @@ export default function PortfolioHeader() {
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">
         <ThemeToggle />
-        {
-          theme === 'dark' ? (
-            <Image
-              src="/odsy-dark.jpg"
-              alt="Dev Italiya"
-              width={80}
-              height={80}
-              className="rounded-full object-cover w-16 h-16 md:w-20 md:h-20"
-            />
-          ) : (
-            <Image
-              src="/odsy-light.jpg"
-              alt="Dev Italiya"
-              width={80}
-              height={80}
-              className="rounded-full object-cover w-16 h-16 md:w-20 md:h-20"
-            />
-          )
-        }
+        {theme === 'dark' ? (
+          <Image
+            src="/odsy-dark.jpg"
+            alt="Dev Italiya"
+            width={80}
+            height={80}
+            className="rounded-full object-cover w-16 h-16 md:w-20 md:h-20"
+          />
+        ) : (
+          <Image
+            src="/odsy-light.jpg"
+            alt="Dev Italiya"
+            width={80}
+            height={80}
+            className="rounded-full object-cover w-16 h-16 md:w-20 md:h-20"
+          />
+        )}
       </div>
     </header>
   );

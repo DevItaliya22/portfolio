@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 
-
 const DEFAULT_CONFIG = {
   position: 'bottom',
   strength: 2,

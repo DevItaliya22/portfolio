@@ -41,9 +41,15 @@ export default function PortfolioEducation() {
                   {edu.school}
                 </span>
               )}
-              <span className="text-neutral-600 dark:text-neutral-400"> · {edu.degree}</span>
+              <span className="text-neutral-600 dark:text-neutral-400">
+                {' '}
+                · {edu.degree}
+              </span>
               <br />
-              <span className="text-neutral-600 dark:text-neutral-400"> {edu.subtitle}</span>
+              <span className="text-neutral-600 dark:text-neutral-400">
+                {' '}
+                {edu.subtitle}
+              </span>
             </div>
             <span className="flex-shrink-0 text-sm text-neutral-600 dark:text-neutral-500">
               {edu.period}

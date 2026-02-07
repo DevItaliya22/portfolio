@@ -17,15 +17,12 @@ import { ModelRegistry } from '@/sync/core/model-registry';
 // Ensure models are registered on the server side
 import '@/sync/models';
 
-// Register models with the server store (idempotent)
-ServerStore.registerModels(ModelRegistry.getAll());
-
-// Force dynamic - this route reads from in-memory store, never static
+// Force dynamic - this route reads from Redis, never static
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
-    const data = ServerStore.getBootstrapData();
+    const data = await ServerStore.getBootstrapData(ModelRegistry.getAll());
 
     return NextResponse.json(data, {
       headers: {
