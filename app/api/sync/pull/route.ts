@@ -3,14 +3,13 @@
  *
  * Pull endpoint - returns all changes since a given syncId.
  *
- * In Linear's architecture, delta packets are pushed via WebSocket.
- * My simplified version uses polling: clients periodically call
- * this endpoint to check for new changes.
- *
- * This is the "delta sync" mechanism:
+ * This is the "delta sync" mechanism (diff-based, not hash-based):
  * - Client sends its lastSyncId
- * - Server returns all actions that happened after that syncId
- * - Client applies these actions to its local state
+ * - Server returns all actions that happened after that syncId from Redis
+ * - Client applies these actions to its local IndexedDB + object pool
+ *
+ * Since the sync log is persisted in Redis, it survives Vercel
+ * serverless cold starts — no more data loss on redeploy.
  *
  * Query params: sinceSyncId (number)
  * Response: PullResponse { delta }
@@ -23,7 +22,7 @@ import { PullResponse } from '@/sync/core/types';
 // Ensure models are registered
 import '@/sync/models';
 
-// Force dynamic - uses request.url and reads from in-memory store
+// Force dynamic - reads from Redis
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
@@ -38,7 +37,7 @@ export async function GET(request: Request) {
       );
     }
 
-    const delta = ServerStore.getDeltaSince(sinceSyncId);
+    const delta = await ServerStore.getDeltaSince(sinceSyncId);
 
     const response: PullResponse = { delta };
 

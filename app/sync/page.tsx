@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import { SyncDemo } from './SyncDemo';
 
-
 export const metadata: Metadata = {
   title: 'Sync Engine Demo',
   description:

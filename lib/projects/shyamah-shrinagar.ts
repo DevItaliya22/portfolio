@@ -81,4 +81,4 @@ Successfully delivered a comprehensive business management platform that meets a
   views: 0,
   date: 'Apr 6, 2025',
   repoCount: 1,
-  };
+};

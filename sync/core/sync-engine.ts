@@ -12,21 +12,27 @@
  * 2. PUSH (Write Path): Client mutations → Transaction → Server
  *    - Optimistic update in object pool
  *    - Persist to IndexedDB offline queue
- *    - Send transaction to server
+ *    - Send transaction to server (Redis)
  *    - Apply server's delta response
  *
  * 3. PULL (Read Path): Server deltas → Apply to IndexedDB + Memory
  *    - Poll server for changes since lastSyncId
  *    - Apply delta actions to object pool and IndexedDB
+ *    - Auto-flush pending offline transactions on successful pull
  *
  * 4. OFFLINE QUEUE: Pending transactions stored in IndexedDB
  *    - Automatically flushed when connection restores
+ *    - Server handles conflict resolution:
+ *      • UPDATE on deleted record → resurrect
+ *      • CREATE on existing → merge
+ *      • DELETE on already-deleted → no-op
  *
  * Key design decisions (matching Linear):
  * - Last-Write-Wins (LWW) conflict resolution
- * - SyncId-based total ordering
+ * - SyncId-based total ordering (diff-based, not hash-based)
  * - Optimistic updates for instant UI response
- * - IndexedDB for offline persistence
+ * - IndexedDB for offline persistence (client cache)
+ * - Redis for server persistence (source of truth)
  *
  * Reference: https://github.com/wzhudev/reverse-linear-sync-engine
  */
@@ -44,7 +50,6 @@ import {
 } from './types';
 import { LocalDatabase } from './local-db';
 import { ModelRegistry } from './model-registry';
-import { blob } from 'stream/consumers';
 
 // ============================================================
 // Helpers
@@ -122,6 +127,9 @@ export class SyncEngine {
   /** Is the engine initialized? */
   private initialized = false;
 
+  /** Lock to prevent concurrent flush operations */
+  private isFlushing = false;
+
   constructor(options?: { apiBase?: string }) {
     this.localDb = new LocalDatabase();
     this.clientId = this.getOrCreateClientId();
@@ -169,6 +177,7 @@ export class SyncEngine {
       }
 
       // Step 3: Flush pending offline transactions
+      // (pull happened first, so server has latest context for conflict resolution)
       await this.flushPendingTransactions();
 
       // Step 4: Start polling for real-time changes
@@ -397,9 +406,9 @@ export class SyncEngine {
    * Full bootstrap - fetch all data from server.
    *
    * Like Linear's full bootstrapping:
-   * 1. Fetch all records from server
-   * 2. Store in IndexedDB
-   * 3. Load into object pool
+   * 1. Fetch all records from server (Redis)
+   * 2. Store in IndexedDB (client cache)
+   * 3. Load into object pool (fast access)
    */
   private async fullBootstrap(): Promise<void> {
     const response = await fetch(`${this.apiBase}/bootstrap`);
@@ -446,7 +455,7 @@ export class SyncEngine {
    *
    * Like Linear's transaction queue:
    * 1. Save to pending queue in IndexedDB (offline resilience)
-   * 2. Try to send to server
+   * 2. Try to send to server (Redis)
    * 3. On success: apply delta, remove from pending queue
    * 4. On failure: keep in pending queue for retry
    */
@@ -470,19 +479,21 @@ export class SyncEngine {
       const result: PushResponse = await response.json();
 
       if (result.success) {
-        // Apply the server's delta (may include side effects)
+        // Apply the server's delta (may include conflict resolutions)
         await this.applyDelta(result.delta);
         // Remove from pending queue
         await this.localDb.removePendingTransaction(transaction.id);
       } else {
         console.error('[SyncEngine] Push rejected:', result.error);
+        // Remove rejected transaction from queue to prevent retry loops
+        await this.localDb.removePendingTransaction(transaction.id);
       }
 
       this.setStatus('idle');
     } catch (error) {
       console.warn('[SyncEngine] Push failed (offline?):', error);
       this.setStatus('offline');
-      // Transaction stays in pending queue for retry
+      // Transaction stays in pending queue for retry when connectivity restores
     }
   }
 
@@ -490,10 +501,13 @@ export class SyncEngine {
    * Pull changes from server since lastSyncId.
    *
    * Like Linear's delta sync: fetch all changes since our last known state.
+   * Uses the diff-based approach: "give me everything after syncId N".
    *
-   * IMPORTANT: Detects server resets. If the server's syncId is less than
-   * our lastSyncId, it means the server restarted and lost its in-memory
-   * state. In that case, we clear local data and do a full re-bootstrap.
+   * Since the server now persists to Redis, there's no more data loss
+   * on serverless cold starts. The syncId and sync log survive restarts.
+   *
+   * After a successful pull, automatically flushes any pending offline
+   * transactions so changes get pushed as soon as connectivity returns.
    */
   async pull(): Promise<void> {
     try {
@@ -509,29 +523,24 @@ export class SyncEngine {
 
       const data = await response.json();
 
-      // Detect server reset: server's syncId is behind our lastSyncId
-      if (data.delta.syncId < this.lastSyncId) {
-        console.warn(
-          `[SyncEngine] Server reset detected (server=${data.delta.syncId}, client=${this.lastSyncId}). Re-bootstrapping...`
-        );
-        // Clear local state and re-bootstrap
-        this.objectPool.clear();
-        this.lastSyncId = 0;
-        await this.localDb.clear();
-        await this.fullBootstrap();
-        this.setStatus('idle');
-        return;
-      }
-
       if (data.delta.actions.length > 0) {
         await this.applyDelta(data.delta);
+      } else if (data.delta.syncId > this.lastSyncId) {
+        // No actions but syncId advanced — update our tracking
+        this.lastSyncId = data.delta.syncId;
+        await this.localDb.setLastSyncId(data.delta.syncId);
       }
 
       this.setStatus('idle');
+
+      // After a successful pull, check for pending offline transactions
+      // and flush them. This handles the case where the user was offline,
+      // made changes, and is now back online.
+      await this.flushPendingTransactions();
     } catch (error) {
       console.warn('[SyncEngine] Pull failed:', error);
       if (this._status !== 'offline') {
-        this.setStatus('idle');
+        this.setStatus('offline');
       }
     }
   }
@@ -543,6 +552,11 @@ export class SyncEngine {
    * - Server's syncId is always authoritative
    * - Updates merge data fields (per-field LWW)
    * - Both object pool and IndexedDB are updated
+   *
+   * Handles conflict resolution results from server:
+   * - A 'create' delta for a record that was locally deleted
+   *   means the server resurrected it (offline user edited it)
+   * - A 'delete' delta removes the record from display
    */
   private async applyDelta(delta: DeltaPacket): Promise<void> {
     const changedModels = new Set<string>();
@@ -615,32 +629,72 @@ export class SyncEngine {
     }
   }
 
-  /** Flush pending transactions from offline queue */
+  /**
+   * Flush pending transactions from offline queue.
+   *
+   * Called:
+   * 1. During bootstrap (after pull, before polling starts)
+   * 2. After every successful pull (auto-retry for offline changes)
+   *
+   * Uses a lock to prevent concurrent flushes (e.g., if polling
+   * triggers a pull while a flush is already in progress).
+   *
+   * The server handles conflict resolution:
+   * - UPDATE on a record deleted by another user → resurrect
+   * - CREATE for a record that already exists → merge as update
+   * - DELETE on already-deleted record → no-op
+   */
   private async flushPendingTransactions(): Promise<void> {
-    const pending = await this.localDb.getPendingTransactions();
-    if (pending.length === 0) return;
+    // Prevent concurrent flushes
+    if (this.isFlushing) return;
+    this.isFlushing = true;
 
-    console.log(`[SyncEngine] Flushing ${pending.length} pending transactions`);
+    try {
+      const pending = await this.localDb.getPendingTransactions();
+      if (pending.length === 0) return;
 
-    for (const tx of pending) {
-      try {
-        const response = await fetch(`${this.apiBase}/push`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ transaction: tx }),
-        });
+      console.log(
+        `[SyncEngine] Flushing ${pending.length} pending transactions`
+      );
 
-        if (response.ok) {
-          const result: PushResponse = await response.json();
-          if (result.success) {
-            await this.applyDelta(result.delta);
-            await this.localDb.removePendingTransaction(tx.id);
+      for (const tx of pending) {
+        try {
+          const response = await fetch(`${this.apiBase}/push`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ transaction: tx }),
+          });
+
+          if (response.ok) {
+            const result: PushResponse = await response.json();
+            if (result.success) {
+              // Apply server's delta (includes conflict resolutions)
+              await this.applyDelta(result.delta);
+              await this.localDb.removePendingTransaction(tx.id);
+            } else {
+              // Server rejected this transaction — remove it to prevent
+              // infinite retry loops (e.g., validation error)
+              console.warn(
+                `[SyncEngine] Transaction ${tx.id} rejected:`,
+                result.error
+              );
+              await this.localDb.removePendingTransaction(tx.id);
+            }
+          } else {
+            // Server error — stop flushing, will retry on next pull
+            console.warn(
+              `[SyncEngine] Flush failed with status ${response.status}`
+            );
+            break;
           }
+        } catch {
+          // Network error — stop flushing, will retry on next pull
+          console.warn('[SyncEngine] Flush network error, will retry');
+          break;
         }
-      } catch {
-        // Will retry on next flush
-        break;
       }
+    } finally {
+      this.isFlushing = false;
     }
   }
 
