@@ -9,7 +9,6 @@ import {
 } from 'lucide-react';
 
 import { autominds } from './projects/autominds';
-import { accufin } from './projects/accufin';
 import { manishVaghasiya } from './projects/manish-vaghasiya';
 import { pubSub } from './projects/pub-sub';
 import { delfa } from './projects/delfa';
@@ -109,28 +108,22 @@ export const socialLinks = [
     href: 'https://twitter.com/DevItaliya22',
   },
   {
-    icon: BookOpen,
-    handle: 'DevSphere',
-    label: 'Medium',
-    href: 'https://medium.com/@thrilled_bisque_gnu_255',
-  },
-  {
     icon: Github,
     handle: 'DevItaliya22',
     label: 'Github',
     href: 'https://github.com/DevItaliya22',
   },
   {
-    icon: FileDown,
-    handle: 'Resume',
-    label: 'resume',
-    href: 'https://www.papermark.com/view/cml3f50u00004l404rrrtcvs5',
+    icon: Instagram,
+    handle: 'devitaliya.me',
+    label: 'Instagram',
+    href: 'https://www.instagram.com/devitaliya.me/',
   },
   {
-    icon: Mail,
-    handle: 'devitaliya.work',
-    label: 'Email',
-    href: 'mailto:devitaliya.work@gmail.com',
+    icon: BookOpen,
+    handle: 'DevSphere',
+    label: 'Medium',
+    href: 'https://medium.com/@thrilled_bisque_gnu_255',
   },
   {
     icon: Linkedin,
@@ -139,9 +132,15 @@ export const socialLinks = [
     href: 'https://www.linkedin.com/in/dev-italiya-0a3a2b273/',
   },
   {
-    icon: Instagram,
-    handle: 'devitaliya.me',
-    label: 'Instagram',
-    href: 'https://www.instagram.com/devitaliya.me/',
+    icon: Mail,
+    handle: 'devitaliya.work',
+    label: 'Email',
+    href: 'mailto:devitaliya.work@gmail.com',
+  },
+  {
+    icon: FileDown,
+    handle: 'Resume',
+    label: 'resume',
+    href: 'https://www.papermark.com/view/cml3f50u00004l404rrrtcvs5',
   },
 ];
