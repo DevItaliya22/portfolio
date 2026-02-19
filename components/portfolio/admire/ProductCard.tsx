@@ -20,8 +20,7 @@ export default function ProductCard({
     >
       <div
         className={cn(
-          'flex-shrink-0 rounded-full border-2 border-dashed border-neutral-300 dark:border-neutral-600',
-          'overflow-hidden flex items-center justify-center',
+          'flex-shrink-0 overflow-hidden flex items-center justify-center',
           'w-12 h-12 sm:w-14 sm:h-14'
         )}
       >

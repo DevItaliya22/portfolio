@@ -7,7 +7,7 @@ import HumansSection from './admire/HumansSection';
 import MoviesSection from './admire/MoviesSection';
 import ProductsSection from './admire/ProductsSection';
 
-const TABS = ['Humans', 'Movies', 'Tech concepts'] as const;
+const TABS = ['Humans', 'Movies', 'Tech'] as const;
 type TabId = (typeof TABS)[number];
 
 export default function AdmireContent() {
@@ -41,7 +41,7 @@ export default function AdmireContent() {
       <div className="flex-1 min-h-0 overflow-y-auto pt-4">
         {activeTab === 'Humans' && <HumansSection />}
         {activeTab === 'Movies' && <MoviesSection />}
-        {activeTab === 'Tech concepts' && <ProductsSection />}
+        {activeTab === 'Tech' && <ProductsSection />}
       </div>
     </div>
   );
