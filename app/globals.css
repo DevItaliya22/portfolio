@@ -71,7 +71,12 @@
   scrollbar-color: #6b7280 #1f2937;
 }
 
+/* Light mode: visible pink selection */
 ::selection {
+  color: rgb(131 24 67); /* pink-900, readable on highlight */
+}
+
+.dark ::selection {
   background-color: transparent;
   color: #fbcfe8;
 }
