@@ -105,6 +105,15 @@ export default function PortfolioAbout() {
           , and doc handling.
         </p>
         <p>available for freelance.</p>
+        <p>
+          <a
+            href="/admire"
+            className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors underline decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2 px-1 py-0.5 rounded"
+          >
+            things i admire
+          </a>{' '}
+          ❤️
+        </p>
       </div>
     </section>
   );

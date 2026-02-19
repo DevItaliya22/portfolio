@@ -5,6 +5,7 @@ import {
   BookOpen,
   FileDown,
   Linkedin,
+  Instagram,
 } from 'lucide-react';
 
 import { autominds } from './projects/autominds';
@@ -136,5 +137,11 @@ export const socialLinks = [
     handle: 'Dev Italiya',
     label: 'Linkedin',
     href: 'https://www.linkedin.com/in/dev-italiya-0a3a2b273/',
+  },
+  {
+    icon: Instagram,
+    handle: 'devitaliya.me',
+    label: 'Instagram',
+    href: 'https://www.instagram.com/devitaliya.me/',
   },
 ];
