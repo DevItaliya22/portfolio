@@ -1,0 +1,27 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "codex/add-raul-dronca-to-humans-tab",
+    "cursor/add-public-blog-3f73",
+    "cursor/development-environment-setup-be68",
+    "main",
+    "origin",
+    "vercel/react-server-components-cve-vu-tncw3r"
+  ],
+  "parent": {
+    "codex/add-raul-dronca-to-humans-tab": "main",
+    "cursor/add-public-blog-3f73": "main",
+    "cursor/development-environment-setup-be68": "main",
+    "main": null,
+    "origin": "main",
+    "vercel/react-server-components-cve-vu-tncw3r": "main"
+  },
+  "order": [
+    "main",
+    "codex/add-raul-dronca-to-humans-tab",
+    "cursor/add-public-blog-3f73",
+    "cursor/development-environment-setup-be68",
+    "origin",
+    "vercel/react-server-components-cve-vu-tncw3r"
+  ]
+}
