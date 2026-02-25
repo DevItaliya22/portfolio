@@ -85,4 +85,10 @@ export const HUMANS_PLACEHOLDER: HumanEntry[] = [
     imageUrl: 'https://unavatar.io/twitter/raul_dronca',
     links: { x: 'https://x.com/raul_dronca' },
   },
+  {
+    id: 'dev-myself',
+    name: 'dev myself',
+    imageUrl: 'https://unavatar.io/twitter/DevItaliya22',
+    links: { x: 'https://x.com/DevItaliya22' },
+  },
 ];
