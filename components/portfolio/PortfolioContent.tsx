@@ -25,6 +25,7 @@ export default function PortfolioContent() {
               alt=""
               fill
               priority
+              unoptimized
               className="object-cover object-center"
               sizes="(max-width: 750px) 100vw, 750px"
             />
