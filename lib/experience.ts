@@ -176,6 +176,16 @@ export const experienceByCategory: Record<
   ],
   'wanna-be-startup': [
     item(
+      'Localtool',
+      'present',
+      ['https://csveditoronline.org/'],
+      'co-founder : ',
+      {
+        text: 'Ashish',
+        href: 'https://github.com/AshishViradiya153',
+      }
+    ),
+    item(
       'DY',
       'present',
       ['https://dy.devitaliya.me/', 'https://dyweb.devitaliya.me/login'],
