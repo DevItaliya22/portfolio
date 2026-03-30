@@ -1,0 +1,14 @@
+---
+description: Default workflow for new work on homepage and new routes
+alwaysApply: true
+---
+
+# Workflow Defaults
+
+When the user asks for new work, apply these defaults unless they explicitly say otherwise:
+
+- Treat active work as homepage-first and new-route-first.
+- Prefer implementing features on the main homepage (`app/page.tsx`) or in new routes such as `app/admire/page.tsx`.
+- Ensure new routes are accessible from the main page navigation or links.
+- Do not treat `/project` or any archive folder (including `(archive)` style folders) as primary working content.
+- Use `/project` and archive content only when the user explicitly asks to work there.

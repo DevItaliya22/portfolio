@@ -26,6 +26,7 @@ import { agencyPortfolio } from './projects/agency-portfolio';
 import { helpbharat } from './projects/helpbharat';
 import { visualizenbuildBugs } from './projects/visualizenbuild-bugs';
 import { shuttle } from './projects/shuttle';
+import { localtool } from './projects/localtool';
 
 export type ProjectCategory = 'side-project' | 'internship' | 'freelance';
 
@@ -48,6 +49,7 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  localtool,
   shuttle,
   visualizenbuildBugs,
   helpbharat,
