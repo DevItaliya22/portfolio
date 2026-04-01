@@ -176,9 +176,9 @@ export const experienceByCategory: Record<
   ],
   'wanna-be-startup': [
     item(
-      'Localtool',
+      'Free Local Converter',
       'present',
-      ['https://csveditoronline.org/'],
+      ['https://freelocalconverter.com/'],
       'co-founder : ',
       {
         text: 'Ashish',
