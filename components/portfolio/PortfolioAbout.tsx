@@ -56,7 +56,7 @@ export default function PortfolioAbout() {
             @AshishViradiya153
           </a>
           {' · '}
-          <TooltipProvider>
+          {/* <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
                 <span className="inline-flex items-baseline gap-1">
@@ -81,7 +81,7 @@ export default function PortfolioAbout() {
                 dataroom sharing, link creation with filters, and more.
               </TooltipContent>
             </Tooltip>
-          </TooltipProvider>
+          </TooltipProvider> */}
         </p>
         <p>
           i&apos;ve built multiple admin dashboards, fix bugs for companies as a

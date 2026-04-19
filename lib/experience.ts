@@ -179,7 +179,7 @@ export const experienceByCategory: Record<
       'Free Local Converter',
       'present',
       ['https://freelocalconverter.com/'],
-      'co-founder : ',
+      'with ',
       {
         text: 'Ashish',
         href: 'https://github.com/AshishViradiya153',
@@ -189,16 +189,16 @@ export const experienceByCategory: Record<
       'DY',
       'present',
       ['https://dy.devitaliya.me/', 'https://dyweb.devitaliya.me/login'],
-      'co-founder : ',
+      'with ',
       {
         text: 'Yash Katrodiya',
         href: 'https://www.linkedin.com/in/recellstechnology/',
       }
     ),
-    item('Sendpaper', 'present', ['https://sendpaper.io/'], 'co-founder : ', {
-      text: 'Ashish',
-      href: 'https://github.com/AshishViradiya153',
-    }),
+    // item('Sendpaper', 'present', ['https://sendpaper.io/'], 'with ', {
+    //   text: 'Ashish',
+    //   href: 'https://github.com/AshishViradiya153',
+    // }),
   ],
 };
 
