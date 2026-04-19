@@ -219,7 +219,7 @@ export const categoryLabels: Record<ExperienceCategory, string> = {
   internship: 'internships',
   freelance: 'freelance',
   learning: 'learning',
-  'wanna-be-startup': "products i'm building",
+  'wanna-be-startup': "things i'm building",
 };
 
 export const categoryOrder: ExperienceCategory[] = [

@@ -46,7 +46,7 @@ export default function PortfolioAbout() {
           </TooltipProvider>
         </p>
         <p className="text-neutral-600 dark:text-neutral-500">
-          built a startup with{' '}
+          building something with{' '}
           <a
             href="https://github.com/AshishViradiya153"
             target="_blank"
