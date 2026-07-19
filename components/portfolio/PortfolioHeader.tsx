@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
-import { useTheme } from 'next-themes';
 import {
   Tooltip,
   TooltipContent,
@@ -20,8 +20,21 @@ const skills = [
   { name: 'PostgreSQL', icon: '/skills/pg.svg' },
 ];
 
+/** true = display can show HDR/EDR right now, false = it can't, null = unknown (SSR) */
+function useEdrDisplay() {
+  const [edr, setEdr] = useState<boolean | null>(null);
+  useEffect(() => {
+    const mq = window.matchMedia('(dynamic-range: high)');
+    setEdr(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setEdr(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+  return edr;
+}
+
 export default function PortfolioHeader() {
-  const { theme } = useTheme();
+  const edr = useEdrDisplay();
   return (
     <header className="flex justify-between items-start gap-8 mb-16">
       <div>
@@ -61,23 +74,54 @@ export default function PortfolioHeader() {
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">
         <ThemeToggle />
-        {theme === 'dark' ? (
-          <Image
-            src="/odsy-dark.jpg"
-            alt="Dev Italiya"
-            width={80}
-            height={80}
-            className="rounded-full object-cover w-16 h-16 md:w-20 md:h-20"
-          />
-        ) : (
-          <Image
-            src="/odsy-light.jpg"
-            alt="Dev Italiya"
-            width={80}
-            height={80}
-            className="rounded-full object-cover w-16 h-16 md:w-20 md:h-20"
-          />
-        )}
+        {/* PNGs carry a Rec.2100 PQ ICC profile so white renders as HDR
+            superwhite on EDR displays — `unoptimized` keeps next/image from
+            re-encoding and stripping the profile. */}
+        <TooltipProvider delayDuration={0}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="inline-flex cursor-default">
+                <Image
+                  src="/odsy-dark-hdr.png"
+                  alt="Dev Italiya"
+                  width={80}
+                  height={80}
+                  unoptimized
+                  className="hidden dark:block rounded-full object-cover w-16 h-16 md:w-20 md:h-20"
+                />
+                <Image
+                  src="/odsy-light-hdr.png"
+                  alt="Dev Italiya"
+                  width={80}
+                  height={80}
+                  unoptimized
+                  className="dark:hidden rounded-full object-cover w-16 h-16 md:w-20 md:h-20"
+                />
+              </span>
+            </TooltipTrigger>
+            <TooltipContent
+              side="bottom"
+              align="end"
+              className="max-w-[280px] bg-neutral-100 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 text-xs leading-relaxed p-3"
+            >
+              <p className="font-medium text-neutral-900 dark:text-white mb-1">
+                this logo is HDR ⚡
+              </p>
+              <p>
+                its white pixels are tagged as Rec.2100 PQ — brighter than the
+                page&apos;s white.
+              </p>
+              <p className="mt-1">
+                {edr
+                  ? 'your display supports EDR, so it should be glowing right now ✨'
+                  : 'your display doesn’t do EDR — on a MacBook / iPhone / HDR screen it literally glows.'}
+              </p>
+              <p className="mt-1 text-neutral-500">
+                intentional, not a rendering bug :)
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
     </header>
   );

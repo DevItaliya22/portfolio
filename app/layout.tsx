@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import { Analytics } from '@vercel/analytics/next';
 import { ThemeProvider } from '@/components/theme-provider';
+import { ThemeFavicon } from '@/components/ThemeFavicon';
 import GradualBlur from '@/components/portfolio/GradualBlur';
 import { InitialBlurReveal } from '@/components/portfolio/InitialBlurReveal';
 import { ConfettiSideCannons } from '@/components/ui/confetti-side-cannons';
@@ -115,12 +116,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link
-          rel="shortcut icon"
-          href="/image.jpg"
-          type="image/jpeg"
-          style={{ borderRadius: '50%' }}
-        />
+        <link rel="shortcut icon" href="/odsy-dark-hdr.png" type="image/png" />
         <script
           defer
           data-website-id="6783df6488b0ca8b0194a39b"
@@ -144,6 +140,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Analytics />
+          <ThemeFavicon />
           {/* <InitialBlurReveal>{children}</InitialBlurReveal>
           //TODO: Uncomment this when the initial blur reveal is ready */}
           {children}
