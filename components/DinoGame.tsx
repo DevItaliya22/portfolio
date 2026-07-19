@@ -4,6 +4,7 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 import { triggerConfetti } from '@/components/ui/confetti-side-cannons';
 
 const DINO_HIGH_SCORE_KEY = 'dino-game-high-score';
+const DEFAULT_FAVICON = '/odsy-dark-hdr.png';
 
 type GameState = 'title' | 'playing' | 'gameover';
 
@@ -372,6 +373,11 @@ export default function DinoGame() {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
+      // Give the tab icon back to the site logo when leaving the game
+      const favicon = document.querySelector<HTMLLinkElement>(
+        'link[rel="shortcut icon"]'
+      );
+      if (favicon) favicon.setAttribute('href', DEFAULT_FAVICON);
     };
   }, [tick]);
 

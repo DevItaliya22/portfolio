@@ -4,10 +4,12 @@
  */
 
 export type ExperienceCategory =
+  | 'full-time'
   | 'internship'
   | 'freelance'
   | 'learning'
-  | 'wanna-be-startup';
+  | 'wanna-be-startup'
+  | 'projects';
 
 export interface ExperienceItem {
   name: string;
@@ -84,6 +86,14 @@ export const experienceByCategory: Record<
   ExperienceCategory,
   ExperienceItem[]
 > = {
+  'full-time': [
+    item(
+      'Unitrix',
+      'present',
+      [],
+      'we build ERP software · Next.js & NestJS'
+    ),
+  ],
   internship: [
     item(
       '3RP Technetium',
@@ -174,6 +184,20 @@ export const experienceByCategory: Record<
       'https://github.com/DevItaliya22/Kubernetes',
     ]),
   ],
+  projects: [
+    item(
+      'Reverse Linear Sync Engine',
+      'Feb 2026',
+      ['/sync'],
+      "a sync engine built from scratch, inspired by Linear's architecture"
+    ),
+    item(
+      'Dino Favicon Game',
+      'Feb 2026',
+      ['/dino'],
+      'the chrome dino game, playable inside the browser tab favicon'
+    ),
+  ],
   'wanna-be-startup': [
     item(
       'Free Local Converter',
@@ -207,24 +231,28 @@ function sortByDateDesc(items: ExperienceItem[]): ExperienceItem[] {
   return [...items].sort((a, b) => b.sortDate.localeCompare(a.sortDate));
 }
 
-// Apply sorting to all categories (freelance uses manual order)
+// Apply sorting to all categories (freelance and projects use manual order)
 Object.keys(experienceByCategory).forEach((key) => {
   const cat = key as ExperienceCategory;
-  if (cat !== 'freelance') {
+  if (cat !== 'freelance' && cat !== 'projects') {
     experienceByCategory[cat] = sortByDateDesc(experienceByCategory[cat]);
   }
 });
 
 export const categoryLabels: Record<ExperienceCategory, string> = {
+  'full-time': 'full time',
   internship: 'internships',
   freelance: 'freelance',
   learning: 'learning',
   'wanna-be-startup': "things i'm building",
+  projects: 'projects & hackathons',
 };
 
 export const categoryOrder: ExperienceCategory[] = [
   'wanna-be-startup',
+  'full-time',
   'internship',
   'freelance',
+  'projects',
   // 'learning',
 ];
