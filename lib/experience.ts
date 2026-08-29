@@ -146,11 +146,11 @@ export const experienceByCategory: Record<
       'https://www.kakadiyaautomobiles.com/',
     ]),
     item("K's Lunaloops", 'Jan 8, 2025', ['https://ks-lunaloop.vercel.app/']),
-    item('Shuttle', 'Jul 22, 2025', ['https://shuttle.devitaliya.me/']),
-    item('Agency Portfolio', 'Jul 8, 2025', ['https://agency.devitaliya.me/']),
+    item('Shuttle', 'Jul 22, 2025', ['https://shuttle.devitaliya.com/']),
+    item('Agency Portfolio', 'Jul 8, 2025', ['https://agency.devitaliya.com/']),
     item('Cyro Technologies', 'Jul 15, 2025', [], undefined, undefined, true),
     item('Manish Vaghasiya', 'Sept 15, 2024', [
-      'https://manishvaghasiya.devitaliya.me/',
+      'https://manishvaghasiya.devitaliya.com/',
     ]),
     item('VisualizeNBuild', 'Jul 10, 2025', [
       'https://vendor.visualizenbuild.com/login',
@@ -161,7 +161,7 @@ export const experienceByCategory: Record<
       'https://ash-deployment-pbq6.vercel.app/',
       'https://ash-deployment-hhwm.vercel.app/',
     ]),
-    // item('StatusHive', 'Mar 13, 2025', ['https://statushive.devitaliya.me', 'https://github.com/DevItaliya22/StatusHive']),
+    // item('StatusHive', 'Mar 13, 2025', ['https://statushive.devitaliya.com', 'https://github.com/DevItaliya22/StatusHive']),
     // item('Autominds', 'Sept 27, 2024', ['https://auto-minds-six.vercel.app/', 'https://github.com/DevItaliya22/AutoMinds']),
     // item('Accufin', 'Jun 9, 2025', ['https://accufin.vercel.app/']),
     // item('ShyamahShringar', 'Apr 6, 2025', []),
@@ -212,7 +212,7 @@ export const experienceByCategory: Record<
     item(
       'DY',
       'present',
-      ['https://dy.devitaliya.me/', 'https://dyweb.devitaliya.me/login'],
+      ['https://dy.devitaliya.com/', 'https://dyweb.devitaliya.com/login'],
       'with ',
       {
         text: 'Yash Katrodiya',

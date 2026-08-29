@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     title: 'Projects - Dev Italiya',
     description:
       'Explore my portfolio of web applications, automation platforms, and client projects.',
-    url: 'https://www.devitaliya.me/projects',
+    url: 'https://www.devitaliya.com/projects',
     type: 'website',
   },
   twitter: {

@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/api/',
     },
-    sitemap: 'https://www.devitaliya.me/sitemap.xml',
+    sitemap: 'https://www.devitaliya.com/sitemap.xml',
   };
 }
