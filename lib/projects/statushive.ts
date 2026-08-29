@@ -5,7 +5,7 @@ export const statushive: Project = {
   category: 'side-project',
   title: 'StatusHive - Multi-tenant Monitoring Platform',
   github: 'https://github.com/DevItaliya22/StatusHive',
-  href: 'https://statushive.devitaliya.me',
+  href: 'https://statushive.devitaliya.com',
   description:
     '🚧 In Progress - Advanced monitoring platform inspired by OpenStatus. Multi-tenant architecture with serverless pings across 18 regions, real-time analytics using Tinybird, and custom Go lambda functions.',
   longDescription: `**⚠️ Project Status: Active Development** - This project is currently in progress due to internship commitments, but the core architecture and learning objectives have been achieved.
@@ -18,7 +18,7 @@ Dedicated intensive learning period where I systematically implemented each micr
 ## Technical Architecture:
 
 ### Multi-Tenant Infrastructure
-- **Custom Domain System**: Users can claim \`xyz.statushive.devitaliya.me\` subdomains
+- **Custom Domain System**: Users can claim \`xyz.statushive.devitaliya.com\` subdomains
 - **Tenant Isolation**: Complete multi-tenancy implementation with domain-based routing
 - **Scalable Database Design**: Architected for handling multiple tenants efficiently
 

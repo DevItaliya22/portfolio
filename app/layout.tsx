@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Dev Italiya' }],
   creator: 'Dev Italiya',
-  metadataBase: new URL('https://www.devitaliya.me'),
+  metadataBase: new URL('https://www.devitaliya.com'),
   alternates: {
     canonical: '/',
   },
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     title: 'Dev Italiya - Full Stack Developer',
     description:
       'Full-stack developer building innovative web applications and websites for clients worldwide.',
-    url: 'https://www.devitaliya.me',
+    url: 'https://www.devitaliya.com',
     siteName: 'Dev Italiya Portfolio',
     images: [
       {
@@ -91,7 +91,7 @@ export default function RootLayout({
     jobTitle: 'Full Stack Developer',
     description:
       'Full-stack developer building innovative web applications and websites for clients worldwide',
-    url: 'https://www.devitaliya.me',
+    url: 'https://www.devitaliya.com',
     sameAs: [
       'https://twitter.com/DevItaliya22',
       'https://github.com/DevItaliya22',
@@ -109,7 +109,7 @@ export default function RootLayout({
     workExample: {
       '@type': 'WebSite',
       name: 'Dev Italiya Portfolio',
-      url: 'https://www.devitaliya.me',
+      url: 'https://www.devitaliya.com',
     },
   };
 
@@ -120,7 +120,7 @@ export default function RootLayout({
         <script
           defer
           data-website-id="6783df6488b0ca8b0194a39b"
-          data-domain="www.devitaliya.me"
+          data-domain="www.devitaliya.com"
           src="https://datafa.st/js/script.js"
         ></script>
         <script

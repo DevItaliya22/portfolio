@@ -22,7 +22,7 @@ export default function PortfolioAbout() {
               <TooltipTrigger asChild>
                 <span className="inline-flex items-baseline gap-1">
                   <a
-                    href="https://dy.devitaliya.me/"
+                    href="https://dy.devitaliya.com/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors underline decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2  px-1 py-0.5 rounded"

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title: 'Dev Italiya - Full Stack Developer',
     description:
       'Full-stack developer building innovative web applications and websites for clients worldwide.',
-    url: 'https://www.devitaliya.me',
+    url: 'https://www.devitaliya.com',
     type: 'website',
   },
   twitter: {

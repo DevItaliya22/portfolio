@@ -34,7 +34,7 @@ export async function generateMetadata({
     openGraph: {
       title: `${project.title} - Dev Italiya`,
       description: project.description,
-      url: `https://www.devitaliya.me/projects/${project.id}`,
+      url: `https://www.devitaliya.com/projects/${project.id}`,
       type: 'article',
     },
     twitter: {
@@ -76,11 +76,11 @@ export default async function ProjectDetail({
     },
     keywords: project.tags,
     programmingLanguage: project.techStack,
-    url: `https://www.devitaliya.me/projects/${project.id}`,
+    url: `https://www.devitaliya.com/projects/${project.id}`,
     isPartOf: {
       '@type': 'WebSite',
       name: 'Dev Italiya Portfolio',
-      url: 'https://www.devitaliya.me',
+      url: 'https://www.devitaliya.com',
     },
   };
 
