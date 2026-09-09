@@ -3,7 +3,7 @@ import { getAllPosts } from '@/lib/blog';
 import { projects } from '@/lib/info';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://www.devitaliya.com';
+  const baseUrl = 'https://devitaliya.com';
 
   // Static pages
   const staticPages = [

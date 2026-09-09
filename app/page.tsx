@@ -18,14 +18,24 @@ export const metadata: Metadata = {
     title: 'Dev Italiya - Full Stack Developer',
     description:
       'Full-stack developer building innovative web applications and websites for clients worldwide.',
-    url: 'https://www.devitaliya.com',
+    url: 'https://devitaliya.com',
     type: 'website',
+    images: [
+      {
+        url: '/og.png',
+        width: 1200,
+        height: 630,
+        alt: 'Dev Italiya - Full Stack Developer',
+        type: 'image/png',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Dev Italiya - Full Stack Developer',
     description:
       'Full-stack developer building innovative web applications and websites for clients worldwide.',
+    images: ['/og.png'],
   },
 };
 
