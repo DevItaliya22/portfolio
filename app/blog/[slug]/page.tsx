@@ -38,6 +38,7 @@ export function generateMetadata({
       url: `/blog/${post.slug}`,
     },
     twitter: {
+      card: 'summary_large_image',
       title: post.title,
       description: post.description,
     },
