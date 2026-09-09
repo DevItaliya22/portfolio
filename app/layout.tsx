@@ -47,14 +47,6 @@ export const metadata: Metadata = {
       'Full-stack developer building innovative web applications and websites for clients worldwide.',
     url: 'https://www.devitaliya.com',
     siteName: 'Dev Italiya Portfolio',
-    images: [
-      {
-        url: '/image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Dev Italiya - Full Stack Developer',
-      },
-    ],
     locale: 'en_US',
     type: 'website',
   },
@@ -64,7 +56,6 @@ export const metadata: Metadata = {
     description:
       'Full-stack developer building innovative web applications and websites for clients worldwide.',
     creator: '@DevItaliya22',
-    images: ['/image.jpg'],
   },
   robots: {
     index: true,

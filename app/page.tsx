@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
+    card: 'summary_large_image',
     title: 'Dev Italiya - Full Stack Developer',
     description:
       'Full-stack developer building innovative web applications and websites for clients worldwide.',
