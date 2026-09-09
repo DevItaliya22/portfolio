@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Dev Italiya' }],
   creator: 'Dev Italiya',
-  metadataBase: new URL('https://www.devitaliya.com'),
+  metadataBase: new URL('https://devitaliya.com'),
   alternates: {
     canonical: '/',
   },
@@ -45,10 +45,19 @@ export const metadata: Metadata = {
     title: 'Dev Italiya - Full Stack Developer',
     description:
       'Full-stack developer building innovative web applications and websites for clients worldwide.',
-    url: 'https://www.devitaliya.com',
+    url: 'https://devitaliya.com',
     siteName: 'Dev Italiya Portfolio',
     locale: 'en_US',
     type: 'website',
+    images: [
+      {
+        url: '/og.png',
+        width: 1200,
+        height: 630,
+        alt: 'Dev Italiya - Full Stack Developer',
+        type: 'image/png',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
@@ -56,6 +65,7 @@ export const metadata: Metadata = {
     description:
       'Full-stack developer building innovative web applications and websites for clients worldwide.',
     creator: '@DevItaliya22',
+    images: ['/og.png'],
   },
   robots: {
     index: true,
@@ -82,7 +92,7 @@ export default function RootLayout({
     jobTitle: 'Full Stack Developer',
     description:
       'Full-stack developer building innovative web applications and websites for clients worldwide',
-    url: 'https://www.devitaliya.com',
+    url: 'https://devitaliya.com',
     sameAs: [
       'https://twitter.com/DevItaliya22',
       'https://github.com/DevItaliya22',
@@ -100,7 +110,7 @@ export default function RootLayout({
     workExample: {
       '@type': 'WebSite',
       name: 'Dev Italiya Portfolio',
-      url: 'https://www.devitaliya.com',
+      url: 'https://devitaliya.com',
     },
   };
 
