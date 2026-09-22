@@ -1,5 +1,4 @@
 import { MetadataRoute } from 'next';
-import { getAllPosts } from '@/lib/blog';
 import { projects } from '@/lib/info';
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -32,12 +31,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     },
     {
-      url: `${baseUrl}/blog`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
       url: `${baseUrl}/sync`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
@@ -51,13 +44,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const blogPages = getAllPosts().map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.date),
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
-
   // Dynamic project pages
   const projectPages = projects.map((project) => ({
     url: `${baseUrl}/projects/${project.id}`,
@@ -66,5 +52,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...blogPages, ...projectPages];
+  return [...staticPages, ...projectPages];
 }
